@@ -78,8 +78,8 @@ def questions(request, **kwargs):
     List of Questions, Tagged questions, and Unanswered questions.
     matching search query or user selection
     """
-    if request.method != 'GET':
-        return HttpResponseNotAllowed(['GET'])
+    if request.method != 'GET' or request.method != 'HEAD':
+        return HttpResponseNotAllowed(['GET', 'HEAD'])
 
     search_state = SearchState(
                     user_logged_in=request.user.is_authenticated,
@@ -385,7 +385,7 @@ def should_show_answer_form(user, thread, answers):
         # we don't know if user has previous answers
         if askbot_settings.LIMIT_ONE_ANSWER_PER_USER:
             return False
-        
+
     if askbot_settings.GROUPS_ENABLED:
         if user.is_authenticated:
             if not user.can_post_answer(thread):
