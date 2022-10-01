@@ -531,7 +531,7 @@ def user_can_anonymize_account(self, user):
     """`True`, if `self` can anonymize and disable account of `user`"""
     perm = askbot_settings.WHO_CAN_ANONYMIZE_ACCOUNTS
     if perm == 'admins':
-        return self.is_administrator()
+        return self.is_administrator() and self.pk != user.pk
     elif self.is_administrator_or_moderator():
         return perm in ('mods', 'users')
     elif perm == 'users':
@@ -1484,6 +1484,7 @@ def user_anonymize(self):
     revs.update(is_anonymous=True)
     self.clear_cached_data()
     self.notification_subscriptions.update(frequency='n')
+    self.userassociation_set.all().delete()
     for prof in self.localized_askbot_profiles.all():
         prof.anonymize()
         prof.save()

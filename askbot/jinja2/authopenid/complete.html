@@ -83,6 +83,7 @@ parameters:
                 <div class="submit-row">
                     <input
                         id="register-button"
+                        class="btn"
                         type="submit"
                         name="bnewaccount"
                         value="{% trans %}Signup{% endtrans %}"
@@ -91,20 +92,22 @@ parameters:
             </form>
         {% endif %}
     </div>
-    <div class="recover-account flip-content">
-        <h1 class="section-title">{% trans %}Recover account{% endtrans %}</h1>
-        {% include "authopenid/account_recovery_form.html" %}
-    </div>
-    <div class="flip-tab-controls">
-        <p class="flip-tab flip-tab-active" data-target=".recover-account">
-            <strong>{% trans %}Already have an account?{% endtrans %}</strong>
-            <a class="trigger">{% trans %}Recover it by email.{% endtrans %}</a>
-        </p>
-        <p class="flip-tab" data-target=".complete-registration">
-            <strong>{% trans %}Prefer to create a new account?{% endtrans %}</strong>
-            <a class="trigger">{% trans %}Return to registration.{% endtrans %}</a>
-        </p>
-    </div>
+    {% if settings.ALLOW_ACCOUNT_RECOVERY_BY_EMAIL %}
+        <div class="recover-account flip-content">
+            <h1 class="section-title">{% trans %}Recover account{% endtrans %}</h1>
+            {% include "authopenid/account_recovery_form.html" %}
+        </div>
+        <div class="flip-tab-controls">
+            <p class="flip-tab flip-tab-active" data-target=".recover-account">
+                <strong>{% trans %}Already have an account?{% endtrans %}</strong>
+                <a class="trigger">{% trans %}Recover it by email.{% endtrans %}</a>
+            </p>
+            <p class="flip-tab" data-target=".complete-registration">
+                <strong>{% trans %}Prefer to create a new account?{% endtrans %}</strong>
+                <a class="trigger">{% trans %}Return to registration.{% endtrans %}</a>
+            </p>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
 <!-- end complete.html -->

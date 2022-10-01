@@ -38,6 +38,7 @@ from django.utils import timezone
 from django.utils.html import strip_tags as strip_all_tags
 from django.views.decorators import csrf
 
+from askbot.auth import logout
 from askbot.utils.slug import slugify
 from askbot.utils.html import sanitize_html
 from askbot.utils.functions import encode_jwt
@@ -293,9 +294,16 @@ def manage_account(request, subject, context):
         elif 'anonymize_account' in request.POST:
             if request.user.can_anonymize_account(subject):
                 subject.anonymize()
+                if request.user.pk == subject.pk:
+                    logout(request)
+                    message = _('Your account has been terminated. All content has been anonymized and remains accessible.')
+                    request.user.message_set.create(message=message)
                 return HttpResponseRedirect(subject.get_absolute_url())
             else:
-                msg = _('Sorry, something is not right here...')
+                if request.user.is_administrator() and request.user.pk == subject.pk:
+                    msg = _('Administrators cannot delete own accounts')
+                else:
+                    msg = _('Sorry, something is not right here...')
                 request.user.message_set.create(message=msg)
                 return HttpResponseRedirect(subject.get_absolute_url())
 

@@ -8684,6 +8684,13 @@ code.hljs {
   margin: 0 0 0.75rem;
 }
 
+.js-modal-body p {
+  margin: 0 0 0.5rem;
+}
+.js-modal-body ul {
+  margin: 0 0 1rem 1rem;
+}
+
 .js-modal-footer .btn {
   margin-left: 0.5rem;
 }
@@ -10466,6 +10473,17 @@ a.badge-page-link {
 }
 .search-posts-page .search-posts-context-type {
   text-transform: capitalize;
+}
+
+.complete-registration {
+  margin-bottom: 0.5rem;
+}
+.complete-registration input {
+  margin-bottom: 0.5rem;
+}
+
+.recover-account {
+  margin-bottom: 0.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

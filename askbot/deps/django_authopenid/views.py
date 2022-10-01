@@ -52,6 +52,7 @@ from django.utils.html import escape
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 import json
+from askbot.auth import logout
 from askbot.mail.messages import AccountActivation, AccountRecovery
 from askbot.utils import decorators as askbot_decorators
 from askbot.utils.functions import format_setting_name
@@ -60,7 +61,6 @@ from askbot.deps.django_authopenid.ldap_auth import ldap_create_user
 from askbot.deps.django_authopenid.ldap_auth import ldap_authenticate
 from askbot.deps.django_authopenid.providers import discourse
 from askbot.deps.django_authopenid.exceptions import OAuthError
-from askbot.middleware.anon_user import connect_messages_to_anon_user
 from askbot.utils.loading import load_module
 from requests_oauthlib.oauth2_session import OAuth2Session
 from urllib.parse import urlparse
@@ -152,7 +152,7 @@ def cleanup_post_register_session(request):
             del request.session[key]
 
 
-#todo: decouple from askbot
+#todo: move to askbot.auth
 def login(request, user):
     from django.contrib.auth import login as _login
 
@@ -171,12 +171,6 @@ def login(request, user):
                     session_key=session_key,
                     sender=None
                 )
-
-#todo: uncouple this from askbot
-def logout(request):
-    from django.contrib.auth import logout as _logout#for login I've added wrapper below - called login
-    _logout(request)
-    connect_messages_to_anon_user(request)
 
 def logout_page(request):
     data = {'have_federated_login_methods': util.have_enabled_federated_login_methods()}
@@ -1071,7 +1065,7 @@ def finalize_generic_signin(
                 ).save()
                 return HttpResponseRedirect(redirect_url)
 
-        elif user != request.user:
+        if user != request.user:
             #prevent theft of account by another pre-existing user
             logging.critical(
                     'possible account theft attempt by %s,%d to %s %d' % \
@@ -1085,27 +1079,28 @@ def finalize_generic_signin(
             logout(request)#log out current user
             login(request, user)#login freshly authenticated user
             return HttpResponseRedirect(redirect_url)
-        else:
-            #user just checks if another login still works
-            msg = _('Your %(provider)s login works fine') % \
-                    {'provider': login_provider_name}
-            request.user.message_set.create(message = msg)
-            return HttpResponseRedirect(redirect_url)
-    elif user:
+
+        #user just checks if another login still works
+        msg = _('Your %(provider)s login works fine') % \
+                {'provider': login_provider_name}
+        request.user.message_set.create(message = msg)
+        return HttpResponseRedirect(redirect_url)
+
+    if user:
         #login branch
         login(request, user)
         logging.debug('login success')
         return HttpResponseRedirect(redirect_url)
-    else:
-        #need to register
-        request.method = 'GET'#this is not a good thing to do
-        #but necessary at the moment to reuse the register() method
-        return register(
-                    request,
-                    login_provider_name=login_provider_name,
-                    user_identifier=user_identifier,
-                    redirect_url=redirect_url
-                )
+
+    #needs to register
+    request.method = 'GET'#this is not a good thing to do
+    #but necessary at the moment to reuse the register() method
+    return register(
+                request,
+                login_provider_name=login_provider_name,
+                user_identifier=user_identifier,
+                redirect_url=redirect_url
+            )
 
 @not_authenticated
 @csrf.csrf_protect
