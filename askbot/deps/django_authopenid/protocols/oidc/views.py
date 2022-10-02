@@ -1,4 +1,5 @@
 """Views for the OpenID Connect - OIDC protocol"""
+import logging
 from django.conf import settings as django_settings
 from django.contrib.auth import authenticate
 from django.http import HttpResponseBadRequest
@@ -9,6 +10,8 @@ from askbot.deps.django_authopenid.models import UserAssociation
 from askbot.deps.django_authopenid.views import finalize_generic_signin
 from askbot.deps.django_authopenid.protocols import get_protocol
 from askbot.utils.html import site_url
+
+LOG = logging.getLogger()
 
 def complete_oidc_signin(request): #pylint: disable=too-many-return-statements
     """Callback for the OIDC authentication"""
@@ -55,15 +58,22 @@ def complete_oidc_signin(request): #pylint: disable=too-many-return-statements
                         provider_name=provider_name,
                         method='identifier')
 
+    if not user:
+        LOG.critical('OIDC LOGIN: user with user_identifier=%s not found, need to authenticate by email %s', user_id, email)
+
     if not user and email and oidc.trust_email:
+        LOG.critical('OIDC LOGIN: trying to authenticate user email %s', email)
         user = authenticate(method='email', email=email)
         if user:
+            LOG.critical('OIDC LOGIN: user id=%s found by email %s', user.id, email)
             UserAssociation(
                 user=user,
                 provider_name=provider_name,
                 openid_url=user_id,
                 last_used_timestamp=timezone.now()
             ).save()
+        else:
+            LOG.critical('OIDC LOGIN: user with email=%s not found, inviting to register', email)
 
     request.session['email'] = email
     request.session['username'] = oidc.get_username(id_token)
