@@ -34,6 +34,7 @@ REQUIREMENTS = {
     'keyedcache': 'django-keyedcache3>=1.5.1',
     'livesettings': 'django-livesettings3==1.5.1',
     'markdown2': 'markdown2<=2.3.9',
+    'markupsafe': 'markupsafe',
     'mock': 'mock==3.0.5',
     'oauth2': 'oauth2<=1.9.0.post1',
     'openid': 'python-openid2>=3.0',
