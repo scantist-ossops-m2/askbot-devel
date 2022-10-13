@@ -210,7 +210,13 @@ def plain_text_input_converter(text):
 
 
 def markdown_input_converter(text):
-    """markdown to html converter"""
+    """Markdown to html converter.
+    Converts markdown with extra features:
+    * link-patterns
+    * video embedding
+    * code-friendly (drop this?) - no underscores to italic (if mathjax or code friendly settings are true)
+    * urlizing of link-like text - this may need to depend on reputation
+    """
     text = get_parser().convert(text)
     text = sanitize_html(text)
     text = urlize_html(text)
