@@ -52,7 +52,7 @@
   --action-link-color: var(--clr-neutral-50);
   --action-link-hover-color: var(--clr-neutral-20);
 
-  --editor-padding: 0.125rem 0.25rem;
+  --editor-padding: 0.5rem 0.75rem;
   --editor-border-color: var(--clr-neutral-60);
   --editor-border: var(--border-width) var(--border-style) var(--editor-border-color);
   --editor-box-shadow: inset 0 0 3px var(--clr-neutral-70);
@@ -169,6 +169,8 @@
   --post-share-button-width: 1rem;
 
   --post-update-info-details-color: var(--clr-neutral-40);
+  --post-update-info-bg: var(--clr-highlight-pale-95);
+  --post-update-info-accepted-answer-bg: white;
   --post-update-info-details-hover-color: var(--clr-neutral-20);
   --post-update-info-container-margin: 0;
   --post-update-info-margin: 0 0.5rem 0.5rem 0;
@@ -199,6 +201,7 @@
   --accept-answer-btn-inactive-hover-color: var(--clr-green-50);
   --accept-answer-btn-active-color: var(--clr-green-50);
   --accept-answer-btn-active-hover-color: var(--clr-danger);
+  --accepted-answer-bg: var(--clr-blue-pale);
 
   --rss-link-color: var(--clr-orange);
   --rss-link-hover-color: var(--clr-danger);
@@ -257,7 +260,7 @@
 	--wmd-spacer-background: var(--clr-neutral-50);
   --wmd-preview-block-margin: 0 0 0.5rem;
   --wmd-preview-list-padding: 0 0 0 1.5rem;
-  --wmd-preview-padding: 0.5rem;
+  --wmd-preview-padding: 0.5rem 0.75rem;
   --wmd-preview-margin: 0 0 0.5rem;
   --wmd-preview-background: var(--clr-neutral-95);
   --wmd-preview-border: var(--border-width) var(--border-style) var(--clr-neutral-80);

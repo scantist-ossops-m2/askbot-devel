@@ -1,9 +1,9 @@
+#pylint: disable=wrong-import-order
 from askbot import startup_procedures
 startup_procedures.run()
 
 from django.contrib.auth.models import User
 
-import askbot
 import collections
 import datetime
 import hashlib
@@ -31,6 +31,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core import exceptions as django_exceptions
 
+import askbot
 from askbot import exceptions as askbot_exceptions
 from askbot import const
 from askbot.const import message_keys
@@ -78,8 +79,8 @@ from askbot.utils.html import replace_links_with_text
 from askbot.utils import functions
 from askbot import mail
 from askbot import signals
-from jsonfield import JSONField
 
+from jsonfield import JSONField
 
 register_user_signal = partial(signals.register_generic_signal, sender=User)
 
@@ -598,13 +599,13 @@ def user_can_see_karma(user, karma_owner):
     """True, if user can see other users karma"""
     if askbot_settings.KARMA_MODE == 'public':
         return True
-    elif askbot_settings.KARMA_MODE == 'private':
-        if user.is_anonymous:
-            return False
-        elif user.is_administrator_or_moderator():
+
+    if askbot_settings.KARMA_MODE == 'private':
+        if user.is_administrator_or_moderator():
             return True
-        elif user.pk == karma_owner.pk:
+        if user.pk == karma_owner.pk:
             return True
+
     return False
 
 
@@ -1114,6 +1115,10 @@ def user_assert_can_post_comment(self, parent_post=None):
     if not self.has_group_permission('post_comments'):
         error_message_tpl = _('Sorry, you cannot %(perform_action)s')
         error_message = error_message_tpl % {'perform_action': _('post comments')}
+        raise django_exceptions.PermissionDenied(error_message)
+
+    if parent_post.has_moderated_comment(self):
+        error_message = _('Sorry, only one moderated comment per post is allowed')
         raise django_exceptions.PermissionDenied(error_message)
 
 
@@ -1796,15 +1801,10 @@ def user_repost_comment_as_answer(self, comment):
 
     comment.thread.update_answer_count()
 
-    comment.parent.comment_count += 1
+    comment.parent.recount_comments()
     comment.parent.save()
 
-    #to avoid db constraint error
-    if old_parent.comment_count >= 1:
-        old_parent.comment_count -= 1
-    else:
-        old_parent.comment_count = 0
-
+    old_parent.recount_comments()
     old_parent.save()
     comment.thread.reset_cached_data()
 
@@ -2251,7 +2251,7 @@ def user_edit_question(
         else:
             question.thread.make_public(recursive=False)
 
-    latest_revision = question.get_latest_revision()
+    latest_revision = question.get_latest_revision(self)
     #a hack to allow partial edits - important for SE loader
     if title is None:
         title = question.thread.title
@@ -2479,16 +2479,15 @@ def user_visit_question(self, question = None, timestamp = None):
 
     try:
         QuestionView.objects.filter(
-            who=self, question=question
+            who=self,
+            question=question
         ).update(
-            when = timestamp
+            when=timestamp
         )
     except QuestionView.DoesNotExist:
-        QuestionView(
-            who=self,
-            question=question,
-            when = timestamp
-        ).save()
+        QuestionView(who=self,
+                     question=question,
+                     when=timestamp).save()
 
     #filter memo objects on response activities directed to the qurrent user
     #that refer to the children of the currently
@@ -2497,16 +2496,17 @@ def user_visit_question(self, question = None, timestamp = None):
     ACTIVITY_TYPES += (const.TYPE_ACTIVITY_MENTION,)
 
     audit_records = ActivityAuditStatus.objects.filter(
-                        user = self,
-                        status = ActivityAuditStatus.STATUS_NEW,
-                        activity__question = question
+                        user=self,
+                        status=ActivityAuditStatus.STATUS_NEW,
+                        activity__question=question
                     )
 
     cleared_record_count = audit_records.filter(
-                                activity__activity_type__in = ACTIVITY_TYPES
+                                activity__activity_type__in=ACTIVITY_TYPES
                             ).update(
                                 status=ActivityAuditStatus.STATUS_SEEN
                             )
+
     if cleared_record_count > 0:
         self.update_response_counts()
 
@@ -2514,7 +2514,7 @@ def user_visit_question(self, question = None, timestamp = None):
     #the admin response counts are not denormalized b/c they are easy to obtain
     if self.is_moderator() or self.is_administrator():
         audit_records.filter(
-                activity__activity_type = const.TYPE_ACTIVITY_MARK_OFFENSIVE
+            activity__activity_type=const.TYPE_ACTIVITY_MARK_OFFENSIVE
         ).update(
             status=ActivityAuditStatus.STATUS_SEEN
         )
@@ -3325,7 +3325,7 @@ def user_approve_post_revision(user, post_revision, timestamp = None):
 
         if post.approved == False:
             if post.is_comment():
-                post.parent.comment_count += 1
+                post.parent.recount_comments()
                 post.parent.save()
             elif post.is_answer():
                 post.thread.answer_count += 1
@@ -4398,22 +4398,20 @@ def group_membership_changed(**kwargs):
             GROUP_MEMBERSHIP_LEVELS.pop(gm_key, None)
 
 
-def tweet_new_post(sender, user=None, question=None, answer=None, form_data=None, **kwargs):
+def tweet_new_post(sender, user=None, question=None, answer=None, **kwargs):
     """seends out tweets about the new post"""
     from askbot.tasks import tweet_new_post_task
     post = question or answer
     defer_celery_task(tweet_new_post_task, args=(post.id,))
 
-def autoapprove_reputable_user(user=None, reputation_before=None, *args, **kwargs):
+def autoapprove_reputable_user(*args, user=None, reputation_before=None, **kwargs):
     """if user is 'watched' we change status to 'approved'
     if user's rep crossed the auto-approval margin"""
     margin = askbot_settings.MIN_REP_TO_AUTOAPPROVE_USER
-    if user.is_watched() and reputation_before < margin and user.reputation >= margin:
+    if user.is_watched() and reputation_before < margin <= user.reputation:
         user.set_status('a')
 
-def record_spam_rejection(
-    sender, spam=None, text=None, user=None, ip_addr='unknown', **kwargs
-):
+def record_spam_rejection(sender, spam=None, text=None, user=None, ip_addr='unknown', **kwargs): #pylint: disable=unused-argument
     """Record spam autorejection activity
     Only one record per user kept
 
@@ -4421,9 +4419,7 @@ def record_spam_rejection(
     and data might be tracked in some other record
     """
     now = timezone.now()
-    summary = 'Found spam text: %s, posted from ip=%s in\n%s' % \
-                        (spam, ip_addr, text)
-
+    summary = f'Found spam text: {spam}, posted from ip={ip_addr} in\n{text}'
     spam_type = const.TYPE_ACTIVITY_FORBIDDEN_PHRASE_FOUND
     act_list = Activity.objects.filter(user=user, activity_type=spam_type)
     if len(act_list) == 0:
@@ -4523,7 +4519,7 @@ django_signals.post_save.connect(
 )
 django_signals.m2m_changed.connect(
     group_membership_changed,
-    sender=User.groups.through,
+    sender=User.groups.through, #pylint: disable=no-member
     dispatch_uid='record_group_membership_change_on_group_change'
 )
 
@@ -4583,13 +4579,11 @@ signals.user_logged_in.connect(
     post_anonymous_askbot_content,
     dispatch_uid='post_anon_content_on_login'
 )
-"""
-signals.post_save.connect(
-    reset_cached_post_data,
-    sender=Thread,
-    dispatch_uid='reset_cached_post_data',
-)
-"""
+#signals.post_save.connect(
+#    reset_cached_post_data,
+#    sender=Thread,
+#    dispatch_uid='reset_cached_post_data',
+#)
 signals.post_updated.connect(
     record_post_update_activity,
     dispatch_uid='record_post_update_activity'

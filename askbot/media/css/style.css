@@ -599,6 +599,8 @@ body:not(.tags-page):not(.questions-page):not(.users-page) main {
   --clr-highlight-pale-80: hsl(var(--highlight-hue), 15%, 80%, var(--debug-transparency));
   --clr-highlight-pale-90: hsla(var(--highlight-hue), 15%, 90%, var(--debug-transparency));
   --clr-highlight-pale-95: hsla(var(--highlight-hue), 15%, 95%, var(--debug-transparency));
+  --clr-highlight-pale-89-05: hsla(var(--highlight-hue), 15%, 89%, 0.5);
+  --clr-highlight-100: hsla(var(--highlight-hue), 100%, 100%, var(--debug-transparency));
   --clr-highlight-90: hsla(var(--highlight-hue), 100%, 90%, var(--debug-transparency));
   --clr-highlight-70: hsla(var(--highlight-hue), 87%, 70%, var(--debug-transparency));
   --clr-highlight-pale: hsla(var(--highlight-hue), 70%, 91%, var(--debug-transparency));
@@ -677,7 +679,7 @@ body:not(.tags-page):not(.questions-page):not(.users-page) main {
   --extra-large-font-size: 1.5rem;
   --action-link-color: var(--clr-neutral-50);
   --action-link-hover-color: var(--clr-neutral-20);
-  --editor-padding: 0.125rem 0.25rem;
+  --editor-padding: 0.5rem 0.75rem;
   --editor-border-color: var(--clr-neutral-60);
   --editor-border: var(--border-width) var(--border-style) var(--editor-border-color);
   --editor-box-shadow: inset 0 0 3px var(--clr-neutral-70);
@@ -774,6 +776,8 @@ body:not(.tags-page):not(.questions-page):not(.users-page) main {
   --post-votes-font-size: 1rem;
   --post-share-button-width: 1rem;
   --post-update-info-details-color: var(--clr-neutral-40);
+  --post-update-info-bg: var(--clr-highlight-pale-95);
+  --post-update-info-accepted-answer-bg: white;
   --post-update-info-details-hover-color: var(--clr-neutral-20);
   --post-update-info-container-margin: 0;
   --post-update-info-margin: 0 0.5rem 0.5rem 0;
@@ -801,6 +805,7 @@ body:not(.tags-page):not(.questions-page):not(.users-page) main {
   --accept-answer-btn-inactive-hover-color: var(--clr-green-50);
   --accept-answer-btn-active-color: var(--clr-green-50);
   --accept-answer-btn-active-hover-color: var(--clr-danger);
+  --accepted-answer-bg: var(--clr-blue-pale);
   --rss-link-color: var(--clr-orange);
   --rss-link-hover-color: var(--clr-danger);
   --toolbar-dropdown-menu-padding-left: 0;
@@ -851,7 +856,7 @@ body:not(.tags-page):not(.questions-page):not(.users-page) main {
   --wmd-spacer-background: var(--clr-neutral-50);
   --wmd-preview-block-margin: 0 0 0.5rem;
   --wmd-preview-list-padding: 0 0 0 1.5rem;
-  --wmd-preview-padding: 0.5rem;
+  --wmd-preview-padding: 0.5rem 0.75rem;
   --wmd-preview-margin: 0 0 0.5rem;
   --wmd-preview-background: var(--clr-neutral-95);
   --wmd-preview-border: var(--border-width) var(--border-style) var(--clr-neutral-80);
@@ -7791,6 +7796,10 @@ input[type=reset] input[type=button].action-link {
   min-width: var(--comment-votes-width);
 }
 
+.js-comment-content {
+  width: 100%;
+}
+
 .js-comments-list-title {
   margin: var(--comments-list-title-margin);
   font-size: var(--comments-list-title-font-size);
@@ -8094,6 +8103,7 @@ form.repost-comment-as-answer {
 
 .wmd-help {
   padding: 0.25rem 0 0.5rem 0.25rem;
+  margin-bottom: 0.25rem;
 }
 .wmd-help p {
   margin-bottom: 0.25rem;
@@ -9330,6 +9340,24 @@ ul.tags li {
   margin: 0 0 0.5rem;
 }
 
+.js-post-moderation-message {
+  padding: 0.5rem;
+  color: var(--bg-color);
+  background: var(--clr-danger);
+  margin: 0.5rem 0;
+}
+.js-post-moderation-message::before {
+  color: var(--clr-highlight-70);
+}
+
+.js-answer .js-post-moderation-message {
+  margin-bottom: 0;
+}
+
+.js-comment-content .js-post-moderation-message {
+  margin: 0.25rem 0 0.125rem !important;
+}
+
 .error-page main {
   display: flex;
   flex-direction: column;
@@ -9544,6 +9572,15 @@ ul.tags li {
 .question-answers-count {
   background: linear-gradient(to top, var(--clr-highlight-pale), var(--bg-color));
   color: var(--answers-count-color);
+  position: relative;
+}
+
+.question-answers-count.with-accept-answer-icon::before {
+  color: var(--accept-answer-btn-active-color);
+  font-size: 0.75rem;
+  position: absolute;
+  right: 3px;
+  top: 3px;
 }
 
 .question-votes-count {
@@ -9620,6 +9657,10 @@ ul.tags li {
 
 .js-post.js-answer {
   margin: var(--answer-margin);
+}
+
+.js-accepted-answer {
+  background: var(--accepted-answer-bg);
 }
 
 .post-body {
@@ -9710,7 +9751,7 @@ ul.tags li {
   margin: var(--post-update-info-margin);
   min-width: 11rem;
   padding: 0.3625rem;
-  background: var(--clr-neutral-95);
+  background: var(--post-update-info-bg);
 }
 .post-update-info:last-child {
   margin-right: 0;
@@ -9721,6 +9762,10 @@ ul.tags li {
     margin-right: 0;
     width: 100%;
   }
+}
+
+.js-accepted-answer .post-update-info {
+  background: var(--post-update-info-accepted-answer-bg);
 }
 
 .post-update-info-avatar {
@@ -10484,6 +10529,60 @@ a.badge-page-link {
 
 .recover-account {
   margin-bottom: 0.5rem;
+}
+
+.edit-answer-page h1, .edit-answer-page main {
+  margin-bottom: 1rem;
+}
+
+.moderation-queue-page .moderation-header .tools {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+.moderation-queue-page .moderation-header .tools .js-label {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.moderation-queue-page .moderation-header .tools .buttons {
+  display: flex;
+}
+.moderation-queue-page .moderation-header .tools .btn {
+  margin-right: 0.25rem;
+}
+.moderation-queue-page .moderation-header .tools .btn:last-child {
+  margin: 0;
+}
+.moderation-queue-page .select-decline-reason-btn {
+  position: relative;
+  margin-right: 0.25rem;
+}
+.moderation-queue-page .select-decline-reason-btn .btn.js-dropdown-trigger {
+  margin-right: 0;
+}
+.moderation-queue-page .select-decline-reason-btn .js-dropdown-target {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border: var(--toolbar-dropdown-menu-border);
+  background: var(--bg-color);
+  border-top: none;
+  list-style: none;
+}
+.moderation-queue-page .select-decline-reason-btn .js-dropdown-target li {
+  padding: 0.5rem;
+}
+.moderation-queue-page .js-approve-block {
+  margin-right: 0.25rem;
+}
+.moderation-queue-page .info-box {
+  padding-left: 1.5rem;
+}
+.moderation-queue-page .messages {
+  margin-bottom: 1rem;
+}
+.moderation-queue-page .empty-content-box {
+  background: var(--clr-neutral-90);
+  margin-bottom: 1rem;
 }
 
 /*# sourceMappingURL=style.css.map */
