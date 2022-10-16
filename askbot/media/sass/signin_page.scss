@@ -41,6 +41,11 @@
 
   .password-login-inputs {
     margin-bottom: 0.5rem;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      max-width: 12rem;
+    }
     input {
       margin-bottom: 0.25rem;
     }

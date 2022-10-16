@@ -562,11 +562,12 @@ def signin(request):
                                             password=login_form.cleaned_data['password'],
                                             provider_name=provider_name
                                            )
-                        if user is None:
-                            login_form.set_password_login_error()
-                        else:
+                        if user:
                             login(request, user)
                             return HttpResponseRedirect(next_url)
+
+                        login_form.set_password_login_error()
+
                     elif password_action == 'change_password':
                         if request.user.is_authenticated:
                             new_password = \
@@ -741,11 +742,11 @@ def signin(request):
 
 @csrf.csrf_protect
 def show_signin_view(request,
-                     login_form = None,
-                     account_recovery_form = None,
-                     account_recovery_message = None,
-                     sticky = False,
-                     view_subtype = 'default'):
+                     login_form=None,
+                     account_recovery_form=None,
+                     account_recovery_message=None,
+                     sticky=False,
+                     view_subtype='default'):
     """url-less utility function that populates
     context of template 'authopenid/signin.html'
     and returns its rendered output
@@ -766,6 +767,7 @@ def show_signin_view(request,
     if login_form is None:
         next_jwt = encode_jwt({'next_url': next_url})
         login_form = forms.LoginForm(initial = {'next': next_jwt})
+
     if account_recovery_form is None:
         account_recovery_form = forms.AccountRecoveryForm()#initial = initial_data)
 
@@ -773,8 +775,8 @@ def show_signin_view(request,
     if request.method == 'GET':
         logging.debug('request method was GET')
 
-    #todo: this sthuff must be executed on some signal
-    #because askbot should have nothing to do with the login app
+    # todo: this must be executed on some signal
+    # because askbot should have nothing to do with the login app
     session_key = request.session.session_key
     logging.debug('retrieving anonymously posted question associated with session %s', session_key)
     qlist = AnonymousQuestion.objects.filter(session_key=session_key).order_by('-added_at') #pylint: disable=no-member

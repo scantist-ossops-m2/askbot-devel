@@ -10386,6 +10386,13 @@ a.badge-page-link {
 .signup-page .password-login-inputs {
   margin-bottom: 0.5rem;
 }
+.signin-page .password-login-inputs .form-group,
+.verify-email-page .password-login-inputs .form-group,
+.signup-page .password-login-inputs .form-group {
+  display: flex;
+  flex-direction: column;
+  max-width: 12rem;
+}
 .signin-page .password-login-inputs input,
 .verify-email-page .password-login-inputs input,
 .signup-page .password-login-inputs input {

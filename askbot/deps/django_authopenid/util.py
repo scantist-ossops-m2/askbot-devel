@@ -1,43 +1,36 @@
-# -*- coding: utf-8 -*-
-import cgi
+import base64
 import functools
+import hashlib
 import http.client
+import json
+import logging
+import operator
 import re
-import urllib.request, urllib.parse, urllib.error
+import time
+import urllib.error
 import urllib.parse
+import urllib.request
 from collections import OrderedDict
-from askbot.utils.html import site_url
-from askbot.utils.functions import format_setting_name
-from askbot.utils.loading import load_module, module_exists
-from openid.store.interface import OpenIDStore
+from functools import reduce
+from openid import store as openid_store
 from openid.association import Association as OIDAssociation
 from openid.extensions import sreg
-from openid import store as openid_store
+from openid.store.interface import OpenIDStore
+from openid.yadis import xri
 import oauth2 as oauth # OAuth1 protocol
+from requests_oauthlib.oauth2_session import OAuth2Session
 from django.db.models.query import Q
 from django.conf import settings
 from django.urls import reverse
-import json
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ImproperlyConfigured
+from askbot.conf import settings as askbot_settings
 from askbot.deps.django_authopenid import providers
 from askbot.deps.django_authopenid.exceptions import OAuthError
-from functools import reduce
-
-try:
-    from hashlib import md5
-except:
-    from md5 import md5
-
-from askbot.conf import settings as askbot_settings
-
-# needed for some linux distributions like debian
-try:
-    from openid.yadis import xri
-except:
-    from yadis import xri
-
-import time, base64, hmac, hashlib, operator, logging
+from askbot.deps.django_authopenid.models import UserAssociation
+from askbot.utils.functions import format_setting_name
+from askbot.utils.html import site_url
+from askbot.utils.loading import load_module, module_exists
 from .models import Association, Nonce
 
 __all__ = ['OpenID', 'DjangoOpenIDStore', 'from_openid_response']
@@ -56,8 +49,8 @@ def email_is_blacklisted(email):
     patterns = patterns.strip().split()
     for pattern in patterns:
         try:
-            regex = re.compile(r'{0}'.format(pattern))
-        except:
+            regex = re.compile(fr'{pattern}')
+        except Exception: # pylint: disable=broad-except
             pass
         else:
             if regex.search(email):
@@ -75,7 +68,7 @@ class OpenID:
         self.is_iname = (xri.identifierScheme(openid_) == 'XRI')
 
     def __repr__(self):
-        return '<OpenID: %s>' % self.openid
+        return f'<OpenID: {self.openid}>'
 
     def __str__(self):
         return self.openid
@@ -88,7 +81,7 @@ class DjangoOpenIDStore(OpenIDStore):
         assoc = Association(
             server_url = server_url,
             handle = association.handle,
-            secret = base64.encodestring(association.secret),
+            secret = base64.encodebytes(association.secret),
             issued = association.issued,
             lifetime = association.lifetime,
             assoc_type = association.assoc_type
@@ -110,7 +103,7 @@ class DjangoOpenIDStore(OpenIDStore):
         associations = []
         for assoc in assocs:
             association = OIDAssociation(
-                assoc.handle, base64.decodestring(assoc.secret), assoc.issued,
+                assoc.handle, base64.decodebytes(assoc.secret), assoc.issued,
                 assoc.lifetime, assoc.assoc_type
             )
             if association.getExpiresIn() == 0:
@@ -155,7 +148,7 @@ class DjangoOpenIDStore(OpenIDStore):
         return False
 
     def cleanupAssociations(self):
-        Association.objects.extra(where=['issued + lifetimeint<(%s)' % time.time()]).delete()
+        Association.objects.extra(where=[f'issued + lifetimeint < {time.time()}']).delete()
 
     def getAuthKey(self):
         # Use first AUTH_KEY_LEN characters of md5 hash of SECRET_KEY
@@ -192,8 +185,8 @@ def get_provider_name_by_endpoint(openid_url):
     """
     parsed_uri = urllib.parse.urlparse(openid_url)
     base_url = '{uri.scheme}://{uri.netloc}'.format(uri=parsed_uri)
-    providers = get_enabled_login_providers()
-    for provider_data in providers.values():
+    enabled_providers = get_enabled_login_providers()
+    for provider_data in enabled_providers.values():
         openid_url_match = (provider_data['type'].startswith('openid') and
             provider_data['openid_endpoint'] is not None and
             provider_data['openid_endpoint'].startswith(base_url))
@@ -229,7 +222,7 @@ def filter_enabled_providers(data):
     """deletes data about disabled providers from
     the input dictionary
     """
-    delete_list = list()
+    delete_list = []
     for provider_key, provider_settings in list(data.items()):
         name = provider_settings['name']
         if not is_login_method_enabled(name):
@@ -240,7 +233,7 @@ def filter_enabled_providers(data):
 
     return data
 
-class LoginMethod(object):
+class LoginMethod:
     """Helper class to add custom authentication modules
     as plugins for the askbot's version of django_authopenid
     """
@@ -252,62 +245,54 @@ class LoginMethod(object):
     def get_required_attr(self, attr_name, required_for_what):
         attr_value = getattr(self.mod, attr_name, None)
         if attr_value is None:
-            raise ImproperlyConfigured(
-                '%s.%s is required for %s' % (
-                    self.mod_path,
-                    attr_name,
-                    required_for_what
-                )
-            )
+            message = f'{self.mod_path}.{attr_name} is required for {required_for_what}'
+            raise ImproperlyConfigured(message)
         return attr_value
 
     def read_params(self):
         self.is_major = getattr(self.mod, 'BIG_BUTTON', True)
         if not isinstance(self.is_major, bool):
-            raise ImproperlyConfigured(
-                'Boolean value expected for %s.BIG_BUTTON' % self.mod_path
-            )
+            message = f'Boolean value expected for {self.mod_path}.BIG_BUTTON'
+            raise ImproperlyConfigured(message)
 
         self.order_number = getattr(self.mod, 'ORDER_NUMBER', 1)
         if not isinstance(self.order_number, int):
-            raise ImproperlyConfigured(
-                'Integer value expected for %s.ORDER_NUMBER' % self.mod_path
-            )
+            message = f'Integer value expected for {self.mod_path}.ORDER_NUMBER'
+            raise ImproperlyConfigured(message)
 
         self.name = getattr(self.mod, 'NAME', None)
         if self.name is None or not isinstance(self.name, str):
-            raise ImproperlyConfigured(
-                '%s.NAME is required as a string parameter' % self.mod_path
-            )
+            message = f'{self.mod_path}.NAME is required as a string parameter'
+            raise ImproperlyConfigured(message)
+
         if not re.search(r'^[a-zA-Z0-9]+$', self.name):
-            raise ImproperlyConfigured(
-                '%s.NAME must be a string of ASCII letters and digits only'
-            )
+            message = f'{self.mod_path}.NAME must be a string of ASCII letters and digits only'
+            raise ImproperlyConfigured(message)
 
         self.trust_email = getattr(self.mod, 'TRUST_EMAIL', False)
         if not isinstance(self.trust_email, bool):
-            raise ImproperlyConfigured(
-                '%s.TRUST_EMAIL must be True or False' % self.mod_path
-            )
+            message = f'{self.mod_path}.TRUST_EMAIL must be True or False'
+            raise ImproperlyConfigured(message)
 
         self.display_name = getattr(self.mod, 'DISPLAY_NAME', None)
         if self.display_name is None or not isinstance(self.display_name, str):
-            raise ImproperlyConfigured(
-                '%s.DISPLAY_NAME is required as a string parameter' % self.mod_path
-            )
+            message = f'{self.mod_path}.DISPLAY_NAME is required as a string parameter'
+            raise ImproperlyConfigured(message)
+
         self.extra_token_name = getattr(self.mod, 'EXTRA_TOKEN_NAME', None)
         self.login_type = getattr(self.mod, 'TYPE', None)
         if self.login_type is None or self.login_type not in ALLOWED_LOGIN_TYPES:
             raise ImproperlyConfigured(
-                "%s.TYPE must be a string "
+                f"{self.mod_path}.TYPE must be a string "
                 "and the possible values are : 'password', 'oauth', "
-                "'openid-direct', 'openid-username'." % self.mod_path
+                "'openid-direct', 'openid-username'."
             )
+
         self.icon_media_path = getattr(self.mod, 'ICON_MEDIA_PATH', None)
         if self.icon_media_path is None:
             raise ImproperlyConfigured(
-                '%s.ICON_MEDIA_PATH is required and must be a url '
-                'to the image used as login button' % self.mod_path
+                f'{self.mod_path}.ICON_MEDIA_PATH is required and must be a url '
+                'to the image used as login button'
             )
 
         self.create_password_prompt = getattr(self.mod, 'CREATE_PASSWORD_PROMPT', None)
@@ -322,17 +307,22 @@ class LoginMethod(object):
             for_what = 'custom OAuth login'
             self.oauth_consumer_key = self.get_required_attr('OAUTH_CONSUMER_KEY', for_what)
             self.oauth_consumer_secret = self.get_required_attr('OAUTH_CONSUMER_SECRET', for_what)
-            self.oauth_request_token_url = self.get_required_attr('OAUTH_REQUEST_TOKEN_URL', for_what)
+            self.oauth_request_token_url = self.get_required_attr('OAUTH_REQUEST_TOKEN_URL',
+                                                                  for_what)
             self.oauth_access_token_url = self.get_required_attr('OAUTH_ACCESS_TOKEN_URL', for_what)
             self.oauth_authorize_url = self.get_required_attr('OAUTH_AUTHORIZE_URL', for_what)
-            self.oauth_get_user_id_function = self.get_required_attr('oauth_get_user_id_function', for_what)
+            self.oauth_get_user_id_function = self.get_required_attr(
+                                                    'oauth_get_user_id_function',
+                                                    for_what)
 
         if self.login_type == 'oauth2':
             for_what = 'custom OAuth2 login'
             self.auth_endpoint = self.get_required_attr('OAUTH_ENDPOINT', for_what)
             self.token_endpoint = self.get_required_attr('OAUTH_TOKEN_ENDPOINT', for_what)
             self.resource_endpoint = self.get_required_attr('OAUTH_RESOURCE_ENDPOINT', for_what)
-            self.oauth_get_user_id_function = self.get_required_attr('oauth_get_user_id_function', for_what)
+            self.oauth_get_user_id_function = self.get_required_attr(
+                                                'oauth_get_user_id_function',
+                                                for_what)
             self.response_parser = getattr(self.mod, 'response_parser', None)
             self.token_transport = getattr(self.mod, 'token_transport', None)
 
@@ -381,7 +371,7 @@ class LoginMethod(object):
             'get_user_id_function': 'oauth_get_user_id_function',
             'check_password': 'check_password_function'
         }
-        data = dict()
+        data = {}
         for param in params:
             attr_name = parameter_map.get(param, param)
             data[param] = getattr(self, attr_name, None)
@@ -393,14 +383,14 @@ class LoginMethod(object):
 def add_custom_provider(func):
     @functools.wraps(func)
     def wrapper():
-        providers = func()
+        enabled_providers = func()
         login_module_path = getattr(settings, 'ASKBOT_CUSTOM_AUTH_MODULE', None)
         if login_module_path:
             mod = LoginMethod(login_module_path)
             if mod.is_major != func.is_major:
-                return providers#only patch the matching provider set
-            providers[mod.name] = mod.as_dict()
-        return providers
+                return enabled_providers#only patch the matching provider set
+            enabled_providers[mod.name] = mod.as_dict()
+        return enabled_providers
     return wrapper
 
 def get_enabled_major_login_providers():
@@ -475,7 +465,8 @@ def get_enabled_major_login_providers():
 
     def get_user_id_from_resource_endpoint(session, provider, get_user_id=None):
         if get_user_id is None:
-            get_user_id = lambda data:data['id']
+            get_user_id = lambda data: data['id']
+
         response = session.get(provider['resource_endpoint'])  # fetch data
         user_data = provider['response_parser'](response.text) # parse json
         return get_user_id(user_data)                          # get user id
@@ -592,16 +583,17 @@ def get_enabled_major_login_providers():
     if askbot_settings.MEDIAWIKI_KEY and askbot_settings.MEDIAWIKI_SECRET:
         data['mediawiki'] = providers.mediawiki.Provider()
 
-    if module_exists('cas') and askbot_settings.SIGNIN_CAS_ENABLED \
+    if module_exists('cas') \
+        and askbot_settings.SIGNIN_CAS_ENABLED \
         and askbot_settings.CAS_SERVER_URL:
-            data['cas'] = providers.cas_provider.CASLoginProvider()
+        data['cas'] = providers.cas_provider.CASLoginProvider()
 
     def get_identica_user_id(data):
         consumer = oauth.Consumer(data['consumer_key'], data['consumer_secret'])
         token = oauth.Token(data['oauth_token'], data['oauth_token_secret'])
         client = oauth.Client(consumer, token=token)
         url = 'https://identi.ca/api/account/verify_credentials.json'
-        response, content = client.request(url, 'GET')
+        _response, content = client.request(url, 'GET')
         return json.loads(content)['id']
 
     if askbot_settings.IDENTICA_KEY and askbot_settings.IDENTICA_SECRET:
@@ -661,7 +653,8 @@ def get_enabled_major_login_providers():
             'resource_endpoint': 'https://www.googleapis.com/plus/v1/people/me',
             'icon_media_path': 'images/jquery-openid/google.gif',
             'get_user_id_function': get_google_user_id,
-            'extra_auth_params': {'scope': ('profile', 'email', 'openid'), 'openid.realm': askbot_settings.APP_URL}
+            'extra_auth_params': {'scope': ('profile', 'email', 'openid'),
+                                  'openid.realm': askbot_settings.APP_URL}
         }
 
     data['mozilla-persona'] = {
@@ -813,9 +806,9 @@ get_enabled_minor_login_providers.is_major = False
 get_enabled_minor_login_providers = add_custom_provider(get_enabled_minor_login_providers)
 
 def have_enabled_federated_login_methods():
-    providers = get_enabled_major_login_providers()
-    providers.update(get_enabled_minor_login_providers())
-    provider_types = [provider['type'] for provider in list(providers.values())]
+    enabled_providers = get_enabled_major_login_providers()
+    enabled_providers.update(get_enabled_minor_login_providers())
+    provider_types = [provider['type'] for provider in list(enabled_providers.values())]
     for provider_type in provider_types:
         if provider_type.startswith('openid') or provider_type == 'oauth':
             return True
@@ -828,18 +821,35 @@ def get_enabled_login_providers():
     data.update(get_enabled_minor_login_providers())
     return data
 
-def get_the_only_login_provider():
+def is_signin_page_used():
+    """`True` if there are > 1 login profiders enabled
+    or when password login is used.
+
+    In the latter case the page is needed to enter the login name and the password.
+    """
+    enabled_providers = get_enabled_login_providers()
+    if len(enabled_providers) == 0:
+        return False
+
+    if len(enabled_providers) == 1:
+        provider = list(enabled_providers.values())[0]
+        return provider_requires_login_page(provider)
+
+    return True
+
+def get_unique_enabled_login_provider():
     """Returns login provider datum if:
     * only one provider is enabled
     * this provider is a third party provider
     Otherwise returns `None`
     """
-    providers = get_enabled_login_providers()
-    if len(providers) == 1:
-        provider = list(providers.values())[0]
-        if not provider_requires_login_page(provider):
-            return provider
-    return None
+    if is_signin_page_used():
+        return None
+
+    enabled_login_providers = get_enabled_login_providers()
+    if not enabled_login_providers:
+        return None
+    return enabled_login_providers[0]
 
 def provider_requires_login_page(provider):
     """requires login page if password needs to be
@@ -905,10 +915,10 @@ def get_oauth_parameters(provider_name):
     it should not be called at compile time
     otherwise there may be strange errors
     """
-    providers = get_enabled_login_providers()
-    data = providers[provider_name]
+    enabled_login_providers = get_enabled_login_providers()
+    data = enabled_login_providers[provider_name]
     if data['type'] != 'oauth':
-        raise ValueError('oauth provider expected, %s found' % data['type'])
+        raise ValueError(f"oauth provider expected, {data['type']} found")
 
     if provider_name == 'twitter':
         consumer_key = askbot_settings.TWITTER_KEY
@@ -935,7 +945,7 @@ def get_oauth_parameters(provider_name):
         consumer_key = askbot_settings.GITHUB_KEY
         consumer_secret = askbot_settings.GITHUB_SECRET
     elif provider_name != 'mediawiki':
-        raise ValueError('unexpected oauth provider %s' % provider_name)
+        raise ValueError(f'unexpected oauth provider {provider_name}')
 
     #dict are old style providers
     if isinstance(data, dict):
@@ -945,40 +955,35 @@ def get_oauth_parameters(provider_name):
     return data
 
 
-class OAuthConnection(object):
-    """a simple class wrapping oauth2 library
-    Which is actually implementing the Oauth1 protocol (version 1)
-    """
+class OAuthConnection:
+    """WrapsA oauth2 library, implementing the OAuth1 protocol (version 1)"""
 
     def __new__(cls, provider_name):
         if provider_name == 'mediawiki':
             return providers.mediawiki.Provider()
-        else:
-            return super(OAuthConnection, cls).__new__(cls)
+        return super(OAuthConnection, cls).__new__(cls)
 
     def __init__(self, provider_name):
-        """initializes oauth connection
-        """
+        """initializes oauth connection"""
         self.provider_name = provider_name
         self.parameters = get_oauth_parameters(provider_name)
-        self.consumer = oauth.Consumer(
-                            self.parameters['consumer_key'],
-                            self.parameters['consumer_secret'],
-                        )
+        self.request_token = None
+        self.access_token = None
+        self.consumer = oauth.Consumer(self.parameters['consumer_key'],
+                                       self.parameters['consumer_secret'])
 
     @classmethod
     def parse_request_url(cls, url):
-        """returns url and the url parameters dict
-        """
+        """returns url and the url parameters dict"""
         if '?' not in url:
-            return url, dict()
+            return url, {}
 
         url, params = url.split('?')
         if params:
-            kv = [v.split('=') for v in params.split('&')]
-            if kv:
-                #kv must be list of two-element arrays
-                params = dict(kv)
+            items = [v.split('=') for v in params.split('&') if '=' in v]
+            if items:
+                # must be list of two-element arrays
+                params = dict(items)
             else:
                 params = {}
         else:
@@ -1000,7 +1005,7 @@ class OAuthConnection(object):
         url, url_params = cls.parse_request_url(url)
         #merge parameters with the query parameters in the url
         #NOTE: there may be a collision
-        params = params or dict()
+        params = params or {}
         params.update(url_params)
         #put all of the parameters into the request body
         #sorted as specified by the OAuth1 protocol
@@ -1014,7 +1019,7 @@ class OAuthConnection(object):
         client = oauth.Client(self.consumer)
         request_url = self.parameters['request_token_url']
 
-        params = dict()
+        params = {}
         if self.parameters.get('callback_is_oob', False):
             params['oauth_callback'] = 'oob' #callback_url
         else:
@@ -1032,9 +1037,9 @@ class OAuthConnection(object):
         url, body = self.normalize_url_and_params(url, params)
         response, content = client.request(url, method, body=body, **kwargs)
         if response['status'] == '200':
-            return dict(cgi.parse_qsl(content))
-        else:
-            raise OAuthError('response is %s' % response)
+            return dict(urllib.parse.parse_qsl(content))
+
+        raise OAuthError(f'response is {response}')
 
     def get_token(self):
         return self.request_token
@@ -1096,7 +1101,7 @@ class OAuthConnection(object):
         """
 
         endpoint_url = self.parameters.get('authorize_url', None)
-        if login_only == True:
+        if login_only:
             endpoint_url = self.parameters.get(
                                         'authenticate_url',
                                         endpoint_url
@@ -1112,27 +1117,26 @@ class OAuthConnection(object):
 
 def get_oauth2_starter_url(provider_name, csrf_token):
     """returns redirect url for the oauth2 protocol for a given provider"""
-    from requests_oauthlib.oauth2_session import OAuth2Session
-
-    providers = get_enabled_login_providers()
-    params = providers[provider_name]
+    enabled_login_providers = get_enabled_login_providers()
+    params = enabled_login_providers[provider_name]
     client_id = getattr(askbot_settings, format_setting_name(provider_name) + '_KEY')
     redirect_uri = site_url(reverse('user_complete_oauth2_signin'))
     session = OAuth2Session(client_id, redirect_uri=redirect_uri, state=csrf_token)
 
-    url, _ = session.authorization_url(params['auth_endpoint'],  **params.get('extra_auth_params', {}))
+    url, _ = session.authorization_url(params['auth_endpoint'],
+                                       **params.get('extra_auth_params', {}))
     return url.encode('utf-8')
 
 
 def ldap_check_password(username, password):
-    import ldap
+    import ldap # pylint: disable=import-outside-toplevel
     try:
         ldap_session = ldap.initialize(askbot_settings.LDAP_URL)
         ldap_session.simple_bind_s(username, password)
         ldap_session.unbind_s()
         return True
-    except ldap.LDAPError as e:
-        logging.critical(str(e))
+    except ldap.LDAPError as err:
+        logging.critical(str(err))
         return False
 
 
@@ -1151,11 +1155,12 @@ def mozilla_persona_get_email_from_assertion(assertion):
         email = data.get('email')
         if email:
             return email
-        else:
-            message = str(data)
-            message += '\nMost likely base url in /settings/QA_SITE_SETTINGS/ is incorrect'
-            raise ImproperlyConfigured(message)
-    #todo: nead more feedback to help debug fail cases
+
+        message = str(data)
+        message += '\nMost likely base url in /settings/QA_SITE_SETTINGS/ is incorrect'
+        raise ImproperlyConfigured(message)
+
+    # may need more feedback to help debug the failure cases
     return None
 
 def google_gplus_get_openid_data(client):
@@ -1170,6 +1175,5 @@ def google_gplus_get_openid_data(client):
     return None
 
 def google_migrate_from_openid_to_gplus(openid_url, gplus_id):
-    from askbot.deps.django_authopenid.models import UserAssociation
-    assoc = UserAssociation.objects.filter(openid_url=openid_url)
+    assoc = UserAssociation.objects.filter(openid_url=openid_url) # pylint: disable=no-member
     assoc.update(openid_url=str(gplus_id), provider_name='google-plus')

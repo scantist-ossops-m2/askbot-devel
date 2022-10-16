@@ -1,9 +1,8 @@
-from .util import get_the_only_login_provider
-from askbot.utils import forms
-from askbot.utils.functions import encode_jwt
 from django.conf import settings as django_settings
-from django.urls import reverse
+from askbot.utils.functions import encode_jwt
+from askbot.utils import forms
 from .forms import LoginForm
+from .util import get_unique_enabled_login_provider, is_signin_page_used
 
 def get_after_login_url(request):
     """returns url where user should go after successful login"""
@@ -20,13 +19,21 @@ def get_after_login_url(request):
     return forms.get_next_url(request, default_next)
 
 def login_context(request):
-    """context necessary for the login functionality
+    """Context necessary for the login functionality
+    for the edge case when there is only one login provider.
+
+    In that case the signin page is not necessary, and the login
+    form is displayed in the site header.
+
+    See `jinja2/components/login_link.html`.
     """
+    # guards against use of this context outside of the mentioned edge case
+    if is_signin_page_used():
+        return {}
+
     next_url = get_after_login_url(request)
     next_jwt = encode_jwt({'next_url': next_url})
-    login_form = LoginForm(initial={'next': next_jwt})
     return {
-        'on_login_page': (request.path == reverse('user_signin')),
-        'unique_login_provider': get_the_only_login_provider(),
-        'login_form': login_form
+        'unique_enabled_login_provider': get_unique_enabled_login_provider(),
+        'login_form': LoginForm(initial={'next': next_jwt})
     }
