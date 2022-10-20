@@ -228,7 +228,7 @@ def email_is_allowed(
     return False
 
 
-def moderated_email_validator(email):
+def moderated_email_validator(email, skip_denylist=False):
     allowed_domains = askbot_settings.ALLOWED_EMAIL_DOMAINS.strip()
     allowed_emails = askbot_settings.ALLOWED_EMAILS.strip()
 
@@ -241,16 +241,23 @@ def moderated_email_validator(email):
                 allowed_email_domains=allowed_domains
             ):
             raise forms.ValidationError(error_msg)
-    else:
-        from askbot.deps.django_authopenid.util import email_is_blacklisted
-        blacklisting_on = askbot_settings.BLACKLISTED_EMAIL_PATTERNS_MODE != 'disabled'
-        if blacklisting_on and email_is_blacklisted(email):
-            raise forms.ValidationError(error_msg)
+        return
+
+    if skip_denylist:
+        return
+
+    from askbot.deps.django_authopenid.util import email_is_blacklisted
+    blacklisting_on = askbot_settings.BLACKLISTED_EMAIL_PATTERNS_MODE != 'disabled'
+    if blacklisting_on and email_is_blacklisted(email):
+        raise forms.ValidationError(error_msg)
 
 
 class UserEmailField(forms.EmailField):
-    def __init__(self, skip_clean=False, **kw):
+    def __init__(self, skip_clean=False, skip_denylist_validation=False, **kw):
+        """`skip_denylist_validation` - if True - do not validate
+        against email denylist"""
         self.skip_clean = skip_clean
+        self.skip_denylist_validation = skip_denylist_validation
 
         hidden = kw.pop('hidden', False)
         if hidden is True:
@@ -258,10 +265,8 @@ class UserEmailField(forms.EmailField):
         else:
             widget_class = forms.TextInput
 
-        super(UserEmailField,self).__init__(
-            widget=widget_class(
-                    attrs=dict(login_form_widget_attrs, maxlength=200)
-                ),
+        super(UserEmailField, self).__init__(
+            widget=widget_class(attrs=dict(login_form_widget_attrs, maxlength=200)),
             label=mark_safe_lazy(_('Your email <i>(never shared)</i>')),
             error_messages={
                 'required':_('email address is required'),
@@ -279,9 +284,9 @@ class UserEmailField(forms.EmailField):
         if askbot_settings.BLANK_EMAIL_ALLOWED and email == '':
             return ''
 
-        moderated_email_validator(email)
+        moderated_email_validator(email, self.skip_denylist_validation)
 
-        email = super(UserEmailField,self).clean(email)
+        email = super(UserEmailField, self).clean(email)
         if self.skip_clean:
             return email
 
@@ -293,7 +298,7 @@ class UserEmailField(forms.EmailField):
             logging.debug('email valid')
             return email
         except User.MultipleObjectsReturned:
-            logging.critical('email taken many times over')
+            logging.critical('email taken')
             raise forms.ValidationError(self.error_messages['taken'])
 
 class SetPasswordForm(forms.Form):

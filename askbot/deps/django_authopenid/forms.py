@@ -303,7 +303,7 @@ class RegistrationForm(forms.Form):
         self.request = kwargs.pop('request', None)
         super(RegistrationForm, self).__init__(*args, **kwargs)
         email_required = not askbot_settings.BLANK_EMAIL_ALLOWED
-        self.fields['email'] = UserEmailField(required=email_required)
+        self.fields['email'] = UserEmailField(required=email_required, skip_denylist_validation=True)
         if askbot_settings.TERMS_CONSENT_REQUIRED:
             self.fields['terms_accepted'] = ConsentField()
         if askbot_settings.USE_RECAPTCHA:

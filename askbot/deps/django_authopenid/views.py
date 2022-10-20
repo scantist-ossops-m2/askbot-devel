@@ -155,6 +155,28 @@ def cleanup_post_register_session(request):
             del request.session[key]
 
 
+def email_is_blacklisted(email):
+    """`True` if email is blacklisted"""
+    if askbot_settings.BLACKLISTED_EMAIL_PATTERNS_MODE == 'disabled':
+        return False
+    return util.email_is_blacklisted(email)
+
+
+def email_is_acceptable(email):
+    """`True`, if email can be used to create an account"""
+    email = email.strip()
+
+    is_blank = (email == '')
+    is_blank_and_ok = is_blank \
+                        and askbot_settings.BLANK_EMAIL_ALLOWED \
+                        and askbot_settings.REQUIRE_VALID_EMAIL_FOR == 'nothing'
+    if is_blank_and_ok:
+        return True
+
+    is_available = User.objects.filter(email__iexact=email).count() == 0
+    return is_available and not email_is_blacklisted(email)
+
+
 #todo: decouple from askbot
 def login(request, user):
     from django.contrib.auth import login as _login
@@ -1139,24 +1161,6 @@ def register(request, login_provider_name=None,
     #1) handle "one-click registration"
     if registration_enabled and login_provider_name:
 
-        def email_is_acceptable(email):
-            email = email.strip()
-
-            is_blank = (email == '')
-            is_blank_and_ok = is_blank \
-                                and askbot_settings.BLANK_EMAIL_ALLOWED \
-                                and askbot_settings.REQUIRE_VALID_EMAIL_FOR == 'nothing'
-            if is_blank_and_ok:
-                return True
-
-            blacklisting_on = askbot_settings.BLACKLISTED_EMAIL_PATTERNS_MODE != 'disabled'
-            is_blacklisted = blacklisting_on and util.email_is_blacklisted(email)
-            is_good = not is_blacklisted
-
-            is_available = User.objects.filter(email__iexact=email).count() == 0
-
-            return is_available and is_good
-
         def username_is_acceptable(username):
             if username.strip() == '':
                 return False
@@ -1250,13 +1254,15 @@ def register(request, login_provider_name=None,
                 cleanup_post_register_session(request)
                 return HttpResponseRedirect(next_url)
             else:
-                email_verifier = UserEmailVerifier(key=generate_random_key())
-                email_verifier.value = {'username': username, 'email': email,
-                                        'user_identifier': user_identifier,
-                                        'login_provider_name': login_provider_name}
-                email_verifier.save()
-                send_email_key(email, email_verifier.key,
-                               email_type='verify_email_and_register')
+                if not email_is_blacklisted(email):
+                    # silently skip registrations with blacklisted email addresses
+                    email_verifier = UserEmailVerifier(key=generate_random_key())
+                    email_verifier.value = {'username': username, 'email': email,
+                                            'user_identifier': user_identifier,
+                                            'login_provider_name': login_provider_name}
+                    email_verifier.save()
+                    send_email_key(email, email_verifier.key,
+                                   email_type='verify_email_and_register')
                 next_jwt = encode_jwt({'next_url': next_url})
                 redirect_url = reverse('verify_email_and_register') + '?next=' + next_jwt
                 return HttpResponseRedirect(redirect_url)
