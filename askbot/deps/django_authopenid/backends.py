@@ -156,10 +156,7 @@ class AuthBackend(object):
     @classmethod
     def auth_by_email_key(cls, email_key):
         try:
-            #todo: add email_key_timestamp field
-            #and check key age
             user = User.objects.get(askbot_profile__email_key=email_key)
-            user.email_key = None #one time key so delete it
             user.email_isvalid = True
             user.askbot_profile.save()
             return user
