@@ -586,8 +586,8 @@ for the purposes of the AJAX comment editor #}
 {%- macro simple_avatar(user_data, size) -%}
   {% spaceless %}
     {% set username=user_data['username']|escape %}
-    <a class="js-avatar-box" href="{{ user_data['profile_url'] }}"><img class="js-avatar gravatar" 
-        src="{{ user_data['avatar_url'] }}"
+    <a class="js-avatar-box" href="{{ user_data['profile_url']|escape }}"><img class="js-avatar gravatar"
+        src="{{ user_data['avatar_url']|escape }}"
         title="{{ username }}" 
         alt="{% trans %}{{username}}'s avatar{% endtrans %}"
     /></a>
