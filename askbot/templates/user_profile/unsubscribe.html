@@ -17,7 +17,7 @@
         {% trans %}Expected format is {{ link_url }}?key=&lt;unsubscribe key&gt;&amp;email=&lt;email address&gt;{% endtrans %}
     </p>
 {% elif result == 'bad_key' %}
-    <p>{% trans %}The unsubscribe key sent with the link had expired.{% endtrans %}</p>
+    <p>{% trans %}The unsubscribe link has expired.{% endtrans %}</p>
     <form action="{% url 'user_unsubscribe' %}" method="post">{% csrf_token %}
         {{ unsubscribe_form.key }}{{ unsubscribe_form.email }}
         <input type="submit" name="resend_key" value="{% trans %}Resend unsubscribe link{% endtrans %}" />
