@@ -1393,14 +1393,15 @@ def signup_with_password(request):
                 cleanup_post_register_session(request)
                 return HttpResponseRedirect(get_next_url(request))
             else:
-                email_verifier = UserEmailVerifier(key=generate_random_key())
-                email_verifier.value = {'username': username,
-                                        'login_provider_name': 'local',
-                                        'email': email, 'password': password}
-                email_verifier.save()
+                if not email_is_blacklisted(email):
+                    email_verifier = UserEmailVerifier(key=generate_random_key())
+                    email_verifier.value = {'username': username,
+                                            'login_provider_name': 'local',
+                                            'email': email, 'password': password}
+                    email_verifier.save()
 
-                send_email_key(email, email_verifier.key,
-                               email_type='verify_email_and_register')
+                    send_email_key(email, email_verifier.key,
+                                   email_type='verify_email_and_register')
                 redirect_url = reverse('verify_email_and_register') + \
                                 '?next=' + get_next_jwt(request)
                 return HttpResponseRedirect(redirect_url)
