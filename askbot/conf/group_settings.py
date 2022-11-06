@@ -35,8 +35,8 @@ def group_name_update_callback(old_name, new_name):
         return old_name
 
     if Group.objects.filter(name=cleaned_new_name).exists():
-        #name already taken
-        return old_name
+        # group exists, just return the value
+        return cleaned_new_name
 
     global_group.name = cleaned_new_name
     global_group.save()
