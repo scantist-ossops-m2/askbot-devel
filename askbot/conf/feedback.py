@@ -35,6 +35,7 @@ settings.register(
         FEEDBACK,
         'FEEDBACK_SITE_URL',
         description=_('Feedback site URL'),
+        default='',
         help_text=_(
             'If left empty, a simple internal feedback form '
             'will be used instead'

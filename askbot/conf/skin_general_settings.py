@@ -208,6 +208,7 @@ settings.register(
     values.LongStringValue(
         GENERAL_SKIN_SETTINGS,
         'CUSTOM_FOOTER',
+        default='',
         localized=True,
         description=_('Custom footer (HTML format)'),
         help_text=_(
@@ -237,6 +238,7 @@ settings.register(
         GENERAL_SKIN_SETTINGS,
         'CUSTOM_CSS',
         description=_('Custom style sheet (CSS)'),
+        default='',
         help_text=_(
             '<strong>To use this function</strong>, check "Apply custom '
             'style sheet" option above. The CSS rules added in this window '
@@ -264,6 +266,7 @@ settings.register(
         GENERAL_SKIN_SETTINGS,
         'CUSTOM_JS',
         description=_('Custom javascript'),
+        default='',
         help_text=_(
             'Type or paste plain javascript that you would like '
             'to run on your site. Link to the script will be inserted '

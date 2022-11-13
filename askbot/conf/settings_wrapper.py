@@ -20,8 +20,6 @@ at run time
 
 askbot.deps.livesettings is a module developed for satchmo project
 """
-import logging
-
 from django.conf import settings as django_settings
 from django.core.cache import cache
 from django.contrib.sites.models import Site
@@ -239,7 +237,6 @@ class ConfigSettings(object):
                     if hasattr(setting_value, 'default'):
                         value = setting_value.default
                     else:
-                        logging.critical('setting %s lacks default value', key)
                         value = setting_value.value
                     db_setting = setting_value.make_setting_with_value(value)
                     db_setting.site = Site.objects.get_current()

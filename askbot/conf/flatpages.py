@@ -68,6 +68,7 @@ settings.register(
         FLATPAGES,
         'QUESTION_INSTRUCTIONS',
         description=_('Instructions on how to ask questions'),
+        default='',
         localized=True,
         help_text=_('HTML is allowed. Save, then '
                     '<a href="http://validator.w3.org/">use HTML validator</a>'
@@ -81,6 +82,7 @@ settings.register(
         FLATPAGES,
         'FORUM_PRIVACY',
         description=_('Text of the Q&amp;A forum Privacy Policy (html format)'),
+        default='',
         localized=True,
         help_text=_('Save, then <a href="http://validator.w3.org/">'
                     'use HTML validator</a> on the "privacy" page to check '
@@ -93,6 +95,7 @@ settings.register(
         FLATPAGES,
         'TERMS',
         description=_('Terms and conditions'),
+        default='',
         localized=True,
         help_text=format_lazy('{} {}',
             _('Save, then <a href="http://validator.w3.org/">'
