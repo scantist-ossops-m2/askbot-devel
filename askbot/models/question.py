@@ -719,10 +719,9 @@ class Thread(models.Model):
         """returns answer count depending on who the user is.
         When user groups are enabled and some answers are hidden,
         the answer count to show must be reflected accordingly"""
-        if not askbot_settings.GROUPS_ENABLED:
-            return self.answer_count
-        else:
+        if askbot_settings.GROUPS_ENABLED:
             return self.get_answers(user).count()
+        return self.answer_count
 
     def get_oldest_answer_id(self, user=None):
         """give oldest visible answer id for the user"""

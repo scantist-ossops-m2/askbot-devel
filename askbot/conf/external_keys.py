@@ -17,6 +17,7 @@ settings.register(
         EXTERNAL_KEYS,
         'GOOGLE_SITEMAP_CODE',
         description=_('Google site verification key'),
+        default='',
         help_text=_(
                         'This key helps google index your site '
                         'please obtain is at '
