@@ -4,9 +4,11 @@
       <h3>{{ view_user.get_status_display() }}</h3>
     </th>
     <th>
-      <a href="{{ url('edit_user',  view_user.id ) }}">
-        {% trans %}update profile{% endtrans %}
-      </a>
+      {% if request.user|can_see_private_user_data(view_user) %}
+        <a href="{{ url('edit_user',  view_user.id ) }}">
+          {% trans %}update profile{% endtrans %}
+        </a>
+      {% endif %}
     </th>
   </tr>
   {% if view_user.real_name %}

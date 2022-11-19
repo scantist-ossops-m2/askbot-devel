@@ -25,7 +25,8 @@ CLOSE_REASONS = (
     (7, _('question contains offensive or malicious remarks')),
     (8, _('spam or advertising')),
     (9, _('too localized')),
-    (10, _('question is considered as answered'))
+    (10, _('question is considered as answered')),
+    (11, _('closed as inactive'))
 )
 
 LONG_TIME = 60*60*24*30 #30 days is a lot of time
