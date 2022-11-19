@@ -264,9 +264,9 @@ class IsPersonal(SimpleListFilter):
 
 
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'logo_url', 'description', 'moderate_email', 'moderate_answers_to_enquirers', 'openness', 'read_only')
+    list_display = ('id', 'name', 'logo_url', 'description', 'moderate_email', 'openness', 'read_only')
     list_display_links = ('id', 'name')
-    list_filter = (IsPersonal, 'moderate_email', 'moderate_answers_to_enquirers', 'openness', 'read_only')
+    list_filter = (IsPersonal, 'moderate_email', 'openness', 'read_only')
     search_fields = ('name', 'logo_url')
 
 

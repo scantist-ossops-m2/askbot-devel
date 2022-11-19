@@ -85,50 +85,7 @@ class ThreadModelTestsWithGroupsEnabled(AskbotTestCase):
         )
 
 
-    def test_restrictive_response_publishing(self):
-        #restrictive model should work even with groups
-        #in common between the asker and the answerer
-        common_group = models.Group(
-                        name='common',
-                        openness=models.Group.OPEN
-                    )
-        common_group.can_post_questions = True
-        common_group.can_post_answers = True
-        common_group.can_post_comments = True
-        common_group.save()
-        self.admin.join_group(common_group)
-        self.user.join_group(common_group)
-
-        self.group.moderate_answers_to_enquirers = True
-        self.group.can_post_questions = True
-        self.group.can_post_answers = True
-        self.group.can_post_comments = True
-        self.group.save()
-        question = self.post_question(user=self.user, group_id=self.group.id)
-        answer = self.post_answer(question=question, user=self.admin)
-
-        #answer and the user don't have groups in common
-        answer_groups = set(answer.groups.all())
-        user_groups = set(self.user.get_groups())
-        self.assertEqual(len(answer_groups & user_groups), 0)
-
-        #publish the answer
-        self.client.login(user_id=self.admin.id, method='force')
-        self.client.post(
-            reverse('publish_post'),
-            data={'post_id': answer.id},
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
-        )
-
-        # now user should be able to see the answer
-        answer = self.reload_object(answer)
-        answer_groups = set(answer.groups.all())
-        self.assertEqual(len(answer_groups & user_groups), 1)
-
-
     def test_permissive_response_publishing(self):
-        self.group.moderate_answers_to_enquirers = False
-        self.group.save()
         question = self.post_question(user=self.user, group_id=self.group.id)
         answer = self.post_answer(question=question, user=self.admin)
 

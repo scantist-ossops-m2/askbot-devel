@@ -234,11 +234,6 @@ class PostManager(BaseQuerySetManager):
             post.last_edited_at = added_at
             post.wikified_at = added_at
 
-        # possibly modify the is_private, if one of the groups
-        # mandates explicit publishing of the posts
-        is_private = is_private or \
-            (thread and thread.requires_response_moderation(author))
-
         post.save()  # saved so that revision can have post_id
 
         revision = post.add_revision(

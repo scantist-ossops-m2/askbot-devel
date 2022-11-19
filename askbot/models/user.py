@@ -592,13 +592,6 @@ class Group(AuthGroup):
                     null=True, blank=True, on_delete=models.CASCADE
                 )
     moderate_email = models.BooleanField(default=True)
-    moderate_answers_to_enquirers = models.BooleanField(
-                        default=False,
-                        help_text=_('If true, answers to outsiders questions '
-                                    'will be shown to the enquirers only when '
-                                    'selected by the group moderators.')
-                    )
-
     can_post_questions = models.BooleanField(default=False)
     can_post_answers = models.BooleanField(default=False)
     can_post_comments = models.BooleanField(default=False)

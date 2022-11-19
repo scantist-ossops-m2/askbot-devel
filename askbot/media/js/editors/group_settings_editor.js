@@ -40,14 +40,6 @@ GroupSettingsEditor.prototype.decorate = function (element) {
   this._moderate_email_btn = moderate_email_btn;
   moderate_email_toggle.decorate(moderate_email_btn);
 
-  var moderate_publishing_replies_toggle = new AjaxToggle();
-  moderate_publishing_replies_toggle.setPostData({
-    group_id: this.getObjectId(),
-    property_name: 'moderate_answers_to_enquirers'
-  });
-  var btn = element.find('.js-moderate-answers-to-enquirers-toggle');
-  moderate_publishing_replies_toggle.decorate(btn);
-
   var readOnlyToggle = new AjaxToggle();
   readOnlyToggle.setPostData({
     group_id: this.getObjectId(),

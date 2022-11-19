@@ -65,21 +65,6 @@
     </div>
     {% endif %}
 
-    {# 
-    <div class="row with-checkbox"> 
-      <input
-        type="checkbox"
-        id="moderate-answers-to-enquirers"
-        class="js-moderate-answers-to-enquirers-toggle"
-        {% if group.moderate_answers_to_enquirers %}checked="checked"{% endif %}
-        data-toggle-url="{{ url('toggle_group_profile_property') }}"
-      />
-      <label for="moderate-answers-to-enquirers">
-        {{ settings.WORDS_SHOW_ONLY_SELECTED_ANSWERS_TO_ENQUIRERS|escape }}
-      </label>
-    </div>
-    #}
-
     <div class="row">
       <label for="group-openness-selector">
         {% trans %}How users join this group?{% endtrans %}

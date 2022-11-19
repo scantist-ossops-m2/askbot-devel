@@ -989,17 +989,6 @@ class Thread(models.Model):
             return False
         return user.is_administrator_or_moderator()
 
-    def requires_response_moderation(self, author):
-        """true, if answers by a given author must be moderated
-        before publishing to the enquirers"""
-        author_groups = author.get_groups()
-        thread_groups = self.get_groups_shared_with()
-        for group in set(author_groups) & set(thread_groups):
-            if group.moderate_answers_to_enquirers:
-                return True
-
-        return False
-
     def tagname_meta_generator(self):
         return ','.join([str(tag) for tag in self.get_tag_names()])
 
