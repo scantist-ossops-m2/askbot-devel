@@ -705,7 +705,6 @@ def question(request, id):#refactor - long subroutine. display question body, an
         'similar_threads' : thread.get_similar_threads(),
         'tab_id' : answer_sort_method,
         'thread': thread,
-        'thread_is_moderated': thread.is_moderated(),
         'user_is_thread_moderator': thread.has_moderator(request.user),
         'user_votes': user_votes,
         'user_post_id_list': user_post_id_list,

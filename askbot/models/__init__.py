@@ -2527,6 +2527,7 @@ def user_is_administrator(self):
     to access the live settings"""
     return self.status == 'd'
 
+
 def user_add_missing_askbot_subscriptions(self):
     from askbot import forms#need to avoid circular dependency
     form = forms.EditUserEmailFeedsForm()
@@ -2547,8 +2548,10 @@ def user_add_missing_askbot_subscriptions(self):
                         )
         feed_setting.save()
 
+
 def user_is_moderator(self):
     return (self.status == 'm' and self.is_administrator() == False)
+
 
 def user_is_post_moderator(self, post):
     """True, if user and post have common groups
@@ -2556,9 +2559,9 @@ def user_is_post_moderator(self, post):
     if askbot_settings.GROUPS_ENABLED:
         group_ids = self.get_groups().values_list('id', flat=True)
         post_groups = PostToGroup.objects.filter(post=post, group__id__in=group_ids)
-        return post_groups.filter(group__is_vip=True).count() > 0
-    else:
-        return False
+        return post_groups.count() > 0
+    return False
+
 
 def user_is_administrator_or_moderator(self):
     return self.is_administrator() or self.is_moderator()

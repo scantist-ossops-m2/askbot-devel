@@ -101,18 +101,6 @@
     </div>
 
     <div class="row with-checkbox">
-      <input type="checkbox"
-        id="moderator-toggle"
-        class="js-moderator-toggle"
-        {% if group.is_vip %}checked="checked"{% endif %}
-        data-toggle-url="{{ url('toggle_group_profile_property') }}"
-      />
-      <label for="moderator-toggle">
-        {% trans %}Can moderate site{% endtrans %}
-      </label>
-    </div>
-
-    <div class="row with-checkbox">
       <input
         type="checkbox"
         id="read-only-access-toggle"

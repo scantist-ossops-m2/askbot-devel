@@ -48,14 +48,6 @@ GroupSettingsEditor.prototype.decorate = function (element) {
   var btn = element.find('.js-moderate-answers-to-enquirers-toggle');
   moderate_publishing_replies_toggle.decorate(btn);
 
-  var vip_toggle = new AjaxToggle();
-  vip_toggle.setPostData({
-    group_id: this.getObjectId(),
-    property_name: 'is_vip'
-  });
-  btn = element.find('.js-moderator-toggle');
-  vip_toggle.decorate(btn);
-
   var readOnlyToggle = new AjaxToggle();
   readOnlyToggle.setPostData({
     group_id: this.getObjectId(),

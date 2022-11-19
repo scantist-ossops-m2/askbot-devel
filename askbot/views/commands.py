@@ -993,7 +993,6 @@ def toggle_group_profile_property(request):
                         'can_post_answers',
                         'can_post_comments',
                         'moderate_answers_to_enquirers',
-                        'is_vip',
                         'read_only'
                     )
     group = models.Group.objects.get(id = group_id)

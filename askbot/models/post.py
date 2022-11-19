@@ -794,13 +794,6 @@ class Post(models.Model):
     
     def add_to_groups(self, groups):
         """associates post with groups"""
-        # this is likely to be temporary - we add
-        # vip groups to the list behind the scenes.
-        groups = list(groups)
-        # add moderator groups to the post implicitly
-        from askbot.models.user import Group
-        vips = Group.objects.filter(is_vip=True)
-        groups.extend(vips)
         # TODO: use bulk-creation
         for group in groups:
             PostToGroup.objects.get_or_create(post=self, group=group)
