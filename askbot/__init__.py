@@ -42,6 +42,7 @@ REQUIREMENTS = {
     'pytz': 'pytz',
     'captcha': 'django-recaptcha>=1.0.3,<=1.3.0',
     'cas': 'python-cas>=1.4.0,<1.6',
+    'okta_jwt_verifier': 'okta-jwt-verifier==0.2.3',
     'responses': 'responses>=0.9.0',
     'requests_oauthlib': 'requests-oauthlib>=1.2.0',
     'requirements': 'requirements-parser>=0.2.0',

@@ -4,7 +4,7 @@
     class="action-link js-edit with-edit-icon"
   >{% trans %}edit{% endtrans %}</span>
   {{ macros.post_flag_buttons(question) }}
-  {% if thread.is_moderated() %}
+  {% if request.user.is_authenticated and request.user.is_post_moderator(question) %}
     {% set is_published=(not question.is_private()) %}
     <span
       id="js-post-publish-btn-{{question.pk}}"

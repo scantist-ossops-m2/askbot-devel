@@ -11,7 +11,7 @@
   >
     {% if answer.deleted %}{% trans %}undelete{% endtrans %}{% else %}{% trans %}delete{% endtrans %}{% endif %}
   </span>
-  {% if thread.is_moderated() %}
+  {% if request.user.is_authenticated and request.user.is_post_moderator(answer) %}
     {% set is_published=(answer.id in published_answer_ids) %}
     <span
       id="js-post-publish-btn-{{answer.id}}"

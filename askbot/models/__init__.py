@@ -2554,10 +2554,10 @@ def user_is_moderator(self):
 
 
 def user_is_post_moderator(self, post):
-    """True, if user and post have common groups
-    with moderation privilege"""
+    """True, if user and post have common private groups,
+    the "everyone" group does not count"""
     if askbot_settings.GROUPS_ENABLED:
-        group_ids = self.get_groups().values_list('id', flat=True)
+        group_ids = self.get_groups(private=True).values_list('id', flat=True)
         post_groups = PostToGroup.objects.filter(post=post, group__id__in=group_ids)
         return post_groups.count() > 0
     return False
