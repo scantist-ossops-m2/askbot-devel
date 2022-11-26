@@ -56,7 +56,6 @@ DeclineAndExplainMenu.prototype.decorate = function (element) {
     this._addReasonBtn = addReasonBtn;
 
     var manageReasonsDialog = new ManageRejectReasonsDialog();
-    debugger;
     manageReasonsDialog.decorate($('#manage-reject-reasons-modal'));
     this._manageReasonsDialog = manageReasonsDialog;
     manageReasonsDialog.setMenu(this);

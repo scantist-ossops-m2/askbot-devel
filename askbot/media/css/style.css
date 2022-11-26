@@ -422,6 +422,10 @@ abbr {
   text-decoration: none !important;
 }
 
+textarea {
+  resize: vertical;
+}
+
 input,
 textarea,
 select {
@@ -567,7 +571,7 @@ main {
   padding: var(--main-block-padding);
 }
 
-body:not(.tags-page):not(.questions-page):not(.users-page) main {
+body:not(.with-tabs) main {
   padding-top: 0.5rem;
 }
 
@@ -8689,6 +8693,14 @@ code.hljs {
   border-left: none;
 }
 
+.js-modal input[type=text],
+.js-modal textarea {
+  width: 100%;
+}
+.js-modal textarea {
+  min-height: 15vh;
+}
+
 .js-modal-header,
 .js-modal-body {
   margin: 0 0 0.75rem;
@@ -9929,9 +9941,42 @@ ul.tags li {
   margin-bottom: calc(1.5 * var(--tags-gap));
 }
 
+.groups-page table.groups-list {
+  --clr-header: var(--clr-neutral-30);
+  border-collapse: collapse;
+  border: 1px solid var(--clr-header);
+}
+.groups-page table.groups-list th {
+  font-weight: var(--font-weight-normal);
+  background: var(--clr-header);
+  color: var(--bg-color);
+}
+.groups-page table.groups-list tr:nth-child(odd) {
+  background: var(--clr-neutral-90);
+}
+.groups-page table.groups-list th, .groups-page table.groups-list td {
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  text-align: left;
+}
+.groups-page table.groups-list td:nth-child(1) {
+  text-transform: capitalize;
+}
+.groups-page table.groups-list td:nth-child(2) {
+  text-align: center;
+}
+
+.js-group-settings h2 {
+  margin-bottom: 0.75rem;
+}
 .js-group-settings label[for=group-openness-selector] {
   display: block;
-  margin-bottom: 0.125rem;
+  margin-bottom: 0.25rem;
+}
+.js-group-settings #group-openness-selector {
+  margin-bottom: 0.5rem;
+}
+.js-group-settings .js-description > p {
+  margin-bottom: 0.75rem;
 }
 .js-group-settings .row.with-checkbox {
   display: flex;
@@ -10542,13 +10587,26 @@ a.badge-page-link {
   margin-bottom: 1rem;
 }
 
+.moderation-queue-page .js-approve-block,
+.moderation-queue-page .js-decline-block {
+  position: relative;
+  border: var(--info-box-border);
+  border-bottom: none;
+  padding-top: 1rem;
+}
 .moderation-queue-page .moderation-header .tools {
   display: flex;
-  margin-bottom: 0.5rem;
+  margin: 1rem 0 0.5rem;
 }
 .moderation-queue-page .moderation-header .tools .js-label {
+  position: absolute;
+  top: -0.625rem;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  margin-bottom: 0.5rem;
+  background: var(--bg-color);
+  display: inline-block;
+  padding: 0 0.5rem;
 }
 .moderation-queue-page .moderation-header .tools .buttons {
   display: flex;
@@ -10590,6 +10648,14 @@ a.badge-page-link {
 .moderation-queue-page .empty-content-box {
   background: var(--clr-neutral-90);
   margin-bottom: 1rem;
+}
+.moderation-queue-page .message-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.moderation-queue-page .message-info > * {
+  margin-right: 0.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

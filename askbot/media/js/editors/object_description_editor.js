@@ -11,6 +11,8 @@ var ObjectDescriptionEditor = function () {
   this._is_editor_loaded = false;
   this._enabled_editor_buttons = null;
   this._previewerEnabled = false;
+  this._onEditEnter = function () {};
+  this._onDisplayEnter = function () {};
 };
 inherits(ObjectDescriptionEditor, WrappedElement);
 
@@ -34,6 +36,14 @@ ObjectDescriptionEditor.prototype.setContent = function (content) {
   this._content_box.append(content);
 };
 
+ObjectDescriptionEditor.prototype.setOnDisplayEnter = function (handler) {
+  this._onDisplayEnter = handler;
+};
+
+ObjectDescriptionEditor.prototype.setOnEditEnter = function (handler) {
+  this._onEditEnter =  handler;
+};
+
 ObjectDescriptionEditor.prototype.setState = function (state) {
   if (state === 'edit') {
     this._state = state;
@@ -41,12 +51,14 @@ ObjectDescriptionEditor.prototype.setState = function (state) {
     this._cancel_btn.show();
     this._save_btn.show();
     this._cancel_sep.show();
+    this._onEditEnter();
   } else if (state === 'display') {
     this._state = state;
     this._edit_btn.show();
     this._cancel_btn.hide();
     this._cancel_sep.hide();
     this._save_btn.hide();
+    this._onDisplayEnter();
   }
 };
 

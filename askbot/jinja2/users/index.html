@@ -6,7 +6,7 @@
 {% import "macros.html" as macros %}
 <!-- users.html -->
 {% block title %}{% filter trim %}{% trans %}Users{% endtrans %}{% endfilter %}{% endblock %}
-{% block layout_class %}users-page{% endblock %}
+{% block layout_class %}users-page with-tabs{% endblock %}
 {% block content %}
   {% include "users/title_row.html" %}
   {% if search_query %}
@@ -60,7 +60,7 @@
     {% if group and request.user.is_authenticated %}
       $(document).ready(function(){
         var group_join_btn = new GroupJoinButton();
-        group_join_btn.decorate($('.group-join-btn'));
+        group_join_btn.decorate($('.js-join-group-btn'));
         //setup WMD editor
         if (askbot['data']['userIsAdminOrMod']){
           //todo: this is kind of Attacklab.init ... should not be here

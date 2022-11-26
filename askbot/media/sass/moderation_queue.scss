@@ -1,11 +1,26 @@
 .moderation-queue-page {
+
+  .js-approve-block,
+  .js-decline-block {
+    position: relative;
+    border: var(--info-box-border);
+    border-bottom: none;
+    padding-top: 1rem;
+  }
+
   .moderation-header .tools {
     display: flex;
-    margin-bottom: 0.5rem;
+    margin: 1rem 0 0.5rem;
 
     .js-label {
+      position: absolute;
+      top: -0.625rem;
+      left: 50%;
+      transform: translateX(-50%);
       text-align: center;
-      margin-bottom: 0.5rem;
+      background: var(--bg-color);
+      display: inline-block;
+      padding: 0 0.5rem;
     }
 
     .buttons {
@@ -56,5 +71,14 @@
   .empty-content-box {
     background: var(--clr-neutral-90);
     margin-bottom: 1rem;
+  }
+
+  .message-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+    & > * {
+      margin-right: 0.5rem;
+    }
   }
 }

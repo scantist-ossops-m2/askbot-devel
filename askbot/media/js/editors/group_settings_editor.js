@@ -100,4 +100,15 @@ GroupSettingsEditor.prototype.decorate = function (element) {
   var delete_logo_btn = element.find('.js-delete-logo-btn');
   logo_changer.setDeleteButton(delete_logo_btn);
   logo_changer.decorate(change_logo_btn);
+
+  var joinGroupBtn = element.find('.js-join-group-btn');
+  var logoControls = element.find('.js-logo-control');
+  this.setOnEditEnter(function () {
+    joinGroupBtn.hide();
+    logoControls.hide();
+  });
+  this.setOnDisplayEnter(function () {
+    joinGroupBtn.show();
+    logoControls.show();
+  });
 };

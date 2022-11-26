@@ -31,7 +31,7 @@
     askbot['urls']['join_or_leave_group'] = '{{ url('join_or_leave_group') }}';
     $(document).ready(function(){
       setupBadgeDetailsToggle();
-      $.each($('.group-join-btn'), function(idx, elem){
+      $.each($('.js-join-group-btn'), function(idx, elem){
         var groupJoinBtn = new GroupJoinButton();
         groupJoinBtn.decorate($(elem));
       });

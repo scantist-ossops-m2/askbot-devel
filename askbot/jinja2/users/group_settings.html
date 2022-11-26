@@ -39,14 +39,14 @@
       <a class="js-edit-description-btn"
       >{% trans %}edit description{% endtrans %}</a>
       {% if group.logo_url %}
-        <span>|</span>
-        <a class="js-change-logo-btn"
+        <span class="js-logo-control">|</span>
+        <a class="js-change-logo-btn js-logo-control"
         >{% trans %}change logo{% endtrans %}</a>
-        <span>|</span>
-        <a class="js-delete-logo-btn">{% trans %}delete logo{% endtrans %}</a>
+        <span class="js-logo-control">|</span>
+        <a class="js-delete-logo-btn js-logo-control">{% trans %}delete logo{% endtrans %}</a>
       {% else %}
-        <span>|</span>
-        <a class="js-change-logo-btn"
+        <span class="js-logo-control">|</span>
+        <a class="js-change-logo-btn js-logo-control"
         >{% trans %}add logo{% endtrans %}</a>
       {% endif %}
     </div>

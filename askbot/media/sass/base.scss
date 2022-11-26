@@ -83,6 +83,10 @@ abbr {
   text-decoration: none !important;
 }
 
+textarea {
+  resize: vertical;
+}
+
 input,
 textarea,
 select {
@@ -236,6 +240,6 @@ main {
   padding: var(--main-block-padding);
 }
 
-body:not(.tags-page):not(.questions-page):not(.users-page) main {
+body:not(.with-tabs) main {
   padding-top: 0.5rem;
 }

@@ -22,6 +22,7 @@ CommentConvertLink.prototype.createDom = function () {
     element.append(csrf_token);
 
     var submit = this.makeElement('input');
+    submit.addClass('action-link js-comment-convert-btn with-convert-post-icon');
     submit.attr('type', 'submit');
     submit.attr('value', gettext('convert to answer'));
     element.append(submit);
