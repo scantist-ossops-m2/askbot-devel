@@ -16,7 +16,7 @@ default_app_config = 'askbot.apps.AskbotConfig' #pylint: disable=invalid-name
 #keys are module names used by python imports,
 #values - the package qualifier to use for pip
 REQUIREMENTS = {
-    'appconf': 'django-appconf==1.0.3',
+    'appconf': 'django-appconf==1.0.5',
     'akismet': 'akismet==1.0.1',
     'avatar': 'django-avatar>=4.0',
     'bleach': 'bleach==5.0.1',
