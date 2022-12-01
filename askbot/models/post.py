@@ -923,9 +923,9 @@ class Post(models.Model):
             if self.thread_id and self.is_question() is False:
                 # for thread-related answers and comments we base
                 # privacy scope on thread + add a personal group
-                personal_group = user.get_personal_group()
+                personal_groups = user.get_groups(private=True)
                 thread_groups = self.thread.get_groups_shared_with()
-                groups = set([personal_group]) | set(thread_groups)
+                groups = set(personal_groups) | set(thread_groups)
             else:
                 groups = user.get_groups(private=True)
 
