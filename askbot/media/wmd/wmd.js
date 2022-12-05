@@ -362,7 +362,9 @@ util.prompt = function(text, defaultInputText, makeLinkMarkdown, dialogType){
             spinner.css('display', 'none');
 
             var startUploadHandler = function(){
-                localUploadFileName = $(this).val();//this is a local var
+                // gets the uploaded file name, fixes the fakepath issue
+                localUploadFileName = $(this).val().replace(/\w:.*\\(.*)$/, '$1');
+
                 /*
                  * startUploadHandler is passed into the ajaxFileUpload
                  * in order to re-install the onchange handler
@@ -1829,7 +1831,6 @@ util.prompt = function(text, defaultInputText, makeLinkMarkdown, dialogType){
 			// The function to be executed when you enter a link and press OK or Cancel.
 			// Marks up the link and adds the ref.
     var makeLinkMarkdown = function(link){
-
         if (link !== null) {
 
             chunk.startTag = chunk.endTag = "";
