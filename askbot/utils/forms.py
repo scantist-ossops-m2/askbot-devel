@@ -46,7 +46,7 @@ def get_next_url(request, default=None):
     next_jwt = getattr(request, request.method).get('next')
     if next_jwt:
         return get_next_url_from_jwt(next_jwt, default)
-    return default
+    return default or reverse('questions')
 
 def get_next_jwt(request, default=None):
     """Returns jwt token with the validated next_url parameter
