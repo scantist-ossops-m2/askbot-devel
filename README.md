@@ -1,11 +1,7 @@
-===========================================================
-ATTENTION: master branch is experimental, please read below
-===========================================================
+# ATTENTION: master branch is experimental, please read below
 
 
-====================================
-Askbot - a Django Q&A forum platform
-====================================
+## Askbot - a Django Q&A forum platform
 
 This is Askbot project - open source Q&A system, like StackOverflow, Yahoo Answers and some others.
 Askbot is based on code of CNPROG, originally created by Mike Chen
@@ -23,42 +19,23 @@ Branch `0.10.x` - supports Django 1.8 - the last version series to support Pytho
 
 Branch `master` - released as versions 0.11.x - supports Django 3.2/Python 3.7 - 3.10
 
-Installation
-============
+## Installation
 
 Installation was tested with Python 3.7 with the following commands:
 
-    pip install --upgrade pip
-    pip install setuptools-rust
-    python setup.py install
-    askbot-setup # answer the questions or use parameters to askbot-setup
-    cd <root_dir> # substitute <root_dir> with the actual directory, default is `askbot_site`
-    python manage.py migrate # assumes that the database specified by askbot-setup is available
+        pip install --upgrade pip
+        pip install setuptools-rust
+        python setup.py install
+        askbot-setup # answer the questions or use parameters to askbot-setup
+        cd <root_dir> # substitute <root_dir> with the actual directory, default is `askbot_site`
+        python manage.py migrate # assumes that the database specified by askbot-setup is available
 
 The last command above will create a working Django project in the project root
 directory that you specify with the `askbot-setup` script.
 
 For the deployment, follow the general Django deployment documentation.
 
-Installation
-============
-
-Installation was tested with Python 3.7 with the following commands:
-
-    pip install --upgrade pip
-    pip install setuptools-rust
-    python setup.py install
-    askbot-setup # answer the questions or use parameters to askbot-setup
-    cd <root_dir> # substitute <root_dir> with the actual directory, default is `askbot_site`
-    python manage.py migrate # assumes that the database specified by askbot-setup is available
-
-The last command above will create a working Django project in the project root
-directory that you specify with the `askbot-setup` script.
-
-For the deployment, follow the general Django deployment documentation.
-
-How to contribute
-=================
+## How to contribute
 
 Your pull requests are very welcome, **but please read the few paragraphs below**, it might save our combined efforts.
 
