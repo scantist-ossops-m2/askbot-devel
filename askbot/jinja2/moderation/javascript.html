@@ -1,15 +1,11 @@
 {% compress js %}
-  <script type="text/javascript" src="{{ '/js/user/response_notifs.js'|media }}"></script>
+  <script type="text/javascript" src="{{ '/js/moderation_queue/errors_alert.js'|media }}"></script>
   <script type="text/javascript" src="{{ '/js/moderation_queue/decline_and_explain_menu.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user/post_moderation_controls.js'|media }}"></script>
+  <script type="text/javascript" src="{{ '/js/moderation_queue/post_moderation_controls.js'|media }}"></script>
+  <script type="text/javascript" src="{{ '/js/moderation_queue/errors_alert.js'|media }}"></script>
+  <script type="text/javascript" src="{{ '/js/moderation_queue/reject_reason_selector.js'|media }}"></script>
+  <script type="text/javascript" src="{{ '/js/moderation_queue/reject_reason_editor.js'|media }}"></script>
   <script type="text/javascript" src="{{ '/js/moderation_queue/manage_reject_reasons_dialog.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user/user_group.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user/groups_container.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user/group_adder_widget.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user/user_groups_editor.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user/tweeting.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user/user_questions_paginator.js'|media }}"></script>
-  <script type="text/javascript" src="{{ '/js/user.js'|media }}"></script>
 {% endcompress %}
 <script type="text/javascript">
   (function() {
@@ -18,7 +14,11 @@
     {% if request.user.is_administrator_or_moderator() %}
       askbot['data']['postRejectReasons'] = [
         {% for reason in post_reject_reasons %}
-          {'id': {{reason.id}}, 'title': '{{reason.title|escapejs}}'},
+          {
+            'id': {{reason.id}},
+            'title': '{{reason.title|escapejs}}',
+            'description': '{{reason.details.text|escapejs}}'
+          },
         {% endfor %}
       ];
     {% endif %}

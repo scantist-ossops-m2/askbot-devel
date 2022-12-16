@@ -8,6 +8,7 @@ var ModalDialog = function () {
     this._acceptBtnEnabled = true;
     this._reject_button_text = gettext('Cancel');
     this._heading_text = 'Add heading by setHeadingText()';
+    this._title = undefined;
     this._initial_content = undefined;
     this._accept_handler = function () {};
     var me = this;
@@ -46,8 +47,13 @@ ModalDialog.prototype.prependContent = function (content) {
     this._content_element.prepend(content);
 };
 
+ModalDialog.prototype.appendContent = function (content) {
+  this._content_element.append(content);
+};
+
 ModalDialog.prototype.setHeadingText = function (text) {
     this._heading_text = text;
+    if (this._title) this._title.html(text);
 };
 
 ModalDialog.prototype.setAcceptButtonText = function (text) {
@@ -62,10 +68,12 @@ ModalDialog.prototype.setRejectButtonText = function (text) {
 };
 
 ModalDialog.prototype.hideRejectButton = function () {
+    if (!this._rejectButton) return; 
     this._rejectBtn.hide();
 };
 
 ModalDialog.prototype.hideAcceptButton = function () {
+    if (!this._acceptButton) return; 
     this._acceptButton.hide();
 };
 
@@ -132,6 +140,7 @@ ModalDialog.prototype.createDom = function () {
         var title = this.makeElement('h3');
         title.html(this._heading_text);
         header.append(title);
+        this._title = title;
     }
 
     //2) create content

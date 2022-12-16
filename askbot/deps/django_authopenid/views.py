@@ -1319,7 +1319,6 @@ def signup_with_password(request):
     """Create a password-protected account
     template: authopenid/signup_with_password.html
     """
-
     logging.debug(get_request_info(request))
     login_form = forms.LoginForm(initial = {'next': get_next_jwt(request)})
     #this is safe because second decorator cleans this field

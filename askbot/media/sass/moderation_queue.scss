@@ -2,10 +2,28 @@
 
   .js-approve-block,
   .js-decline-block {
+    background: var(--clr-neutral-95);
     position: relative;
     border: var(--info-box-border);
-    border-bottom: none;
-    padding-top: 1rem;
+    padding: 1rem 0.25rem 0.25rem;
+  }
+
+  .js-manage-reject-reasons-dialog .js-modal-body {
+    margin-bottom: 0;
+  }
+
+  .js-reject-reason-editor {
+    input[type="text"] {
+      margin-bottom: 0.5rem;
+    }
+    textarea {
+      padding-top: 0.25rem;
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+    .btn {
+      margin-right: 0.5rem;
+    }
   }
 
   .moderation-header .tools {
@@ -13,6 +31,8 @@
     margin: 1rem 0 0.5rem;
 
     .js-label {
+      border-radius: 1rem;
+      box-shadow: 1px 1px 3px var(--clr-neutral-50);
       position: absolute;
       top: -0.625rem;
       left: 50%;

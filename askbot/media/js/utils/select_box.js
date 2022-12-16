@@ -14,6 +14,10 @@ SelectBox.prototype.setItemClass = function (itemClass) {
     this._item_class = itemClass;
 };
 
+SelectBox.prototype.getItemCount = function () {
+  return this._items.length;
+};
+
 SelectBox.prototype.setEditable = function (is_editable) {
     this._is_editable = is_editable;
 };

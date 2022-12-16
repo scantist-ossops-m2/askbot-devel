@@ -53,9 +53,14 @@ AlertBox.prototype.addContent = function (content) {
     container.append(content);
 };
 
+AlertBox.prototype.clear = function () {
+    this.getContent().empty();
+    this.hide();
+};
+
 AlertBox.prototype.createDom = function () {
     this._element = this.makeElement('div');
-    this._element.addClass('alert fade in');
+    this._element.addClass('js-alert-box');
 
     if (this._is_error) {
         this.setError(this._is_error);
@@ -65,17 +70,21 @@ AlertBox.prototype.createDom = function () {
         this._element.addClass(this._classes);
     }
 
-    this._cancel_button = this.makeElement('button');
-    this._cancel_button
-        .addClass('close')
+    var cancelButton = this.makeElement('button');
+    cancelButton
+        .addClass('js-alert-box--dismiss-button')
         .attr('data-dismiss', 'alert')
         .html('&times;');
-    this._element.append(this._cancel_button);
+    
+    this._element.append(cancelButton);
+    var me = this;
+    setupButtonEventHandlers(cancelButton, function () { me.clear(); });
+    this._cancel_button = cancelButton;
 
     this._element.append(this.getContent());
     if (this._text) {
         this.setText(this._text);
     }
 
-    this._element.alert();//bootstrap.js alert
+    this.hide();
 };

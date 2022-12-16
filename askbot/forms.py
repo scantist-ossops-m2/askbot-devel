@@ -224,7 +224,6 @@ class CountedWordsField(forms.CharField):
             value = ''
 
         value = value.strip()
-
         word_count = len(value.split())
         if word_count < self.min_words:
             msg = ungettext_lazy('must be > %d word', 'must be > %d words',
@@ -1607,7 +1606,6 @@ class EditRejectReasonForm(forms.Form):
     reason_id = forms.IntegerField(required=False)
     title = CountedWordsField(min_words=1, max_words=4, field_name=_('Title'))
     details = CountedWordsField(min_words=6, field_name=_('Description'))
-
 
 class ModerateTagForm(forms.Form):
     tag_id = forms.IntegerField()

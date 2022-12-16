@@ -46,13 +46,14 @@ def get_next_url(request, default=None):
     next_jwt = getattr(request, request.method).get('next')
     if next_jwt:
         return get_next_url_from_jwt(next_jwt, default)
-    return default
+    return default or reverse('questions')
 
 def get_next_jwt(request, default=None):
     """Returns jwt token with the validated next_url parameter
     coming from the request.
     The point of this is to authenticate the value using the SECRET_KEY.
     """
+    default = default or reverse('questions')
     return encode_jwt({'next_url': get_next_url(request, default)})
 
 def get_db_object_or_404(params):

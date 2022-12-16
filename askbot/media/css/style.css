@@ -7629,6 +7629,26 @@ readers do not read off random characters that represent icons */
   z-index: 10000 !important;
 }
 
+.js-alert-box {
+  position: relative;
+  padding: var(--input-horizontal-padding);
+  background: var(--error-popup-bg);
+  color: var(--bg-color);
+  margin-bottom: 0.5rem;
+}
+.js-alert-box .js-alert-box--dismiss-button {
+  position: absolute;
+  top: 0;
+  right: 0.25rem;
+  font-size: 1.25rem;
+  background: transparent;
+  border: none;
+  color: var(--bg-color);
+}
+.js-alert-box ul {
+  margin-bottom: 0 !important;
+}
+
 .action-link {
   display: inline-block;
   color: var(--action-link-color);
@@ -10589,16 +10609,32 @@ a.badge-page-link {
 
 .moderation-queue-page .js-approve-block,
 .moderation-queue-page .js-decline-block {
+  background: var(--clr-neutral-95);
   position: relative;
   border: var(--info-box-border);
-  border-bottom: none;
-  padding-top: 1rem;
+  padding: 1rem 0.25rem 0.25rem;
+}
+.moderation-queue-page .js-manage-reject-reasons-dialog .js-modal-body {
+  margin-bottom: 0;
+}
+.moderation-queue-page .js-reject-reason-editor input[type=text] {
+  margin-bottom: 0.5rem;
+}
+.moderation-queue-page .js-reject-reason-editor textarea {
+  padding-top: 0.25rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.moderation-queue-page .js-reject-reason-editor .btn {
+  margin-right: 0.5rem;
 }
 .moderation-queue-page .moderation-header .tools {
   display: flex;
   margin: 1rem 0 0.5rem;
 }
 .moderation-queue-page .moderation-header .tools .js-label {
+  border-radius: 1rem;
+  box-shadow: 1px 1px 3px var(--clr-neutral-50);
   position: absolute;
   top: -0.625rem;
   left: 50%;
