@@ -1,4 +1,4 @@
-/* global Attacklab, SimpleEditor, inherits, WMDExpanderToggle, addExtraCssClasses, getSuperClass */
+/* global askbot, getTemplate, Attacklab, SimpleEditor, inherits, WMDExpanderToggle, addExtraCssClasses, getSuperClass */
 /**
  * @constructor
  * a wrapper for the WMD editor
@@ -6,8 +6,8 @@
 var WMD = function (opts) {
     SimpleEditor.call(this, opts);
     this._text = undefined;
-    this._enabled_buttons = 'bold italic link blockquote code ' +
-        'image attachment ol ul heading hr';
+    var allButtons = 'bold italic link blockquote code image attachment ol ul heading hr';
+    this._enabled_buttons = this.filterEnabledButtons(allButtons);
     this._previewerEnabled = true;
 };
 inherits(WMD, SimpleEditor);
@@ -15,7 +15,16 @@ inherits(WMD, SimpleEditor);
 //@todo: implement getHtml method that runs text through showdown renderer
 
 WMD.prototype.setEnabledButtons = function (buttons) {
-    this._enabled_buttons = buttons;
+  this._enabled_buttons = this.filterEnabledButtons(buttons);
+};
+
+WMD.prototype.filterEnabledButtons = function (buttons) {
+  var buttonsList = buttons.split(' ');
+  var filteredList = buttonsList.filter(function (button) {
+    if (!['image', 'attachment'].includes(button)) return true;
+    return askbot.data.userCanUploadFile;
+  });
+  return filteredList.join(' ');
 };
 
 WMD.prototype.setPreviewerEnabled = function (enabledStatus) {

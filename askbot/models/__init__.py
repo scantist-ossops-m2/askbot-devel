@@ -927,6 +927,12 @@ def user_assert_can_upload_file(request_user):
         min_rep_setting=askbot_settings.MIN_REP_TO_UPLOAD_FILES
     )
 
+def user_can_upload_file(request_user):
+    try:
+        user_assert_can_upload_file(request_user)
+    except Exception: #pylint: disable=broad-except
+        return False
+    return True
 
 def user_assert_can_join_or_leave_group(self):
     _assert_user_can(
@@ -3619,6 +3625,7 @@ User.add_to_class('get_avatar_type', user_get_avatar_type)
 User.add_to_class('get_avatar_url', user_get_avatar_url)
 User.add_to_class('can_terminate_account', user_can_terminate_account)
 User.add_to_class('can_manage_account', user_can_manage_account)
+User.add_to_class('can_upload_file', user_can_upload_file)
 User.add_to_class('calculate_avatar_url', user_calculate_avatar_url)
 User.add_to_class('clear_avatar_urls', user_clear_avatar_urls)
 User.add_to_class('clear_cached_data', user_clear_cached_data)
