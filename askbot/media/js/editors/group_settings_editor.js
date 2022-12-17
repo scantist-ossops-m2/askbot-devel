@@ -64,13 +64,23 @@ GroupSettingsEditor.prototype.decorate = function (element) {
   btn = element.find('.js-can-post-answers-toggle');
   postAnswersToggle.decorate(btn);
 
-  var postCommentsToggle = new AjaxToggle();
-  postCommentsToggle.setPostData({
-    group_id: this.getObjectId(),
-    property_name: 'can_post_comments'
-  });
   btn = element.find('.js-can-post-comments-toggle');
-  postCommentsToggle.decorate(btn);
+  if (btn.length) {
+    var postCommentsToggle = new AjaxToggle();
+    postCommentsToggle.setPostData({
+      group_id: this.getObjectId(),
+      property_name: 'can_post_comments'
+    });
+    postCommentsToggle.decorate(btn);
+  }
+
+  var uploadFilesToggle = new AjaxToggle();
+  uploadFilesToggle.setPostData({
+    group_id: this.getObjectId(),
+    property_name: 'can_upload_files'
+  });
+  btn = element.find('.js-can-upload-files-toggle');
+  uploadFilesToggle.decorate(btn);
 
   var opennessSelector = new DropdownSelect();
   var selectorElement = element.find('.js-group-openness-selector');

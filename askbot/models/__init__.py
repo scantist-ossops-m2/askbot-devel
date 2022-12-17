@@ -919,6 +919,14 @@ def user_assert_can_vote_for_post(self, post=None, direction=None):
 
 
 def user_assert_can_upload_file(request_user):
+    if not askbot_settings.FILE_UPLOADS_ENABLED:
+        raise django_exceptions.PermissionDenied(_('Uploading of files is not allowed'))
+
+    if askbot_settings.GROUPS_ENABLED:
+        groups = request_user.get_groups()
+        if groups.filter(can_upload_files=True).count() == 0:
+            raise django_exceptions.PermissionDenied(_('Uploading of files is not allowed'))
+
     _assert_user_can(
         user=request_user,
         action_display=_('upload files'),
@@ -926,6 +934,7 @@ def user_assert_can_upload_file(request_user):
         suspended_user_cannot=True,
         min_rep_setting=askbot_settings.MIN_REP_TO_UPLOAD_FILES
     )
+
 
 def user_can_upload_file(request_user):
     try:
@@ -4680,3 +4689,5 @@ __all__ = [
 
         'get_model',
 ]
+
+# a function that returns a number of users in Askbot

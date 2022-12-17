@@ -595,6 +595,7 @@ class Group(AuthGroup):
     can_post_questions = models.BooleanField(default=False)
     can_post_answers = models.BooleanField(default=False)
     can_post_comments = models.BooleanField(default=False)
+    can_upload_files = models.BooleanField(default=False)
 
     openness = models.SmallIntegerField(default=CLOSED, choices=OPENNESS_CHOICES)
     # preapproved email addresses and domain names to auto-join groups

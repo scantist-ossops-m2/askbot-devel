@@ -137,6 +137,21 @@
       </label>
     </div>
 
+    {% if settings.FILE_UPLOADS_ENABLED %}
+      <div class="row with-checkbox">
+        <input
+          type="checkbox"
+          id="can-upload-files-toggle"
+          class="js-can-upload-files-toggle"
+          {% if group.can_upload_files %}checked="checked"{% endif %}
+          data-toggle-url="{{ url('toggle_group_profile_property') }}"
+        />
+        <label for="can-upload-files-toggle">
+          {% trans %}Can upload files{% endtrans %}
+        </label>
+      </div>
+    {% endif %}
+
     <div class="row">
       <a
         id="preapproved-emails"

@@ -128,6 +128,21 @@ settings.register(
     )
 )
 
+
+settings.register(
+    livesettings.BooleanValue(
+        FORUM_DATA_RULES,
+        'FILE_UPLOADS_ENABLED',
+        default=True,
+        description=_('Allow uploading files in posts'),
+        help_text=_(
+            'File uploads are subject to a minimum reputation setting. '
+            'Also, if groups are enabled - user must belong to at least '
+            'one group that is allowed to upload files.'
+        )
+    )
+)
+
 settings.register(
     livesettings.BooleanValue(
         FORUM_DATA_RULES,
