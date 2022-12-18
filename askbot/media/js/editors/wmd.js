@@ -21,8 +21,9 @@ WMD.prototype.setEnabledButtons = function (buttons) {
 WMD.prototype.filterEnabledButtons = function (buttons) {
   var buttonsList = buttons.split(' ');
   var filteredList = buttonsList.filter(function (button) {
-    if (!['image', 'attachment'].includes(button)) return true;
-    return askbot.data.userCanUploadFile;
+    if (button === 'image') return askbot.data.userCanUploadImage;
+    if (button === 'image') return askbot.data.userCanUploadAttachment;
+    return true;
   });
   return filteredList.join(' ');
 };

@@ -137,17 +137,32 @@
       </label>
     </div>
 
-    {% if settings.FILE_UPLOADS_ENABLED %}
+    {% if settings.ATTACHMENT_UPLOADS_ENABLED %}
       <div class="row with-checkbox">
         <input
           type="checkbox"
-          id="can-upload-files-toggle"
-          class="js-can-upload-files-toggle"
-          {% if group.can_upload_files %}checked="checked"{% endif %}
+          id="can-upload-attachments-toggle"
+          class="js-can-upload-attachments-toggle"
+          {% if group.can_upload_attachments %}checked="checked"{% endif %}
           data-toggle-url="{{ url('toggle_group_profile_property') }}"
         />
-        <label for="can-upload-files-toggle">
-          {% trans %}Can upload files{% endtrans %}
+        <label for="can-upload-attachments-toggle">
+          {% trans %}Can upload file attachments{% endtrans %}
+        </label>
+      </div>
+    {% endif %}
+
+    {% if settings.IMAGE_UPLOADS_ENABLED %}
+      <div class="row with-checkbox">
+        <input
+          type="checkbox"
+          id="can-upload-images-toggle"
+          class="js-can-upload-images-toggle"
+          {% if group.can_upload_images %}checked="checked"{% endif %}
+          data-toggle-url="{{ url('toggle_group_profile_property') }}"
+        />
+        <label for="can-upload-images-toggle">
+          {% trans %}Can upload images{% endtrans %}
         </label>
       </div>
     {% endif %}

@@ -992,7 +992,8 @@ def toggle_group_profile_property(request):
                         'can_post_questions',
                         'can_post_answers',
                         'can_post_comments',
-                        'can_upload_files',
+                        'can_upload_attachments',
+                        'can_upload_images',
                         'read_only'
                     )
     group = models.Group.objects.get(id = group_id)

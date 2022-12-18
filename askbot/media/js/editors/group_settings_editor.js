@@ -45,7 +45,7 @@ GroupSettingsEditor.prototype.decorate = function (element) {
     group_id: this.getObjectId(),
     property_name: 'read_only'
   });
-  btn = element.find('.js-read-only-access-toggle');
+  var btn = element.find('.js-read-only-access-toggle');
   readOnlyToggle.decorate(btn);
 
   var postQuestionsToggle = new AjaxToggle();
@@ -64,23 +64,33 @@ GroupSettingsEditor.prototype.decorate = function (element) {
   btn = element.find('.js-can-post-answers-toggle');
   postAnswersToggle.decorate(btn);
 
+  var postCommentsToggle = new AjaxToggle();
+  postCommentsToggle.setPostData({
+    group_id: this.getObjectId(),
+    property_name: 'can_post_comments'
+  });
   btn = element.find('.js-can-post-comments-toggle');
+  postCommentsToggle.decorate(btn);
+
+  btn = element.find('.js-can-upload-attachments-toggle');
   if (btn.length) {
-    var postCommentsToggle = new AjaxToggle();
-    postCommentsToggle.setPostData({
+    var uploadFilesToggle = new AjaxToggle();
+    uploadFilesToggle.setPostData({
       group_id: this.getObjectId(),
-      property_name: 'can_post_comments'
+      property_name: 'can_upload_attachments'
     });
-    postCommentsToggle.decorate(btn);
+    uploadFilesToggle.decorate(btn);
   }
 
-  var uploadFilesToggle = new AjaxToggle();
-  uploadFilesToggle.setPostData({
-    group_id: this.getObjectId(),
-    property_name: 'can_upload_files'
-  });
-  btn = element.find('.js-can-upload-files-toggle');
-  uploadFilesToggle.decorate(btn);
+  btn = element.find('.js-can-upload-images-toggle');
+  if (btn.length) {
+    var uploadFilesToggle = new AjaxToggle();
+    uploadFilesToggle.setPostData({
+      group_id: this.getObjectId(),
+      property_name: 'can_upload_images'
+    });
+    uploadFilesToggle.decorate(btn);
+  }
 
   var opennessSelector = new DropdownSelect();
   var selectorElement = element.find('.js-group-openness-selector');

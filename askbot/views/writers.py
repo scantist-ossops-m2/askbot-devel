@@ -65,7 +65,10 @@ def upload(request):#ajax upload file to a question or answer
             msg = _('Sorry, anonymous users cannot upload files')
             raise exceptions.PermissionDenied(msg)
 
-        request.user.assert_can_upload_file()
+        if not (request.user.can_upload_attachment() or request.user.can_upload_image()):
+            # NOTE: there is no file type check enforcement yet,
+            # the permission to upload attachements/images works only for users acting in good faith
+            raise exceptions.PermissionDenied(_('Uploading of files is not allowed'))
 
         #todo: build proper form validation
         file_name_prefix = request.POST.get('file_name_prefix', '')
