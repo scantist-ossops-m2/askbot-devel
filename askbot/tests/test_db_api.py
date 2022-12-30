@@ -551,7 +551,7 @@ class GroupTests(AskbotTestCase):
         #membership in `group` should not affect things,
         #because answer groups always inherit thread groups
         self.edit_answer(user=self.u1, answer=answer, is_private=True)
-        self.assertEqual(answer.groups.count(), 1)
+        self.assertEqual(answer.groups.filter(name=askbot_settings.GLOBAL_GROUP_NAME).count(), 0)
 
         #here we have a simple case - the comment to answer was posted
         #by the answer author!!!
@@ -559,7 +559,7 @@ class GroupTests(AskbotTestCase):
         u1_group = self.u1.get_personal_group()
         self.assertEqual(answer.groups.filter(id=u1_group.id).count(), 1)
         #comment inherits the sharing scope
-        self.assertEqual(comment.groups.count(), 1)
+        self.assertEqual(comment.groups.filter(name=askbot_settings.GLOBAL_GROUP_NAME).count(), 0)
         self.assertEqual(comment.groups.filter(id=u1_group.id).count(), 1)
 
     def test_public_question_private_answer_works(self):

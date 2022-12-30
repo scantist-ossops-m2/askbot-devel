@@ -861,8 +861,16 @@ util.prompt = function(text, defaultInputText, makeLinkMarkdown, dialogType){
 		var undoMgr; // The undo manager
 
         var isButtonUsed = function(button){
-            var buttons = $.trim(wmd.wmd_env.buttons).split(/\s+/);
-            return $.inArray(button, buttons) !== -1;
+          if (button === 'attachment') {
+            var canUpload = askbot && askbot.data && askbot.data.userCanUploadAttachment;
+            if (!canUpload) return false;
+          }
+          if (button === 'image') {
+            var canUpload = askbot && askbot.data && askbot.data.userCanUploadImage;
+            if (!canUpload) return false;
+          }
+          var buttons = $.trim(wmd.wmd_env.buttons).split(/\s+/);
+          return $.inArray(button, buttons) !== -1;
         };
 
 		// Perform the button's action.

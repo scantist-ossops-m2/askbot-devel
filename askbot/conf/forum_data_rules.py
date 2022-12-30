@@ -131,6 +131,34 @@ settings.register(
 settings.register(
     livesettings.BooleanValue(
         FORUM_DATA_RULES,
+        'ATTACHMENT_UPLOADS_ENABLED',
+        default=True,
+        description=_('Allow uploading file attachmentts in posts'),
+        help_text=_(
+            'File uploads are subject to a minimum reputation setting. '
+            'Also, if groups are enabled - user must belong to at least '
+            'one group that is allowed to upload files.'
+        )
+    )
+)
+
+settings.register(
+    livesettings.BooleanValue(
+        FORUM_DATA_RULES,
+        'IMAGE_UPLOADS_ENABLED',
+        default=True,
+        description=_('Allow uploading images in posts'),
+        help_text=_(
+            'File uploads are subject to a minimum reputation setting. '
+            'Also, if groups are enabled - user must belong to at least '
+            'one group that is allowed to upload files.'
+        )
+    )
+)
+
+settings.register(
+    livesettings.BooleanValue(
+        FORUM_DATA_RULES,
         'AUTO_FOLLOW_QUESTION_BY_OP',
         default=True,
         description=_('Auto-follow questions by the Author')

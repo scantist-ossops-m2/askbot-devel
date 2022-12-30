@@ -918,14 +918,46 @@ def user_assert_can_vote_for_post(self, post=None, direction=None):
     )
 
 
-def user_assert_can_upload_file(request_user):
+def user_assert_can_upload_file(user):
     _assert_user_can(
-        user=request_user,
+        user=user,
         action_display=_('upload files'),
         blocked_user_cannot=True,
         suspended_user_cannot=True,
         min_rep_setting=askbot_settings.MIN_REP_TO_UPLOAD_FILES
     )
+
+
+def user_can_upload_file(user):
+    try:
+        user.assert_can_upload_file()
+    except Exception: #pylint: disable=broad-except
+        return False
+    return True
+
+
+def user_can_upload_attachment(user):
+    if not askbot_settings.ATTACHMENT_UPLOADS_ENABLED:
+        return False
+
+    if askbot_settings.GROUPS_ENABLED:
+        groups = user.get_groups()
+        if groups.filter(can_upload_attachments=True).count() == 0:
+            return False
+
+    return user.can_upload_file()
+
+
+def user_can_upload_image(user):
+    if not askbot_settings.IMAGE_UPLOADS_ENABLED:
+        return False
+
+    if askbot_settings.GROUPS_ENABLED:
+        groups = user.get_groups()
+        if groups.filter(can_upload_images=True).count() == 0:
+            return False
+
+    return user.can_upload_file()
 
 
 def user_assert_can_join_or_leave_group(self):
@@ -3619,6 +3651,9 @@ User.add_to_class('get_avatar_type', user_get_avatar_type)
 User.add_to_class('get_avatar_url', user_get_avatar_url)
 User.add_to_class('can_terminate_account', user_can_terminate_account)
 User.add_to_class('can_manage_account', user_can_manage_account)
+User.add_to_class('can_upload_file', user_can_upload_file)
+User.add_to_class('can_upload_attachment', user_can_upload_attachment)
+User.add_to_class('can_upload_image', user_can_upload_image)
 User.add_to_class('calculate_avatar_url', user_calculate_avatar_url)
 User.add_to_class('clear_avatar_urls', user_clear_avatar_urls)
 User.add_to_class('clear_cached_data', user_clear_cached_data)
@@ -4673,3 +4708,5 @@ __all__ = [
 
         'get_model',
 ]
+
+# a function that returns a number of users in Askbot
