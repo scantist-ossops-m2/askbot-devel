@@ -1,4 +1,4 @@
-/* global WrappedElement, inherits */
+/* global WrappedElement, inherits, setupButtonEventHandlers, gettext, askbot */
 var RejectReasonEditor = function () {
   WrappedElement.call(this);
   this._menu = null;
@@ -56,6 +56,7 @@ RejectReasonEditor.prototype.focus = function () {
 RejectReasonEditor.prototype.cancelEditingReason = function () {
   this.reset();
   var menu = this.getMenu();
+  menu.clearErrors();
   if (menu.getReasonsCount() === 0) {
     menu.reset();
     menu.hide();
@@ -64,7 +65,7 @@ RejectReasonEditor.prototype.cancelEditingReason = function () {
   }
 };
 
-RejectReasonEditor.prototype.startSavingReason = function (callback) {
+RejectReasonEditor.prototype.startSavingReason = function () {
   var errors = this.checkInputs();
   if (errors.length > 0) {
     this.getMenu().setErrors(errors);
@@ -72,20 +73,19 @@ RejectReasonEditor.prototype.startSavingReason = function (callback) {
   }
 
   var me = this;
+  var reasonData = this.getInputs();
   $.ajax({
     type: 'POST',
     dataType: 'json',
     cache: false,
     url: askbot.urls.save_post_reject_reason,
-    data: this.getInputs(),
+    data: reasonData,
     success: function (result) {
       if (result.success) {
-        me.getMenu().setReason(result);
-        if (callback) {
-          callback(data);
-        } else {
-          me.getMenu().setState('select');
-        }
+        var menu  = me.getMenu();
+        menu.setReason(result, !reasonData.reason_id);
+        menu.clearErrors();
+        me.getMenu().setState('select');
       } else {
         me.getMenu().setErrors(result.message);
       }
@@ -94,13 +94,13 @@ RejectReasonEditor.prototype.startSavingReason = function (callback) {
 };
 
 RejectReasonEditor.prototype.startEditingReason = function () {
-    var data = this._select_box.getSelectedItemData();
-    var title = $(data.title).text();
-    var details = data.details;
-    this._titleInput.setVal(title);
-    this._detailsInput.setVal(details);
-    this._selected_reason_id = data.id;
-    this.setState('add-new');
+  var data = this._select_box.getSelectedItemData();
+  var title = $(data.title).text();
+  var details = data.details;
+  this._titleInput.setVal(title);
+  this._detailsInput.setVal(details);
+  this._selected_reason_id = data.id;
+  this.setState('add-new');
 };
 
 RejectReasonEditor.prototype.createDom = function () {

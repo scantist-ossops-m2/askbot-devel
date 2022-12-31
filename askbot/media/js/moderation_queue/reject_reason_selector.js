@@ -1,4 +1,4 @@
-/* global WrappedElement, inherits, SelectBox */
+/* global WrappedElement, inherits, SelectBox, askbot, gettext, setupButtonEventHandlers */
 var RejectReasonSelector = function () {
   WrappedElement.call(this);
   this._selectedReasonId = null;
@@ -17,68 +17,64 @@ RejectReasonSelector.prototype.reset = function () {
   this._selectedReasonId = null;
 };
 
-RejectReasonSelector.prototype.addSelectableReason = function (data) {
-    var id = data.reason_id;
-    var title = data.title;
-    var details = data.details;
-    this._selectBox.addItem(id, title, details);
+RejectReasonSelector.prototype.addReason = function (data) {
+  var id = data.reason_id;
+  var title = data.title;
+  var details = data.details;
+  this._selectBox.addItem(id, title, details);
+};
 
-    askbot.data.postRejectReasons.push(
-        {id: data.reason_id, title: data.title}
-    );
-
-    $.each(this._postModerationControls, function (idx, control) {
-        control.addReason(data.reason_id, data.title);
-    });
+RejectReasonSelector.prototype.updateReason = function (data) {
+  var item = this._selectBox.getItem(data.reason_id);
+  item.setName(data.title);
+  item.setDescription(data.details);
 };
 
 RejectReasonSelector.prototype.startEditingReason = function () {
-    var data = this._selectBox.getSelectedItemData();
-    this._selectedReasonId = data.id;
-    var menu = this.getMenu();
-    menu.setState('edit');
-    menu.setEditorValues({
-      title: $(data.title).text(),
-      details: data.details,
-      reason_id: this._selectedReasonId
-    });
+  var data = this._selectBox.getSelectedItemData();
+  this._selectedReasonId = data.id;
+  var menu = this.getMenu();
+  menu.setState('edit');
+  menu.setEditorValues({
+    title: $(data.title).text(),
+    details: data.details,
+    reason_id: this._selectedReasonId
+  });
 };
 
 RejectReasonSelector.prototype.resetSelectedReasonId = function () {
-    this._selectedReasonId = null;
+  this._selectedReasonId = null;
 };
 
 RejectReasonSelector.prototype.getSelectedReasonId = function () {
-    return this._selectedReasonId;
+  return this._selectedReasonId;
 };
 
 RejectReasonSelector.prototype.startDeletingReason = function () {
-    var selectBox = this._selectBox;
-    var data = selectBox.getSelectedItemData();
-    var reason_id = data.id;
-    var me = this;
-    if (data.id) {
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            cache: false,
-            url: askbot.urls.delete_post_reject_reason,
-            data: {reason_id: reason_id},
-            success: function (data) {
-                if (data.success) {
-                    selectBox.removeItem(reason_id);
-                    me.hideEditButtons();
-                    me.getMenu().removeReason(reason_id);
-                } else {
-                    me.setSelectorErrors(data.message);
-                }
-            }
-        });
-    } else {
-        me.setSelectorErrors(
-            gettext('A reason must be selected to delete one.')
-        );
-    }
+  var selectBox = this._selectBox;
+  var data = selectBox.getSelectedItemData();
+  var reason_id = data.id;
+  var me = this;
+  if (data.id) {
+    $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      cache: false,
+      url: askbot.urls.delete_post_reject_reason,
+      data: {reason_id: reason_id},
+      success: function (data) {
+        if (data.success) {
+          selectBox.removeItem(reason_id);
+          me.hideEditButtons();
+          me.getMenu().removeReason(reason_id);
+        } else {
+          me.setSelectorErrors(data.message);
+        }
+      }
+    });
+  } else {
+    me.setSelectorErrors(gettext('A reason must be selected to delete one.'));
+  }
 };
 
 RejectReasonSelector.prototype.getReasonsCount = function () {

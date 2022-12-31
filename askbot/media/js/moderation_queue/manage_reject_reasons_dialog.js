@@ -1,5 +1,5 @@
 /* global ModalDialog, RejectReasonEditor, RejectReasonSelector, ErrorsAlert,
- WrappedElement, getSuperClass, gettext, inherits */
+ askbot, gettext, getSuperClass, gettext, inherits */
 var ManageRejectReasonsDialog = function () {
   ModalDialog.call(this);
   this._state = null; //'select', 'edit'
@@ -24,6 +24,7 @@ ManageRejectReasonsDialog.prototype.setState = function (state) {
   if (state === 'add-new-reason') {
     this._selector.hide();
     this._editor.show();
+    this._editor.focus();
     this.setHeadingText(gettext('Add new reject reason'));
   }
   if (state === 'select') {
@@ -53,27 +54,33 @@ ManageRejectReasonsDialog.prototype.setErrors = function (errors) {
   this._errors.setErrors(errors);
 };
 
+ManageRejectReasonsDialog.prototype.clearErrors = function () {
+  this._errors.clear();
+};
 
 /**
  * add/update reason in data store
  * add/update reason in the select box
  * select added reason in the select box
  */
-ManageRejectReasonsDialog.prototype.setReason = function (data) {
-  /* code below is draft
-  
-    var id = data.reason_id;
-    var title = data.title;
-    var details = data.details;
-    this._select_box.addItem(id, title, details);
-
-    askbot.data.postRejectReasons.push(
-        {id: data.reason_id, title: data.title}
-    );
-    $.each(this._postModerationControls, function (idx, control) {
-        control.addReason(data.reason_id, data.title);
-    });
-  */
+ManageRejectReasonsDialog.prototype.setReason = function (data, created) {
+  if (created) {
+    this._selector.addReason(data);
+    this._topMenu.addReason(data.reason_id, data.title);
+    askbot.data.postRejectReasons.push({id: data.reason_id, title: data.title});
+  } else {
+    this._selector.updateReason(data);
+    this._topMenu.updateReason(data);
+    for (var i = 0; i < askbot.data.postRejectReasons.length; i++) {
+      if (askbot.data.postRejectReasons[i].id === data.reason_id) {
+        askbot.data.postRejectReasons[i] = {
+          id: data.reason_id,
+          title: data.title,
+          description: data.description
+        };
+      }
+    }
+  }
 };
 
 ManageRejectReasonsDialog.prototype.getReasonsCount = function () {

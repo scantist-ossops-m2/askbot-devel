@@ -1,3 +1,5 @@
+/* global WrappedElement, inherits, setupButtonEventHandlers, ManageRejectReasonsDialog */
+
 /**
 * the dropdown menu with selection of reasons
 * to reject posts and a button that starts menu to
@@ -9,7 +11,6 @@ var DeclineAndExplainMenu = function () {
 inherits(DeclineAndExplainMenu, WrappedElement);
 
 DeclineAndExplainMenu.prototype.setupDeclinePostHandler = function (button) {
-    var me = this;
     var reasonId = button.data('reasonId');
     var controls = this.getControls();
     var handler = controls.getModHandler('decline-with-reason', ['posts'], reasonId);
@@ -28,8 +29,17 @@ DeclineAndExplainMenu.prototype.addReason = function (id, title) {
     this.setupDeclinePostHandler(button);
 };
 
+DeclineAndExplainMenu.prototype.getReasonButtonById = function (id) {
+  return this._element.find('a[data-reason-id="' + id + '"]');
+};
+
+DeclineAndExplainMenu.prototype.updateReason = function (id, title) {
+  var btn = this.getReasonButtonById(id);
+  btn.html(title);
+}
+
 DeclineAndExplainMenu.prototype.removeReason = function (id) {
-    var btn = this._element.find('a[data-reason-id="' + id + '"]');
+    var btn = this.getReasonButtonById(id);
     btn.parent().remove();
 };
 
