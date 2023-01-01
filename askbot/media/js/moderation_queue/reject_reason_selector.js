@@ -35,10 +35,10 @@ RejectReasonSelector.prototype.startEditingReason = function () {
   this._selectedReasonId = data.id;
   var menu = this.getMenu();
   menu.setState('edit');
-  menu.setEditorValues({
-    title: $(data.title).text(),
-    details: data.details,
-    reason_id: this._selectedReasonId
+  menu.getEditor().setInputs({
+    title: data.title,
+    reason_id: data.id,
+    details: data.details
   });
 };
 
@@ -65,8 +65,10 @@ RejectReasonSelector.prototype.startDeletingReason = function () {
       success: function (data) {
         if (data.success) {
           selectBox.removeItem(reason_id);
-          me.hideEditButtons();
-          me.getMenu().removeReason(reason_id);
+          me._editButton.hide();
+          me._deleteButton.hide();
+          var menu = me.getMenu();
+          menu.getTopMenu().removeReason(reason_id);
         } else {
           me.setSelectorErrors(data.message);
         }
@@ -87,7 +89,11 @@ RejectReasonSelector.prototype.createDom = function () {
   // create the select box
   var selectBox = new SelectBox();
   this._element.append(selectBox.getElement());
-  selectBox.setSelectHandler(function() {});
+  var me = this;
+  selectBox.setSelectHandler(function() {
+    me._editButton.show();
+    me._deleteButton.show();
+  });
   $.each(askbot.data.postRejectReasons, function(_idx, item) {
     selectBox.addItem(item.id, item.title, item.description);
   });
@@ -98,7 +104,6 @@ RejectReasonSelector.prototype.createDom = function () {
   this._element.append(div);
 
   // edit button
-  var me = this;
   var editButton = this.makeElement('button');
   editButton.addClass('btn');
   editButton.text(gettext('Edit this reason'));

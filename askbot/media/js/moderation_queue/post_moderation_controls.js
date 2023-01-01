@@ -1,3 +1,6 @@
+/* global askbot, gettext, interpolate, ngettext, WrappedElement, inherits,
+  setupButtonEventHandlers, DeclineAndExplainMenu
+  */
 /**
 * Buttons to moderate posts
 * and the list of edits
@@ -27,7 +30,7 @@ PostModerationControls.prototype.removeEntries = function (entryIds) {
   /* jshint loopfunc:true */
   for (var i = 0; i < entryIds.length; i++) {
     var id = entryIds[i];
-    var elem = this._element.find('.message[data-message-id="' + id + '"]');
+    var elem = this._element.find('.js-message[data-message-id="' + id + '"]');
     var msgCtr = elem.closest('.js-message-container');
     if (msgCtr.length) {
       msgCtr.fadeOut('fast', function () {
@@ -73,12 +76,11 @@ PostModerationControls.prototype.getModHandler = function (action, items, optRea
     var selectedEditIds = me.getSelectedEditIds();
     if (selectedEditIds.length === 0) {
       if (action === 'approve') {
-        selectedEditIds = [$('.message').first().data('messageId')];
+        selectedEditIds = [$('.js-message').first().data('messageId')];
       } else {
         selectedEditIds = me.getVisibleEditIds();
       }
     }
-    //@todo: implement undo
     var postData = {
       'edit_ids': selectedEditIds,//revision ids
       'action': action,
@@ -94,7 +96,6 @@ PostModerationControls.prototype.getModHandler = function (action, items, optRea
       success: function (response_data) {
         if (response_data.success) {
           me.removeEntries(response_data.memo_ids);
-          me.setEntryCount(response_data.memo_count);
         }
 
         var message = response_data.message || '';
@@ -170,12 +171,13 @@ PostModerationControls.prototype.updateApproveButtonGroupLabel = function () {
 PostModerationControls.prototype.updateDeclineButtonGroupLabel = function () {
   var label = this._element.find('.js-decline-block .js-label');
   var numSelected = this.getManuallySelectedCount();
+  var formatString;
   if (numSelected === 0) {
     var numVisible = this.getVisibleCount();
-    var formatString = ngettext('%(count)s visible post', '%(count)s visible posts', numVisible);
+    formatString = ngettext('%(count)s visible post', '%(count)s visible posts', numVisible);
     label.text(interpolate(formatString, {count: numVisible}, true));
   } else  {
-    var formatString = ngettext('%(count)s selected post', '%(count)s selected posts', numSelected);
+    formatString = ngettext('%(count)s selected post', '%(count)s selected posts', numSelected);
     label.text(interpolate(formatString, {count: numSelected}, true));
   }
 };
@@ -190,7 +192,6 @@ PostModerationControls.prototype.getCheckboxClickHandler = function () {
 
 PostModerationControls.prototype.isIntersectionObserverEntryVisible = function(entry) {
   if (!entry.isIntersecting) return false;
-  return true;
   var message = entry.target;
   var messageRect = message.getBoundingClientRect();
   var menuRect = $('.moderation-header')[0].getBoundingClientRect();
@@ -200,7 +201,7 @@ PostModerationControls.prototype.isIntersectionObserverEntryVisible = function(e
 
 PostModerationControls.prototype.setupIntersectionObserver = function () {
   var me = this;
-  function obsCallback(entries, observer) {
+  function obsCallback(entries) {
     entries.forEach(function(entry) {
       var messageId = $(entry.target).data('messageId');
       me._visibleMessagesById[messageId] = me.isIntersectionObserverEntryVisible(entry);
@@ -222,9 +223,8 @@ PostModerationControls.prototype.setupIntersectionObserver = function () {
 
 PostModerationControls.prototype.setupMessageExpanders = function () {
   var msgCtrs = $('.js-message-container');
-  var me = this;
   msgCtrs.each(function(_, item) {
-    var msg = $(item).find('.message');
+    var msg = $(item).find('.js-message');
     if (msg.prop('scrollHeight') <= msg.prop('clientHeight') + 7) return;
 
     var expander = $(item).find('.js-expander');

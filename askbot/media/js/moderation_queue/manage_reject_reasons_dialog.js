@@ -9,7 +9,15 @@ inherits(ManageRejectReasonsDialog, ModalDialog);
 
 ManageRejectReasonsDialog.prototype.setTopMenu = function (topMenu) {
   this._topMenu = topMenu;
-}
+};
+
+ManageRejectReasonsDialog.prototype.getTopMenu = function () {
+  return this._topMenu;
+};
+
+ManageRejectReasonsDialog.prototype.getSelector = function () {
+  return this._selector;
+};
 
 ManageRejectReasonsDialog.prototype.setState = function (state) {
   this._state = state;
@@ -87,6 +95,9 @@ ManageRejectReasonsDialog.prototype.getReasonsCount = function () {
   return this._selector.getReasonsCount();
 };
 
+ManageRejectReasonsDialog.prototype.getEditor = function () {
+  return this._editor;
+};
 
 ManageRejectReasonsDialog.prototype.createDom = function () {
   var superClass = getSuperClass(ManageRejectReasonsDialog);

@@ -39,8 +39,8 @@ DeclineAndExplainMenu.prototype.updateReason = function (id, title) {
 }
 
 DeclineAndExplainMenu.prototype.removeReason = function (id) {
-    var btn = this.getReasonButtonById(id);
-    btn.parent().remove();
+  var btn = this.getReasonButtonById(id);
+  btn.parent().remove();
 };
 
 DeclineAndExplainMenu.prototype.setControls = function (controls) {

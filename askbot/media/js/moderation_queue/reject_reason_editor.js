@@ -27,6 +27,9 @@ RejectReasonEditor.prototype.reset = function () {
 RejectReasonEditor.prototype.setInputs = function (inputs) {
   this._titleInput.val(inputs.title);
   this._detailsInput.val(inputs.details);
+  if (inputs.reason_id) {
+    this._selectedReasonId = inputs.reason_id;
+  }
 };
 
 RejectReasonEditor.prototype.getInputs = function () {
