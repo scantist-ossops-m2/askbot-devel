@@ -15,6 +15,7 @@ RejectReasonSelector.prototype.getMenu = function () {
 
 RejectReasonSelector.prototype.reset = function () {
   this._selectedReasonId = null;
+  this._selectBox.clearSelection();
 };
 
 RejectReasonSelector.prototype.addReason = function (data) {

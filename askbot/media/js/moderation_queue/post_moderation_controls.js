@@ -56,7 +56,7 @@ PostModerationControls.prototype.getSelectedEditIds = function () {
   for (var i = 0; i < num; i++) {
     var cb = $(checkBoxes[i]);
     if (cb.is(':checked')) {
-      var msg = cb.closest('.js-message-details');
+      var msg = cb.closest('.js-message');
       var msgId = msg.data('messageId');
       idList.push(msgId);
     }
@@ -157,6 +157,7 @@ PostModerationControls.prototype.getVisibleEditIds = function () {
   }
   return ids;
 }
+
 PostModerationControls.prototype.updateApproveButtonGroupLabel = function () {
   var label = this._element.find('.js-approve-block .js-label');
   var numSelected = this.getManuallySelectedCount();

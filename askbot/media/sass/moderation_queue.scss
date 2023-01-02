@@ -125,4 +125,30 @@
       margin-bottom: 0 !important;
     }
   }
+  .js-dropdown-active {
+    li:hover {
+      background: var(--clr-neutral-90);
+    }
+  }
+
+  .js-manage-reject-reasons-dialog {
+    .btn {
+      margin-right: 0.5rem;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .js-select-box {
+      list-style: none;
+      margin: 0 0 0.5rem;
+      li {
+        cursor: pointer;
+        padding: 0.5rem;
+        &:hover,
+        &.js-active {
+          background: var(--clr-neutral-90);
+        }
+      }
+    }
+  }
 }

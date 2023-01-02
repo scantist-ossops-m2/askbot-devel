@@ -58,6 +58,14 @@ ManageRejectReasonsDialog.prototype.show = function () {
   this.setState(this.getReasonsCount() > 0 ? 'select' : 'add-new-reason');
 };
 
+ManageRejectReasonsDialog.prototype.hide = function () {
+  var superClass = getSuperClass(ManageRejectReasonsDialog);
+  if (this._selector) {
+    this._selector.reset();
+  }
+  superClass.hide.call(this);
+};
+
 ManageRejectReasonsDialog.prototype.setErrors = function (errors) {
   this._errors.setErrors(errors);
 };

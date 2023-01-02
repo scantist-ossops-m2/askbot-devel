@@ -10720,5 +10720,25 @@ a.badge-page-link {
 .moderation-queue-page .js-message .post-content > :last-child {
   margin-bottom: 0 !important;
 }
+.moderation-queue-page .js-dropdown-active li:hover {
+  background: var(--clr-neutral-90);
+}
+.moderation-queue-page .js-manage-reject-reasons-dialog .btn {
+  margin-right: 0.5rem;
+}
+.moderation-queue-page .js-manage-reject-reasons-dialog .btn:last-child {
+  margin-right: 0;
+}
+.moderation-queue-page .js-manage-reject-reasons-dialog .js-select-box {
+  list-style: none;
+  margin: 0 0 0.5rem;
+}
+.moderation-queue-page .js-manage-reject-reasons-dialog .js-select-box li {
+  cursor: pointer;
+  padding: 0.5rem;
+}
+.moderation-queue-page .js-manage-reject-reasons-dialog .js-select-box li:hover, .moderation-queue-page .js-manage-reject-reasons-dialog .js-select-box li.js-active {
+  background: var(--clr-neutral-90);
+}
 
 /*# sourceMappingURL=style.css.map */
