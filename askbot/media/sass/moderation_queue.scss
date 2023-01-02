@@ -101,4 +101,28 @@
       margin-right: 0.5rem;
     }
   }
+
+  .js-message-container {
+    margin-bottom: 0.75rem;
+    .js-expander {
+      text-align: center;
+    }
+  }
+
+  .js-message:not(.js-expanded) {
+    max-height: 9.5rem;
+    overflow: hidden;
+  }
+  
+  .js-message {
+    ul, ol {
+      padding: var(--wmd-preview-list-padding);
+    }
+    ul, ol, p, pre {
+      margin: var(--wmd-preview-block-margin);
+    }
+    .post-content > :last-child {
+      margin-bottom: 0 !important;
+    }
+  }
 }

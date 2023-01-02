@@ -49,14 +49,13 @@
   <div class="message-info">
     <input type="checkbox" />
     {{ gravatar(message.user, 16, hide_rep=True) }}
-    <a class="username" href="{{ message.user.get_absolute_url() }}">{{ message.user.username|escape }}</a> |
-    {% if message['memo_type'] == 'edit' %}
-        {{ mailto_link(message.user.email) }} |
-        ip=<span class="ip-addr">{{ message.ip_addr }}</span> |
-    {% endif %}
+    <a class="username" href="{{ message.user.get_absolute_url() }}">{{ message.user.username|escape }}</a><span>|</span>
+    {%- if message['memo_type'] == 'edit' -%}
+      {{ mailto_link(message.user.email) }}<span>|</span>
+      ip=<span class="ip-addr">{{ message.ip_addr }}</span><span>|</span>
+    {%- endif %}
     <a class="forum-post-link" href="{{ message.url }}">{{ message.message_type }}</a>
     ({{ timeago(message.timestamp) }})
-    {#<div class="snippet">{{ message.snippet }}</div>#}
   </div>
   <div class="post-content">{{ message.content }}</div>
 </div>
@@ -841,7 +840,7 @@ for the purposes of the AJAX comment editor #}
 {%- endmacro -%}
 
 {%- macro timeago(datetime_object, action_performed=None) -%}
-  {%- set when='<abbr class="js-timeago" title="'
+{%- set when='<abbr class="js-timeago" title="'
               ~ datetime_object.replace(microsecond=0)|add_tz_offset
               ~ '">'
               ~ datetime_object.replace(microsecond=0)|add_tz_offset

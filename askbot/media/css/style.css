@@ -9167,6 +9167,7 @@ ul.tags li {
 
 .js-timeago {
   display: none;
+  margin: 0 !important;
 }
 
 .js-toolbar-dropdown-menu {
@@ -9388,6 +9389,13 @@ ul.tags li {
 
 .js-comment-content .js-post-moderation-message {
   margin: 0.25rem 0 0.125rem !important;
+}
+
+.js-expander {
+  cursor: pointer;
+  color: var(--link-color);
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width);
 }
 
 .error-page main {
@@ -10692,6 +10700,25 @@ a.badge-page-link {
 }
 .moderation-queue-page .message-info > * {
   margin-right: 0.5rem;
+}
+.moderation-queue-page .js-message-container {
+  margin-bottom: 0.75rem;
+}
+.moderation-queue-page .js-message-container .js-expander {
+  text-align: center;
+}
+.moderation-queue-page .js-message:not(.js-expanded) {
+  max-height: 9.5rem;
+  overflow: hidden;
+}
+.moderation-queue-page .js-message ul, .moderation-queue-page .js-message ol {
+  padding: var(--wmd-preview-list-padding);
+}
+.moderation-queue-page .js-message ul, .moderation-queue-page .js-message ol, .moderation-queue-page .js-message p, .moderation-queue-page .js-message pre {
+  margin: var(--wmd-preview-block-margin);
+}
+.moderation-queue-page .js-message .post-content > :last-child {
+  margin-bottom: 0 !important;
 }
 
 /*# sourceMappingURL=style.css.map */

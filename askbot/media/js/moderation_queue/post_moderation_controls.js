@@ -225,16 +225,18 @@ PostModerationControls.prototype.setupMessageExpanders = function () {
   var msgCtrs = $('.js-message-container');
   msgCtrs.each(function(_, item) {
     var msg = $(item).find('.js-message');
+
+    // if the message is short, do not enable the eexpander
     if (msg.prop('scrollHeight') <= msg.prop('clientHeight') + 7) return;
 
     var expander = $(item).find('.js-expander');
-    expander.show();
+    expander.removeClass('js-hidden');
     expander.click(function() {
       msg.toggleClass('js-expanded')
       if (msg.hasClass('js-expanded')) {
         expander.text(gettext('collapse'));
       } else {
-        expander.text(gettext('expand'));
+        expander.text(gettext('show more'));
       }
     });
   });
