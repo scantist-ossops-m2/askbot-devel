@@ -11,6 +11,7 @@ import re
 
 from django.utils.html import urlize
 from django.utils.module_loading import import_string
+from django.urls.exceptions import NoReverseMatch
 
 from askbot import const
 from askbot.conf import settings as askbot_settings
@@ -78,9 +79,12 @@ def get_parser(markdown_class_addr=None):
 
 def format_mention_in_html(mentioned_user):
     """formats mention as url to the user profile"""
-    url = mentioned_user.get_profile_url()
-    username = mentioned_user.username
-    return '<a href="%s">@%s</a>' % (url, username)
+    try:
+        url = mentioned_user.get_profile_url()
+        username = mentioned_user.username
+        return '<a href="%s">@%s</a>' % (url, username)
+    except NoReverseMatch:
+        return ""
 
 
 def extract_first_matching_mentioned_author(text, anticipated_authors):

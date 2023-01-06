@@ -4,7 +4,7 @@ Markdown format, from the html markup.
 import sys
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from markdownify import markdownify as md
+from html2text import html2text as md
 from askbot.conf import settings as askbot_settings
 from askbot.models import Post, PostRevision
 from askbot.utils.console import get_yes_or_no, ProgressBar
