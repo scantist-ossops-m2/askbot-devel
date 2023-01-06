@@ -1150,11 +1150,8 @@ class Post(models.Model):
         else:
             max_words = int(max_length/5)
 
-        # TODO: truncate so that we have max number of lines
-        # the issue is that code blocks have few words
-        # but very tall, while paragraphs can be dense on words
-        # and fit into fewer lines
-        truncated = Truncator(self.html).words(max_words, truncate=' ...', html=True)
+        from askbot.utils.html import sanitize_html
+        truncated = sanitize_html(Truncator(self.html).words(max_words, truncate=' ...', html=True))
         new_count = get_word_count(truncated)
         orig_count = get_word_count(self.html)
         if new_count + 1 < orig_count:
@@ -1166,8 +1163,7 @@ class Post(models.Model):
                 snippet = truncated + expander
             # it is important to have div here, so that we can make
             # the expander work
-            from askbot.utils.html import sanitize_html
-            return sanitize_html('<div class="js-snippet">' + snippet + '</div>')
+            return '<div class="js-snippet">' + snippet + '</div>'
 
         return self.html
 
