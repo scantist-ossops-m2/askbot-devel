@@ -630,6 +630,10 @@ urlpatterns = [
         {'domain': 'djangojs', 'packages': str.join('+',['askbot'])},
         name='askbot_jsi18n'
     ),
+    service_url(
+        r'^get-csrf-token/$',
+        views.commands.get_csrf_token,
+    ),
     #service_url(r'^private-messages/', include('askbot.deps.group_messaging.urls')),
     url(r'^settings/', include('livesettings.urls')),
     url(r'^preview-emails/$', views.emails.list_emails, name='list_emails'),

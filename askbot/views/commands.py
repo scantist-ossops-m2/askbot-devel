@@ -1526,3 +1526,9 @@ def reorder_badges(request):
         return
 
     raise exceptions.PermissionDenied()
+
+from django.template.context_processors import csrf as csrf_ctx
+@decorators.ajax_only
+def get_csrf_token(request):
+    token = str(csrf_ctx(request)['csrf_token'])
+    return {'token': token}
