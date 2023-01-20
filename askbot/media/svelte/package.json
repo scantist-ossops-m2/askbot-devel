@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev --host localhost.askbot.com --port 3000",
+		"dev": "DJANGO_SESSION_COOKIE_NAME=sessionid DJANGO_CSRF_COOKIE_NAME=_csrf vite dev --host localhost.askbot.com --port 3000",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",

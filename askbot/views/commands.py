@@ -1528,7 +1528,15 @@ def reorder_badges(request):
     raise exceptions.PermissionDenied()
 
 from django.template.context_processors import csrf as csrf_ctx
-@decorators.ajax_only
 def get_csrf_token(request):
     token = str(csrf_ctx(request)['csrf_token'])
     return {'token': token}
+
+#@decorators.ajax_only
+from django.middleware.csrf import rotate_token
+@csrf.csrf_protect
+def ping(request):
+    """A do-nothing view to pass Django cookies to the frontend"""
+    if django_settings.CSRF_COOKIE_NAME not in request.COOKIES:
+        rotate_token(request)
+    return HttpResponse('pong')
