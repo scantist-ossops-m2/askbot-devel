@@ -90,6 +90,7 @@ TEMPLATES = (
 )
 
 MIDDLEWARE = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',            # for csrf
     'django.contrib.sessions.middleware.SessionMiddleware', # prerequisite for user messages
     'django.contrib.messages.middleware.MessageMiddleware', # for user messages
@@ -155,6 +156,7 @@ INSTALLED_APPS = (
     'livesettings',
     'robots',
     'tinymce',
+    'corsheaders',
 )
 
 {{ caching_settings }}
@@ -255,5 +257,11 @@ AVATAR_THUMB_FORMAT = 'PNG'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_EXPOSE_HEADERS = ['Set-Cookie', 'X-CSRFToken']
+CORS_ORIGIN_ALLOW_ALL = True
+
+CSRF_TRUSTED_ORIGINS = []
 
 {{ extra_settings }}
