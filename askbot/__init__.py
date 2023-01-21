@@ -16,6 +16,7 @@ default_app_config = 'askbot.apps.AskbotConfig' #pylint: disable=invalid-name
 #keys are module names used by python imports,
 #values - the package qualifier to use for pip
 REQUIREMENTS = {
+    'aiohttp': 'aiohttp<4.0',
     'appconf': 'django-appconf==1.0.5',
     'akismet': 'akismet==1.0.1',
     'avatar': 'django-avatar>=4.0',
@@ -49,7 +50,8 @@ REQUIREMENTS = {
     'robots': 'django-robots>=3.1,<5.0',
     'regex': 'regex',
     'tinymce': 'django-tinymce==2.8.0',
-    'unidecode': 'unidecode'
+    'unidecode': 'unidecode',
+    'urllib3': 'urllib3<1.27,>=1.21.1'
 }
 
 def get_install_directory():
