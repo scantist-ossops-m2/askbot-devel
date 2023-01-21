@@ -1,4 +1,5 @@
 --trusted-host github.com
+aiohttp<4.0
 Jinja2>=2.10,<3.1
 akismet==1.0.1
 beautifulsoup4<=4.7.1
@@ -33,3 +34,4 @@ requests-oauthlib>=1.2.0
 requirements-parser>=0.2.0
 responses>=0.9.0
 unidecode
+urllib3<1.27,>=1.21.1
