@@ -7,13 +7,16 @@ from django.core.management import BaseCommand
 from django.db.models import signals, Count
 from askbot import models
 from askbot import const
+from askbot.utils.console import ProgressBar
 
 def fix_revisionless_posts(post_class):
         posts = post_class.objects.annotate(
                                         rev_count = Count('revisions')
                                     ).filter(rev_count = 0)
-        print('have %d corrupted posts' % len(posts))
-        for post in posts:
+        count = len(posts)
+        print(f'have {count} corrupted posts')
+        message = 'Adding missing revisions:'
+        for post in ProgressBar(posts.iterator(), count, message):
             rev = post.add_revision(
                         author=post.author,
                         text=post.text,
