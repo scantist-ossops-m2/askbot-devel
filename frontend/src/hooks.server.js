@@ -1,5 +1,6 @@
-import CookieParser from 'set-cookie-parser'
 import { getAskbotCookies } from '$lib/backend'
+import { loadCatalog } from '$lib/i18n'
+import { env } from '$env/dynamic/public'
 
 function setCookieToEvent(event, cookie) {
   if (!cookie) return
@@ -23,5 +24,7 @@ export async function handle({ event, resolve }) {
       setCookieToEvent(event, askbotCookies.csrfToken)
     }
   }
+  //todo: here we have an opportunity to handle the url-based language selection
+  await loadCatalog(env.PUBLIC_DJANGO_LANGUAGE_CODE)
   return resolve(event)
 }

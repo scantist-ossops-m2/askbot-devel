@@ -1,10 +1,23 @@
 import CookieParser from 'set-cookie-parser'
+import { browser } from '$app/environment'
 import { env } from '$env/dynamic/private'
+import { env as publicEnv } from '$env/dynamic/public' 
+
+function getBackendUrl() {
+  //return browser ? publicEnv.PUBLIC_BACKEND_URL : env.publi_BACKEND_URL
+  return publicEnv.PUBLIC_BACKEND_URL
+}
+
+export async function get(url, options={}) {
+  options.method = 'GET'
+  options.mode = 'cors'
+  options.credentials = 'include'
+  return await fetch(getBackendUrl() + url, options)
+}
 
 async function getBackendCookieHeader() {
   try {
-    const headers = {'X-Requested-With': 'XMLHttpRequest'}
-    const resp = await fetch('http://localhost.askbot.com:8000/s/ping/')//, {headers})
+    const resp = await get('/s/ping')
     return resp.headers.get('set-cookie')
   } catch (err) {
     return null
