@@ -92,5 +92,5 @@ class Command(BaseCommand):
     def print_output(cls, spam, ham, file_name):
         """Creates the output file as array in python format,
         new post starts with new line."""
-        with open(file_name, 'w', encoding='utf-8') as output_file:
+        with open(file_name, 'w') as output_file:
             output_file.write(json.dumps({'spam': spam, 'ham': ham}, indent=2))
