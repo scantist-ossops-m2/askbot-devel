@@ -38,7 +38,7 @@ class Command(BaseCommand):
         # get users with reputation more than min rep
 
         if os.path.exists(kwargs['file_name']):
-            raise CommandError(f'File {kwargs["file_name"]} already exists')
+            raise CommandError('File %s already exists' % kwargs['file_name'])
 
         users = User.objects.filter(askbot_profile__reputation__gte=kwargs['min_rep'])
         users = users.order_by('-askbot_profile__reputation')
@@ -52,7 +52,8 @@ class Command(BaseCommand):
         self.print_output(spam, ham, kwargs["file_name"])
 
 
-    def get_content_sample(self, users, size):
+    @classmethod
+    def get_content_sample(cls, users, size):
         """Returns list of ham posts"""
         # if total number of posts from these users is less than size,
         # then we can just take all of them
@@ -68,14 +69,15 @@ class Command(BaseCommand):
         index = 0
         while len(ham_post_ids) < size:
             if len(ham_post_ids) % 100 == 0:
-                print(f'post {len(ham_post_ids) + 1}')
+                print 'post %s' % (len(ham_post_ids) + 1)
 
             if index in bad_user_ids:
                 index = (index + 1) % users_count
                 continue
 
             user = users[index]
-            post = user.posts.exclude(pk__in=ham_post_ids).filter(post_type__in=POST_TYPES).only('pk').first()
+            posts = user.posts.exclude(pk__in=ham_post_ids)
+            post = posts.filter(post_type__in=POST_TYPES).only('pk').first()
             if post:
                 ham_post_ids.append(post.pk)
                 index = (index + 1) % users_count
@@ -86,7 +88,8 @@ class Command(BaseCommand):
         return get_content(ham_posts)
 
 
-    def print_output(self, spam, ham, file_name):
+    @classmethod
+    def print_output(cls, spam, ham, file_name):
         """Creates the output file as array in python format,
         new post starts with new line."""
         with open(file_name, 'w', encoding='utf-8') as output_file:
