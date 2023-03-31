@@ -408,7 +408,7 @@ for the purposes of the AJAX comment editor #}
             </li>
             <li>
               <form class="repost-comment-as-answer" action="{{ url('comment_to_answer') }}" method="POST" accept-charset="utf-8">
-                {{ csrf_input }}
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
                 <input type="hidden" value="{{ comment.id }}" name="comment_id">
                 <input class="action-link js-comment-convert-btn with-convert-post-icon" type="submit" value="{% trans %}convert to answer{% endtrans %}">
               </form>
