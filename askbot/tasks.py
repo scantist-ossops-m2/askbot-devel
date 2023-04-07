@@ -19,7 +19,6 @@ That is the reason for having two types of methods here:
 """
 import logging
 import os
-import sys
 import traceback
 import uuid
 
