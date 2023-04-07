@@ -17,6 +17,7 @@ That is the reason for having two types of methods here:
 * celery tasks - shells that reconstitute the necessary ORM
   objects and call the base methods
 """
+import json
 import logging
 import os
 import traceback
@@ -24,18 +25,14 @@ import uuid
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
-from django.template import Context
-from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from django.utils.translation import activate as activate_language
-import json
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
 
 from askbot.conf import settings as askbot_settings
 from askbot import const
-from askbot import mail
 from askbot.mail.messages import (
                         InstantEmailAlert,
                         ApprovedPostNotification,
@@ -66,7 +63,7 @@ logger = get_task_logger(__name__)
 def tweet_new_post_task(post_id):
     try:
         twitter = Twitter()
-    except:
+    except: # pylint: disable=bare-except
         return
 
     post = Post.objects.get(id=post_id)
@@ -77,7 +74,7 @@ def tweet_new_post_task(post_id):
         tweeters = tweeters.exclude(id=post.author.id)
         access_tokens = tweeters.values_list('twitter_access_token', flat=True)
     else:
-        access_tokens = list()
+        access_tokens = []
 
     tweet_text = post.as_tweet()
 
@@ -118,7 +115,7 @@ def export_user_data(user_id):
         if not os.path.exists(data_dir):
             os.makedirs(data_dir, 0o700)
         call_command('askbot_export_user_data', user_id=user_id, file_name=file_path)
-    except User.DoesNotExist:
+    except User.DoesNotExist: # pylint: disable=no-member
         return
 
 
@@ -126,11 +123,11 @@ def export_user_data(user_id):
 def delete_update_notifications_task(rev_ids, keep_activity):
     """parameter is list of revision ids"""
     ctype = ContentType.objects.get_for_model(PostRevision)
-    aa = Activity.objects.filter(content_type=ctype, object_id__in=rev_ids)
-    act_ids = aa.values_list('pk', flat=True)
+    acts = Activity.objects.filter(content_type=ctype, object_id__in=rev_ids)
+    act_ids = acts.values_list('pk', flat=True)
 
     # 2) Find notifications related to found activities
-    notifs = ActivityAuditStatus.objects.filter(activity__pk__in=act_ids)
+    notifs = ActivityAuditStatus.objects.filter(activity__pk__in=act_ids) # pylint: disable=no-member
 
     # 3) Find recipients of notifications
     user_ids = notifs.values_list('user', flat=True).distinct()
@@ -144,7 +141,7 @@ def delete_update_notifications_task(rev_ids, keep_activity):
     else:
         # delete activities and notifications
         # b/c notifications have activity as FK records
-        aa.delete()
+        acts.delete()
 
     for user in users:
         user.update_response_counts()
@@ -157,8 +154,8 @@ def notify_author_of_published_revision_celery_task(revision_id):
 
     try:
         revision = PostRevision.objects.get(pk=revision_id)
-    except PostRevision.DoesNotExist:
-        logger.error("Unable to fetch revision with id %s" % revision_id)
+    except PostRevision.DoesNotExist: # pylint: disable=no-member
+        logger.error("Unable to fetch revision with id %s", revision_id)
         return
 
     activate_language(revision.post.language_code)
@@ -201,7 +198,7 @@ def notify_author_of_published_revision_celery_task(revision_id):
 
 
 @shared_task(ignore_result=True)
-def record_post_update_celery_task(
+def record_post_update_celery_task( # pylint: disable=too-many-arguments
         post_id, newly_mentioned_user_id_list=None, updated_by_id=None,
         suppress_email=False, timestamp=None, created=False, diff=None):
     # reconstitute objects from the database
@@ -223,7 +220,7 @@ def record_post_update_celery_task(
             suppress_email=suppress_email,
             timestamp=timestamp,
             diff=diff)
-    except Exception:
+    except Exception: # pylint: disable=broad-except
         logger.error(str(traceback.format_exc()).encode('utf-8'))
 
 
@@ -240,8 +237,8 @@ def record_question_visit(
     # 1) maybe update the view count
     try:
         question_post = Post.objects.get(id=question_post_id)
-    except Post.DoesNotExist:
-        logger.error("Unable to fetch post with id %s" % question_post_id)
+    except Post.DoesNotExist: # pylint: disable=no-member
+        logger.error("Unable to fetch post with id %s", question_post_id)
         return
 
     if update_view_count and question_post.thread_id:
@@ -285,14 +282,14 @@ def send_instant_notifications_about_activity_in_post(
         update_activity = Activity.objects\
             .filter(activity_type__in=acceptable_types)\
             .get(id=activity_id)
-    except Activity.DoesNotExist:
-        logger.error("Unable to fetch activity with id %s" % post_id)
+    except Activity.DoesNotExist: # pylint: disable=no-member
+        logger.error("Unable to fetch activity with id %s", post_id)
         return
 
     try:
         post = Post.objects.get(id=post_id)
-    except Post.DoesNotExist:
-        logger.error("Unable to fetch post with id %s" % post_id)
+    except Post.DoesNotExist: # pylint: disable=no-member
+        logger.error("Unable to fetch post with id %s", post_id)
         return
 
     if not post.is_approved():
@@ -300,8 +297,7 @@ def send_instant_notifications_about_activity_in_post(
 
     if logger.getEffectiveLevel() <= logging.DEBUG:
         log_id = uuid.uuid1()
-        message = 'email-alert %s, logId=%s' % (post.get_absolute_url(), log_id)
-        logger.debug(message)
+        logger.debug('email-alert %s, logId=%s', post.get_absolute_url(), log_id)
     else:
         log_id = None
 
@@ -320,8 +316,6 @@ def send_instant_notifications_about_activity_in_post(
         try:
             email.send([user.email])
         except askbot_exceptions.EmailNotSent as error:
-            logger.debug(
-                '%s, error=%s, logId=%s' % (user.email, error, log_id)
-            )
+            logger.debug('%s, error=%s, logId=%s', user.email, error, log_id)
         else:
-            logger.debug('success %s, logId=%s' % (user.email, log_id))
+            logger.debug('success %s, logId=%s', user.email, log_id)
