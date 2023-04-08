@@ -55,6 +55,7 @@ spam_rejected = django.dispatch.Signal(
 
 site_visited = django.dispatch.Signal(providing_args=['user', 'timestamp'])
 reputation_received = django.dispatch.Signal(providing_args=['user', 'reputation_before'])
+posts_marked_as_spam = django.dispatch.Signal(providing_args=['post_ids'])
 
 
 def pop_signal_receivers(signal):
@@ -94,6 +95,7 @@ def pop_all_db_signal_receivers():
         user_registered,
         post_updated,
         award_badges_signal,
+        posts_marked_as_spam,
         # django signals
         pre_save,
         post_save,

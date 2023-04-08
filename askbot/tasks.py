@@ -88,7 +88,7 @@ def tweet_new_post_task(post_id):
 
 
 @shared_task(ignore_result=True)
-def submit_spam_posts(post_ids):
+def submit_spam_posts_to_akismet(post_ids):
     posts = Post.objects.filter(pk__in=post_ids)
     # todo: save user agent in the revisions, using a fixed record
     # here because there is nothing better at the moment

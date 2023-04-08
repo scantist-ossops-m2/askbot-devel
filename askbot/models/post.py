@@ -419,6 +419,11 @@ class Post(models.Model):
                                    related_name='deleted_posts',
                                    on_delete=models.CASCADE)
 
+    marked_as_spam = models.BooleanField(default=False, db_index=True)
+    marked_as_spam_by = models.ForeignKey(User, null=True, blank=True,
+                                          on_delete=models.SET_NULL)
+    marked_as_spam_at = models.DateTimeField(null=True, blank=True)
+
     wiki = models.BooleanField(default=False)
     wikified_at = models.DateTimeField(null=True, blank=True)
 
