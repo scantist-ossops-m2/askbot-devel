@@ -63,7 +63,7 @@ from askbot.search.state_manager import SearchState
 from askbot.utils.http import get_request_params
 from askbot.utils import url_utils
 from askbot.utils.loading import load_module
-from askbot.utils.akismet_utils import akismet_check_spam
+from askbot.spam_classifier.akismet_utils import check_spam
 
 def owner_or_moderator_required(func):
     @functools.wraps(func)
@@ -788,7 +788,7 @@ def set_user_description(request):
     description = form.cleaned_data['description']
 
     user = get_object_or_404(models.User, pk=user_id)
-    if akismet_check_spam(description, request, user):
+    if check_spam(description, request, user):
         message = _('Spam was detected in the post')
         raise django_exceptions.PermissionDenied(message)
 

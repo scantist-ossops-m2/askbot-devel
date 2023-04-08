@@ -18,15 +18,13 @@ def get_user_param(user, param_name):
         return None
     return getattr(user, param_name)
 
-def akismet_check_spam(text, request=None, author=None, ip_addr=None, user_agent=None):
+def check_spam(text, request=None, author=None):
     """Returns True if spam found, false if not,
     May raise exceptions if something is not right with
     the Akismet account/service/setup"""
     return call_akismet(text,
                         request=request,
                         author=author,
-                        ip_addr=ip_addr,
-                        user_agent=user_agent,
                         command='check_spam')
 
 def akismet_submit_spam(text, request=None, author=None, ip_addr=None, user_agent=None):
@@ -34,11 +32,9 @@ def akismet_submit_spam(text, request=None, author=None, ip_addr=None, user_agen
     return call_akismet(text,
                         request=request,
                         author=author,
-                        ip_addr=ip_addr,
-                        user_agent=user_agent,
                         command='submit_spam')
 
-def call_akismet(text, request=None, author=None, ip_addr=None, user_agent=None, command='check_spam'):
+def call_akismet(text, request=None, author=None, command='check_spam'):
     """Calls akismet apy with a command.
     Supports commands 'check_spam', 'submit_spam' and 'submit_ham'
     """
@@ -71,8 +67,6 @@ def call_akismet(text, request=None, author=None, ip_addr=None, user_agent=None,
             return api.submit_ham(user_ip, user_agent, **data)
         else:
             raise RuntimeError('unknown akismet method: "{}"'.format(command))
-
-        return api.comment_check(user_ip, user_agent, **data)
     except APIKeyError:
         logging.critical('Akismet Key is missing')
     except AkismetError:

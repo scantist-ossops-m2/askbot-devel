@@ -42,7 +42,7 @@ from askbot.utils import url_utils
 from askbot.utils.forms import get_db_object_or_404
 from askbot.utils.functions import decode_and_loads
 from askbot.utils.html import get_login_link
-from askbot.utils.akismet_utils import akismet_check_spam
+from askbot.spam_classifier.akismet_utils import check_spam
 from django.template import RequestContext
 from askbot.skins.shortcuts import render_into_skin_as_string
 from askbot.skins.shortcuts import render_text_into_skin
@@ -634,7 +634,7 @@ def set_question_title(request):
     question = get_object_or_404(models.Post, pk=question_id)
     title = request.POST['title']
 
-    if akismet_check_spam(question.get_text_content(title=title), request):
+    if check_spam(question.get_text_content(title=title), request):
         message = _('Spam was detected in the post')
         raise exceptions.PermissionDenied(message)
 
@@ -679,7 +679,7 @@ def set_post_body(request):
 
     post = get_object_or_404(models.Post, pk=post_id)
     text = post.get_text_content(body_text=body_text)
-    if akismet_check_spam(text, request):
+    if check_spam(text, request):
         message = _('Spam was detected in the post')
         raise exceptions.PermissionDenied(message)
 

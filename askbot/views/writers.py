@@ -48,7 +48,7 @@ from askbot.views import context
 from askbot.templatetags import extra_filters_jinja as template_filters
 from askbot.importers.stackexchange import management as stackexchange#todo: may change
 from askbot.utils.slug import slugify
-from askbot.utils.akismet_utils import akismet_check_spam
+from askbot.spam_classifier.akismet_utils import check_spam
 
 #todo: make this work with csrf
 @csrf.csrf_exempt
@@ -231,7 +231,7 @@ def ask(request):#view used to ask a new question
             language = form.cleaned_data.get('language', None)
 
             content = '{}\n\n{}\n\n{}'.format(title, tagnames, text)
-            if akismet_check_spam(content, request):
+            if check_spam(content, request):
                 message = _('Spam was detected in the post')
                 raise exceptions.PermissionDenied(message)
 
@@ -357,7 +357,7 @@ def retag_question(request, id):
 
         if form.has_changed():
             text = question.get_text_content(tags=form.cleaned_data['tags'])
-            if akismet_check_spam(text, request):
+            if check_spam(text, request):
                 message = _('Spam was detected in the post')
                 raise exceptions.PermissionDenied(message)
 
@@ -436,7 +436,7 @@ def edit_answer(request, id):
                         is_private = form.cleaned_data.get('post_privately', False)
 
                         text = form.cleaned_data['text']
-                        if akismet_check_spam(text, request):
+                        if check_spam(text, request):
                             message = _('Spam was detected in the post')
                             raise exceptions.PermissionDenied(message)
 
@@ -524,7 +524,7 @@ def answer(request, id, form_class=forms.AnswerForm):#process a new answer
                 user = form.get_post_user(request.user)
                 try:
                     text = form.cleaned_data['text']
-                    if akismet_check_spam(text, request):
+                    if check_spam(text, request):
                         message = _('Spam was detected in the post')
                         raise exceptions.PermissionDenied(message)
 
@@ -671,7 +671,7 @@ def post_comments(request):#generic ajax handler to load comments to an object
                 raise exceptions.PermissionDenied(askbot_settings.READ_ONLY_MESSAGE)
 
             text = form.cleaned_data['comment']
-            if akismet_check_spam(text, request):
+            if check_spam(text, request):
                 message = _('Spam was detected in the post')
                 raise exceptions.PermissionDenied(message)
 
@@ -704,7 +704,7 @@ def edit_comment(request):
     if form.is_valid() == False:
         raise exceptions.PermissionDenied('This content is forbidden')
 
-    if akismet_check_spam(form.cleaned_data['comment'], request):
+    if check_spam(form.cleaned_data['comment'], request):
         message = _('Spam was detected in the post')
         raise exceptions.PermissionDenied(message)
 
