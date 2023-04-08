@@ -32,9 +32,11 @@ def akismet_submit_spam(text, request=None, author=None, ip_addr=None, user_agen
     return call_akismet(text,
                         request=request,
                         author=author,
+                        ip_addr=ip_addr,
+                        user_agent=user_agent,
                         command='submit_spam')
 
-def call_akismet(text, request=None, author=None, command='check_spam'):
+def call_akismet(text, request=None, author=None, command='check_spam', ip_addr=None, user_agent=None):
     """Calls akismet apy with a command.
     Supports commands 'check_spam', 'submit_spam' and 'submit_ham'
     """

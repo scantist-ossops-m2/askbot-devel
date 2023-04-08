@@ -25,9 +25,11 @@ class User(object):
             self.username = username
             self.email = email
 
+    @property
     def is_authenticated(self):
         return not self.anon
 
+    @property
     def is_anonymous(self):
         return self.anon
 
