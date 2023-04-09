@@ -48,7 +48,7 @@ from askbot.views import context
 from askbot.templatetags import extra_filters_jinja as template_filters
 from askbot.importers.stackexchange import management as stackexchange#todo: may change
 from askbot.utils.slug import slugify
-from askbot.spam_classifier.akismet_utils import check_spam
+from askbot.spam_classifiers.akismet_spam_classifier import check_spam
 
 #todo: make this work with csrf
 @csrf.csrf_exempt

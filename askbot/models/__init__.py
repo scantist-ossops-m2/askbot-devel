@@ -4664,8 +4664,16 @@ signals.question_visited.connect(
 
 def handle_posts_marked_as_spam(sender, post_ids, **kwargs):
     """Launches a task to submit spam posts to Akismet"""
-    if not askbot_settings.USE_AKISMET:
+    if not askbot_settings.SPAM_FILTER_ENABLED:
         return
+
+    akismet_func_path = 'askbot.spam_classifiers.akismet_spam_classifier.check_spam'
+    if django_settings.ASKBOT_SPAM_CLASSIFIER_FUNCTION != akismet_func_path:
+        return
+
+    if not askbot_settings.AKISMET_API_KEY:
+        return
+
     from askbot.tasks import submit_spam_posts_to_akismet
     defer_celery_task(submit_spam_posts_to_akismet, kwargs={'post_ids': post_ids})
 

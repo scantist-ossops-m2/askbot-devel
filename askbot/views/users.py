@@ -63,7 +63,7 @@ from askbot.search.state_manager import SearchState
 from askbot.utils.http import get_request_params
 from askbot.utils import url_utils
 from askbot.utils.loading import load_module
-from askbot.spam_classifier.akismet_utils import check_spam
+from askbot.spam_classifiers.akismet_spam_classifier import check_spam
 
 def owner_or_moderator_required(func):
     @functools.wraps(func)

@@ -40,8 +40,6 @@ def call_akismet(text, request=None, author=None, command='check_spam', ip_addr=
     """Calls akismet apy with a command.
     Supports commands 'check_spam', 'submit_spam' and 'submit_ham'
     """
-    if not askbot_settings.USE_AKISMET:
-        return False
     try:
         if askbot_settings.AKISMET_API_KEY.strip() == "":
             raise ImproperlyConfigured('You have not set AKISMET_API_KEY')

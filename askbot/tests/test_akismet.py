@@ -1,10 +1,12 @@
+from django.test import override_settings
 from askbot.tests.utils import AskbotTestCase, with_settings
-from askbot.spam_classifier.akismet_utils import check_spam
+from askbot.spam_classifiers.akismet_spam_classifier import check_spam
 #from askbot.tasks import submit_spam_posts
 #from askbot.utils.celery_utils import defer_celery_task
 import responses
 from urllib.parse import parse_qsl
 
+AKISMET_CLASSIFIER = 'askbot.spam_classifiers.akismet_spam_classifier.check_spam'
 TEXT = 'hello foobar'
 API_KEY = 'foobar'
 CHECK_SPAM_URL = 'https://{}.rest.akismet.com/1.1/comment-check'.format(API_KEY)
@@ -65,7 +67,8 @@ def get_request_params(idx):
 class AkismetApiTests(AskbotTestCase):
 
     @responses.activate
-    @with_settings(USE_AKISMET=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
+    @override_settings(ASKBOT_SPAM_CLASSIFIER_FUNCTION=AKISMET_CLASSIFIER)
+    @with_settings(SPAM_FILTER_ENABLED=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
     def test_anon_user_no_author(self):
         mock_akismet()
         request = AuthRequest(anon=True)
@@ -79,7 +82,8 @@ class AkismetApiTests(AskbotTestCase):
         self.assertTrue('comment_author_email' not in params)
 
     @responses.activate
-    @with_settings(USE_AKISMET=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
+    @override_settings(ASKBOT_SPAM_CLASSIFIER_FUNCTION=AKISMET_CLASSIFIER)
+    @with_settings(SPAM_FILTER_ENABLED=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
     def test_anon_user_with_author(self):
         mock_akismet()
         request = AuthRequest(anon=True)
@@ -93,7 +97,8 @@ class AkismetApiTests(AskbotTestCase):
         self.assertEqual(params['comment_author_email'], COMMENT_AUTHOR_EMAIL)
 
     @responses.activate
-    @with_settings(USE_AKISMET=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
+    @override_settings(ASKBOT_SPAM_CLASSIFIER_FUNCTION=AKISMET_CLASSIFIER)
+    @with_settings(SPAM_FILTER_ENABLED=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
     def test_auth_user_no_author(self):
         mock_akismet()
         request = AuthRequest(username='Request User', email='request@example.com')
@@ -107,7 +112,8 @@ class AkismetApiTests(AskbotTestCase):
         self.assertEqual(params['comment_author_email'], 'request@example.com')
 
     @responses.activate
-    @with_settings(USE_AKISMET=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
+    @override_settings(ASKBOT_SPAM_CLASSIFIER_FUNCTION=AKISMET_CLASSIFIER)
+    @with_settings(SPAM_FILTER_ENABLED=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
     def test_auth_user_with_author(self):
         mock_akismet()
         request = AuthRequest(username='Request User', email='request@example.com')
@@ -122,7 +128,8 @@ class AkismetApiTests(AskbotTestCase):
         self.assertEqual(params['comment_author_email'], user.email)
 
     @responses.activate
-    @with_settings(USE_AKISMET=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
+    @override_settings(ASKBOT_SPAM_CLASSIFIER_FUNCTION=AKISMET_CLASSIFIER)
+    @with_settings(SPAM_FILTER_ENABLED=True, AKISMET_API_KEY=API_KEY, APP_URL='http://askbot.com/')
     def test_submit_spam_on_delete_spammer_content(self):
         mock_akismet()
         user = self.create_user()

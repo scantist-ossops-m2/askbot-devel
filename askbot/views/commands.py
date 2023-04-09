@@ -42,7 +42,7 @@ from askbot.utils import url_utils
 from askbot.utils.forms import get_db_object_or_404
 from askbot.utils.functions import decode_and_loads
 from askbot.utils.html import get_login_link
-from askbot.spam_classifier.akismet_utils import check_spam
+from askbot.spam_classifiers.akismet_spam_classifier import check_spam
 from django.template import RequestContext
 from askbot.skins.shortcuts import render_into_skin_as_string
 from askbot.skins.shortcuts import render_text_into_skin

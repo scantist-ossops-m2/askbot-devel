@@ -50,7 +50,7 @@ from askbot.models.user import get_invited_moderators
 from askbot.models.badges import award_badges_signal
 from askbot import exceptions as askbot_exceptions
 from askbot.utils.twitter import Twitter
-from askbot.spam_classifier.akismet_utils import akismet_submit_spam
+from askbot.spam_classifiers.akismet_spam_classifier import akismet_submit_spam
 
 
 logger = get_task_logger(__name__)
