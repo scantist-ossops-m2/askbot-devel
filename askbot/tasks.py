@@ -50,7 +50,7 @@ from askbot.models.user import get_invited_moderators
 from askbot.models.badges import award_badges_signal
 from askbot import exceptions as askbot_exceptions
 from askbot.utils.twitter import Twitter
-from askbot.spam_classifiers.akismet_spam_classifier import akismet_submit_spam
+from askbot.spam_checker.akismet_spam_checker import akismet_submit_spam
 
 
 logger = get_task_logger(__name__)
@@ -99,7 +99,8 @@ def submit_spam_posts_to_akismet(post_ids):
         akismet_submit_spam(text,
                             ip_addr=ip_addr,
                             user_agent=user_agent,
-                            author=post.author)
+                            username=post.author.username,
+                            email=post.author.email)
 
 
 @shared_task(ignore_result=True)

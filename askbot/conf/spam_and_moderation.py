@@ -22,7 +22,7 @@ settings.register(
     )
 )
 
-if django_settings.ASKBOT_SPAM_CLASSIFIER_FUNCTION == 'askbot.spam_classifiers.akismet_spam_classifier.check_spam':
+if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION == 'askbot.spam_checker.akismet_spam_checker.is_spam':
 
     # keep this for a while, to allow migration to SPAM_FILTER_ENABLED
     settings.register(

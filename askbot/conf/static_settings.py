@@ -65,7 +65,7 @@ class AskbotStaticSettings(AppConf):
     QUESTION_PAGE_BASE_URL = pgettext('urls', 'question') + '/'
     SERVICE_URL_PREFIX = 's/' # prefix for non-UI urls
     SELF_TEST = True # if true - run startup self-test
-    SPAM_CLASSIFIER_FUNCTION = 'askbot.spam_classifiers.akismet_spam_classifier.check_spam'
+    SPAM_CHECKER_FUNCTION = 'askbot.spam_checker.akismet_spam_checker.is_spam'
     TRANSLATE_URL = True # set true to localize urls
     USER_DATA_EXPORT_DIR = const.DEFAULT_USER_DATA_EXPORT_DIR
     USE_LOCAL_FONTS = False

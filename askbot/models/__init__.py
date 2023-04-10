@@ -4667,8 +4667,8 @@ def handle_posts_marked_as_spam(sender, post_ids, **kwargs):
     if not askbot_settings.SPAM_FILTER_ENABLED:
         return
 
-    akismet_func_path = 'askbot.spam_classifiers.akismet_spam_classifier.check_spam'
-    if django_settings.ASKBOT_SPAM_CLASSIFIER_FUNCTION != akismet_func_path:
+    akismet_func_path = 'askbot.spam_checker.akismet_spam_checker.is_spam'
+    if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION != akismet_func_path:
         return
 
     if not askbot_settings.AKISMET_API_KEY:

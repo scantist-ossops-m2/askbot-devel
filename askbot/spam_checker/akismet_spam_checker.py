@@ -18,25 +18,32 @@ def get_user_param(user, param_name):
         return None
     return getattr(user, param_name)
 
-def check_spam(text, request=None, author=None):
+def is_spam(text, username=None, email=None, ip_addr=None, user_agent=None):
     """Returns True if spam found, false if not,
     May raise exceptions if something is not right with
     the Akismet account/service/setup"""
     return call_akismet(text,
-                        request=request,
-                        author=author,
+                        username=username,
+                        email=email,
+                        ip_addr=ip_addr,
+                        user_agent=user_agent,
                         command='check_spam')
 
-def akismet_submit_spam(text, request=None, author=None, ip_addr=None, user_agent=None):
+def akismet_submit_spam(text, username=None, email=None, ip_addr=None, user_agent=None):
     """Submits manually marked spam to Akismet"""
     return call_akismet(text,
-                        request=request,
-                        author=author,
+                        username=username,
+                        email=email,
                         ip_addr=ip_addr,
                         user_agent=user_agent,
                         command='submit_spam')
 
-def call_akismet(text, request=None, author=None, command='check_spam', ip_addr=None, user_agent=None):
+def call_akismet(text, 
+                 username=None,
+                 email=None,
+                 ip_addr=None,
+                 user_agent=None,
+                 command='submit_spam'):
     """Calls akismet apy with a command.
     Supports commands 'check_spam', 'submit_spam' and 'submit_ham'
     """
@@ -45,26 +52,21 @@ def call_akismet(text, request=None, author=None, command='check_spam', ip_addr=
             raise ImproperlyConfigured('You have not set AKISMET_API_KEY')
 
         data = {'comment_content': text}
-        user = get_user(author, request)
-        username = get_user_param(user, 'username')
         if username:
             data['comment_author'] = smart_str(username)
 
-        email = get_user_param(user, 'email')
         if email:
             data['comment_author_email'] = email
 
         api = Akismet(key=askbot_settings.AKISMET_API_KEY,
                       blog_url=smart_str(site_url(reverse('questions'))))
 
-        user_ip = ip_addr or request.META.get('REMOTE_ADDR')
-        user_agent = user_agent or request.environ['HTTP_USER_AGENT']
         if command == 'check_spam':
-            return api.comment_check(user_ip, user_agent, **data)
+            return api.comment_check(ip_addr, user_agent, **data)
         elif command == 'submit_spam':
-            return api.submit_spam(user_ip, user_agent, **data)
+            return api.submit_spam(ip_addr, user_agent, **data)
         elif command == 'submit_ham':
-            return api.submit_ham(user_ip, user_agent, **data)
+            return api.submit_ham(ip_addr, user_agent, **data)
         else:
             raise RuntimeError('unknown akismet method: "{}"'.format(command))
     except APIKeyError:
