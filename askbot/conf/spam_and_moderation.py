@@ -1,8 +1,8 @@
 """Settings for content moderation and spam control"""
 from django.conf import settings as django_settings
 from django.utils.translation import ugettext_lazy as _
-from askbot import const
 from livesettings import values as livesettings
+from askbot import const
 from askbot.conf.settings_wrapper import settings
 from askbot.conf.super_groups import EXTERNAL_SERVICES
 
@@ -22,9 +22,10 @@ settings.register(
     )
 )
 
-if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION == 'askbot.spam_checker.akismet_spam_checker.is_spam':
+AKISMET_SPAM_CHECKER_FUNCTION = 'askbot.spam_checker.akismet_spam_checker.is_spam'
+if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION == AKISMET_SPAM_CHECKER_FUNCTION:
 
-    # keep this for a while, to allow migration to SPAM_FILTER_ENABLED
+    # keep this for a while, to allow migration to SPAM_FILTER_ENABLED - Apr, 9 2023
     settings.register(
         livesettings.BooleanValue(
             SPAM_AND_MODERATION,
@@ -44,5 +45,25 @@ if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION == 'askbot.spam_checker.akismet_
                 'To get an Akismet key please visit '
                 '<a href="%(url)s">Akismet site</a>'
             ) % {'url': const.DEPENDENCY_URLS['akismet']}
+        )
+    )
+
+ASKBOT_SPAM_CHECKER_FUNCTION = 'askbot.spam_checker.askbot_spam_checker.is_spam'
+if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION == ASKBOT_SPAM_CHECKER_FUNCTION:
+    settings.register(
+        livesettings.StringValue(
+            SPAM_AND_MODERATION,
+            'ASKBOT_SPAM_CHECKER_API_URL',
+            description=_('Askbot spam checker API URL'),
+            default='',
+        )
+    )
+
+    settings.register(
+        livesettings.StringValue(
+            SPAM_AND_MODERATION,
+            'ASKBOT_SPAM_CHECKER_API_KEY',
+            description=_('Askbot spam checker API key'),
+            default='',
         )
     )
