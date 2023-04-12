@@ -90,8 +90,8 @@ def ldap_authenticate_default(username, password):
 
         if master_username and master_password:
             ldap_session.simple_bind_s(
-                master_username.encode(encoding),
-                master_password.encode(encoding)
+                master_username,
+                master_password
             )
 
         user_filter = askbot_settings.LDAP_USER_FILTER_TEMPLATE % (
@@ -129,7 +129,7 @@ def ldap_authenticate_default(username, password):
         if user_search_result: # User found in LDAP Directory
             user_dn = user_search_result[0][0]
             user_information = user_search_result[0][1]
-            ldap_session.simple_bind_s(user_dn, password.encode(encoding)) #raises INVALID_CREDENTIALS
+            ldap_session.simple_bind_s(user_dn, password) #raises INVALID_CREDENTIALS
             ldap_session.unbind_s()
 
             if given_name_field and surname_field:
