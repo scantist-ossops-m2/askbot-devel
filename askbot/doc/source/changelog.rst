@@ -1,14 +1,30 @@
 Changes in Askbot
 =================
 
-Development version
+0.11.5 (Apr 12, 2023)
 -------------------
 * Works with python 3.7-3.10
 * Rewrites the base theme.
 * New theme is responsive across all reasonable screen sizes
 * When groups are enabled - per group permissions
   to post questions/answers/comments are respected
-* Bug fixes
+* Adds settings "Allow uploading file attachments in posts"
+  and "Allow uploading images in posts"
+  to the "Forum data rules" section of the admin settings page
+* Adds question close reasons: "question is considered as answered" and
+  "closed as inactive"
+* Supports OIDC authentication protocol
+* Adds blank state for the moderation queue
+* Adds management command `askbot_markdownify_content` - converts
+  html markup to markdown
+* When groups are enabled, per-group permissions added:
+  - can upload attachments
+  - can upload images
+* Bug, PEP8 fixes
+
+0.11.3, 0.11.4 (Apr 7, 2023)
+--------------
+* Changelog not recorded, see update for 0.11.5
 
 0.11.2 (Jan 21, 2022)
 ------------------

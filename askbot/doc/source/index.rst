@@ -51,8 +51,4 @@ Mike Chen and Sailing Cai.
 .. _CNPROG: http://cnprog.com
 .. _forum: http://askbot.org
 .. _`development version`: http://github.com/ASKBOT/askbot-devel
-<<<<<<< HEAD
-.. _`the instructions`: https://github.com/ASKBOT/askbot-devel/blob/master/askbot/doc/source/upgrade.rst
-=======
 .. _`upgrade instructions`: https://github.com/ASKBOT/askbot-devel/blob/master/askbot/doc/source/upgrade.rst
->>>>>>> 0.8.x
