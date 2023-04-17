@@ -60,8 +60,6 @@ example INSTALLED_APPS:
         'django.contrib.messages',
         'django_jinja',
         #'debug_toolbar',
-        #Optional, to enable haystack search
-        #'haystack',
         'compressor',
         'askbot',
         'askbot.deps.django_authopenid',

@@ -9,7 +9,6 @@ There are several things to consider when localizing askbot:
 * :ref:`translation and display of the urls <translate-urls>`
 * :ref:`translation of the strings in the user interface <strings>`
 * :ref:`enabling the multilingual setup <multilingual>`
-* :ref:`configuring the language-specific text search <text-search>`
 
 .. _default-lang:
 

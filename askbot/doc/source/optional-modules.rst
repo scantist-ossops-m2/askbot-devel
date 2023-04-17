@@ -5,30 +5,6 @@ Optional modules
 Askbot supports a number of optional modules, enabling certain features, not available 
 in askbot by default.
 
-.. _haystack:
-
-Haystack search
-================
-
-Askbot supports `Haystack <http://haystacksearch.org/>`_, a modular search framework that supports popular search engine backends as 
-Solr, Elasticsearch, Whoosh and Xapian. 
-
-.. note::
-    Haystack support in Askbot is a new feature,
-    please give us your feedback at ``support@askbot.com``
-    regarding the possible improvements.
-
-To enable:
-
-* add 'haystack' to INSTALLED_APPS
-* add ENABLE_HAYSTACK_SEARCH = True in settings.py 
-* Configure your search backend according to your setup following `this guide <http://django-haystack.readthedocs.org/en/latest/tutorial.html#modify-your-settings-py>`_
-
-Solr and  Multilingual Support
--------------------------------
-
-There is more documentation about solr and multilingual support  please visit :ref:`this link <solr>`
-
 .. _ldap:
 
 LDAP authentication
@@ -112,7 +88,7 @@ these were not added to the live settings due to security concerns.
 ``LDAP_USER`` and ``LDAP_PASSWORD`` will be used only if both are provided!
 
 Since LDAP authentication requires so many parameters,
-you might need to :ref:`debug <debugging>` the settings.
+you might need to debug the settings with pdb.
 The function to look at is `askbot.deps.django_authopenid.backends.ldap_authenticate`.
 If you have problems with LDAP please contact us at support@askbot.com.
 
@@ -213,7 +189,7 @@ Then run **supervisorctl update** and it will be started. For more information a
 
 
 S3 Integration
-=============
+==============
 
 .. note::
     Please note that this is a "recipe" solution and there might be a better way

@@ -34,8 +34,7 @@ at the forum_ or by email at admin@askbot.org
    Appendix E: Customizing skin in askbot <customizing-skin-in-askbot>
    Appendix F: Intranet setup <intranet-setup>
    Appendix G: Language support in Askbot <localization>
-   Appendix H: Configuration of text search <text-search>
-   Appendix I: Migration from MySQL to PostgreSQL <mysql-to-postgres>
+   Appendix H: Migration from MySQL to PostgreSQL <mysql-to-postgres>
    Footnotes <footnotes>
    Contributors <contributors>
    Changelog <changelog>
