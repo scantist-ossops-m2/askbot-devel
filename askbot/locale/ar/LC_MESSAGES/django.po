@@ -14,15 +14,16 @@
 # Khaled Menof <kifcaliph@hotmail.com>, 2013
 # Mustafa Albazy <mustafa@albazy.com>, 2013
 # Ratnadeep Debnath <rtnpro@indifex.com>, 2012
-# Usama Akkad <os@uakkad.com>, 2020
+# Riyadh Talal <a.shamil77@yahoo.com>, 2021-2022
+# Usama Akkad, 2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: askbot\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 13:08-0500\n"
-"PO-Revision-Date: 2020-08-16 19:55+0000\n"
-"Last-Translator: evgeny <evgeny.fadeev@gmail.com>\n"
-"Language-Team: Arabic (http://www.transifex.com/askbot/askbot/language/ar/)\n"
+"PO-Revision-Date: 2011-10-08 20:03+0000\n"
+"Last-Translator: Riyadh Talal <a.shamil77@yahoo.com>, 2021-2022\n"
+"Language-Team: Arabic (http://app.transifex.com/askbot/askbot/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,25 +32,25 @@ msgstr ""
 
 #: admin.py:94
 msgid "Question"
-msgstr ""
+msgstr "سؤال"
 
 #: admin.py:159
 msgid "Specific to question"
-msgstr ""
+msgstr "خاص بالسؤال"
 
 #: conf/access_control.py:12
 msgid "Access control settings"
-msgstr "إعدادات الوصول"
+msgstr "إعدادات التحكم بالوصول"
 
 #: conf/access_control.py:21
 msgid "Make site read-only"
-msgstr ""
+msgstr "اجعل الموقع للقراءة فقط"
 
 #: conf/access_control.py:30
 msgid ""
 "The site is temporarily read-only. Only viewing of the content is possible "
 "at the moment."
-msgstr ""
+msgstr "هذا الموقع هو للقراءة فقط مؤقتا. يمكنك رؤية المحتوى الموجود حاليا."
 
 #: conf/access_control.py:41
 msgid "Allow only registered user to access the forum"
@@ -57,22 +58,22 @@ msgstr "السماح فقط للأعضاء المسجلين لدخول هذا ا
 
 #: conf/access_control.py:50
 msgid "Disable registration of new users"
-msgstr ""
+msgstr "عطل تسجيل المستخدمين الجدد"
 
 #: conf/access_control.py:58
 msgid ""
 "<p>New users cannot be registered at this time. Please sign in if you "
 "already have an account.</p>"
-msgstr ""
+msgstr "<p>لا يمكنك تسجيل مستخدمين جدد حاليا. لُج إذا كان لديك حساب مسبق.</p>"
 
 #: conf/access_control.py:60
 msgid "Message explaining that user registrations are disabled"
-msgstr ""
+msgstr "رسالة تشرح أن تسجيل المستخدمين معطل"
 
 #: conf/access_control.py:61 conf/words.py:72 conf/words.py:86
 #: conf/words.py:102
 msgid "HTML is allowed"
-msgstr ""
+msgstr "يسمح بـ HTML"
 
 #: conf/access_control.py:66
 msgid "nothing - not required"
@@ -80,7 +81,7 @@ msgstr "لا شيء - غير مطلوب"
 
 #: conf/access_control.py:67
 msgid "account registration"
-msgstr ""
+msgstr "تسجيل الحسابات"
 
 #: conf/access_control.py:77
 msgid "Require valid email for"
@@ -96,7 +97,7 @@ msgstr "أستخدم المسافة للفصل بينهم"
 
 #: conf/access_control.py:106 conf/access_control.py:121
 msgid "Entry disables blacklisted email patterns"
-msgstr ""
+msgstr "المُدخَل يعطّل أنماط بريد القائمة السوداء"
 
 #: conf/access_control.py:117
 msgid "Allowed email domain names"
@@ -108,35 +109,35 @@ msgstr "يرجى إستخدام المسافات لفصل المدخلات، ل�
 
 #: conf/access_control.py:128
 msgid "disable"
-msgstr ""
+msgstr "عطّل"
 
 #: conf/access_control.py:129
 msgid "block user registrations"
-msgstr ""
+msgstr "عطل تسجيل المستخدمين"
 
 #: conf/access_control.py:131
 msgid "allow existing users to post"
-msgstr ""
+msgstr "اسمح للمستخدمين الحاليين بالمشاركة"
 
 #: conf/access_control.py:132
 msgid "block completely"
-msgstr ""
+msgstr "احظر نهائيا"
 
 #: conf/access_control.py:141
 msgid "Blacklisted email address patterns mode"
-msgstr ""
+msgstr "وضع أنماط عناوين بريد القائمة السوداء"
 
 #: conf/access_control.py:150
 msgid "Blacklisted email address patterns"
-msgstr ""
+msgstr "أنماط عناوين بريد القائمة السوداء"
 
 #: conf/access_control.py:154
 msgid "regular expressions are allowed"
-msgstr ""
+msgstr "التعابير النظامية مسموح بها"
 
 #: conf/access_control.py:165
 msgid "Allow moderators to access other's messages"
-msgstr ""
+msgstr "اسمح بوصول المشرفين لرسائل الآخرين"
 
 #: conf/badges.py:16
 msgid "Badge settings"
@@ -145,7 +146,7 @@ msgstr "إعدادات الشارات"
 #: conf/badges.py:25
 #, python-format
 msgid "Enable \"%s\" badge"
-msgstr ""
+msgstr "فعّل شارة \"%s\" "
 
 #: conf/badges.py:44 models/badges.py:676
 msgid "Associate Editor"
@@ -153,7 +154,7 @@ msgstr "كبير المحررين"
 
 #: conf/badges.py:46
 msgid "minimum number of edits"
-msgstr ""
+msgstr "الحد الأدنى للتحريرات"
 
 #: conf/badges.py:50 models/badges.py:698
 msgid "Autobiographer"
@@ -169,7 +170,7 @@ msgstr "مؤدي الواجب"
 
 #: conf/badges.py:58
 msgid "minimum votes"
-msgstr ""
+msgstr "الحد الأدنى للأصوات"
 
 #: conf/badges.py:62 models/badges.py:617
 msgid "Cleanup"
@@ -181,7 +182,7 @@ msgstr "معلق"
 
 #: conf/badges.py:68
 msgid "minimum comments"
-msgstr ""
+msgstr "الحد الأدنى للتعليقات"
 
 #: conf/badges.py:72 models/badges.py:226
 msgid "Critic"
@@ -193,7 +194,7 @@ msgstr "منضبط"
 
 #: conf/badges.py:78
 msgid "minimum upvotes for deleted post"
-msgstr ""
+msgstr "أقل تصويتات إيجابية للمشاركة المحذوفة"
 
 #: conf/badges.py:82 models/badges.py:663
 msgid "Editor"
@@ -201,11 +202,11 @@ msgstr "محرر"
 
 #: conf/badges.py:86
 msgid "Enlightened Duty"
-msgstr ""
+msgstr "واجب مستنير"
 
 #: conf/badges.py:88 conf/badges.py:154 conf/badges.py:162
 msgid "minimum upvotes"
-msgstr ""
+msgstr "أقل تصويتات إيجابية"
 
 #: conf/badges.py:94 models/badges.py:768
 msgid "Enthusiast"
@@ -213,7 +214,7 @@ msgstr "متحمس"
 
 #: conf/badges.py:96
 msgid "minimum days"
-msgstr ""
+msgstr "أقل أيام"
 
 #: conf/badges.py:100 models/badges.py:863
 msgid "Expert"
@@ -225,7 +226,7 @@ msgstr "سؤال مشهور"
 
 #: conf/badges.py:106 conf/badges.py:187 conf/badges.py:205
 msgid "minimum views"
-msgstr ""
+msgstr "أقل مشاهدات"
 
 #: conf/badges.py:112 conf/words.py:465 conf/words.py:466
 msgid "Favorite Question"
@@ -233,7 +234,7 @@ msgstr "سؤال مفضل"
 
 #: conf/badges.py:114 conf/badges.py:225
 msgid "minimum followers"
-msgstr ""
+msgstr "أقل متابعين"
 
 #: conf/badges.py:120 conf/words.py:377 conf/words.py:378
 msgid "Good Answer"
@@ -241,7 +242,7 @@ msgstr "إجابة جيدة"
 
 #: conf/badges.py:122 conf/badges.py:138 conf/badges.py:179 conf/badges.py:245
 msgid "minimum upvotes for the answer"
-msgstr ""
+msgstr "أقل تصويتات إيجابية للإجابة"
 
 #: conf/badges.py:128 conf/words.py:388 conf/words.py:389
 msgid "Good Question"
@@ -249,7 +250,7 @@ msgstr "سؤال جيد"
 
 #: conf/badges.py:130 conf/badges.py:146 conf/badges.py:171
 msgid "minimum upvotes for the question"
-msgstr ""
+msgstr "أقل تصويتات إيجابية للسؤال"
 
 #: conf/badges.py:136 conf/words.py:399 conf/words.py:400
 msgid "Great Answer"
@@ -269,7 +270,7 @@ msgstr "قسم الأرشيف"
 
 #: conf/badges.py:163
 msgid "minimum delay in days"
-msgstr ""
+msgstr "أقل تأخير بالأيام"
 
 #: conf/badges.py:169 conf/words.py:366 conf/words.py:367
 msgid "Nice Question"
@@ -293,7 +294,7 @@ msgstr ""
 
 #: conf/badges.py:197
 msgid "minimum downvotes for deleted post"
-msgstr ""
+msgstr "أقل تصويتات سلبية للمشاركة المحذوفة"
 
 #: conf/badges.py:203 conf/words.py:421 conf/words.py:422
 msgid "Popular Question"
@@ -313,7 +314,7 @@ msgstr "متعلم ذاتياً"
 
 #: conf/badges.py:217
 msgid "minimum answer upvotes"
-msgstr ""
+msgstr "أقل تصويتات إيجابية للجواب"
 
 #: conf/badges.py:223 conf/words.py:454 conf/words.py:455
 msgid "Stellar Question"
@@ -333,7 +334,7 @@ msgstr "مصنف المواضيع"
 
 #: conf/badges.py:237
 msgid "minimum tag use count"
-msgstr ""
+msgstr "أقل عدد مرات استخدام للوسم"
 
 #: conf/badges.py:243 models/badges.py:179
 msgid "Teacher"
@@ -341,15 +342,15 @@ msgstr "أستاذ"
 
 #: conf/badges.py:251 models/badges.py:833
 msgid "Rapid Responder"
-msgstr ""
+msgstr "المستجيب السريع"
 
 #: conf/badges.py:253
 msgid "maximum delay in hours"
-msgstr ""
+msgstr "أكثر تأخير بالساعات"
 
 #: conf/badges.py:254
 msgid "badge expiration in days"
-msgstr ""
+msgstr "انتهاء الشارة بالأيام"
 
 #: conf/email.py:17
 msgid "Email and email alert settings"
@@ -375,15 +376,15 @@ msgstr "تفعيل تنبيهات البريد"
 
 #: conf/email.py:64
 msgid "Enable instant email alerts"
-msgstr ""
+msgstr "مكّن تنبيهات البريد الآنيّة"
 
 #: conf/email.py:73
 msgid "Enable welcome email"
-msgstr ""
+msgstr "مكّن رسالة الترحيب"
 
 #: conf/email.py:82
 msgid "Enable rejected post alert"
-msgstr ""
+msgstr "مكّن تنبيه المشاركة المرفوضة"
 
 #: conf/email.py:83 conf/email.py:93
 msgid "Also, premoderation mode must be enabled"
@@ -391,23 +392,23 @@ msgstr ""
 
 #: conf/email.py:92
 msgid "Enable approved post alert"
-msgstr ""
+msgstr "مكّن تنبيه المشاركة المقبولة"
 
 #: conf/email.py:102
 msgid "Enable batch email alert"
-msgstr ""
+msgstr "مكّن تنبيهات البريد الجماعية"
 
 #: conf/email.py:111
 msgid "Enable private messaging alerts"
-msgstr ""
+msgstr "مكّن تنبيهات المراسلة الخاصة"
 
 #: conf/email.py:120
 msgid "Enable moderation queue alerts"
-msgstr ""
+msgstr "مكّن تنبيهات طابور المراقبة"
 
 #: conf/email.py:130
 msgid "Enable HTML-formatted email"
-msgstr ""
+msgstr "مكّن البريد المنسَّق بـ HTML"
 
 #: conf/email.py:131
 msgid "May not be supported by some email clients"
@@ -506,7 +507,7 @@ msgstr "الحد الأقصى للتنبيهات على قبول أفضل إجا
 
 #: conf/email.py:318
 msgid "Allow blank email"
-msgstr ""
+msgstr "اسمح بالبريد الفارغ"
 
 #: conf/email.py:320
 msgid "DANGER: makes impossible account recovery by email."
@@ -514,7 +515,7 @@ msgstr ""
 
 #: conf/email.py:323
 msgid "Must be optional"
-msgstr ""
+msgstr "يجب أن يكون اختياريًا"
 
 #: conf/email.py:334
 msgid "Fake email for anonymous user"
@@ -536,7 +537,7 @@ msgstr "يطبق هذا الإعداد على الوسوم المذكورة في
 
 #: conf/email.py:356
 msgid "Enable posting and replying by email"
-msgstr ""
+msgstr "مكّن النشر أو الإجابة بالبريد الإلكتروني"
 
 #: conf/email.py:358
 msgid "To enable this feature make sure lamson is running"
@@ -544,7 +545,7 @@ msgstr "لتفعيل هذه الخاصية تأكد من أن lamson فعال و
 
 #: conf/email.py:366
 msgid "Emailed post: when to notify author about publishing"
-msgstr "Emailed post: when to notify author about publishing"
+msgstr "المشاركة المرسلة بالبريد: متى ينبّه المؤلف عن النشر"
 
 #: conf/email.py:390
 msgid "Reply by email hostname"
@@ -554,7 +555,7 @@ msgstr "Reply by email hostname"
 msgid ""
 "Email replies having fewer words than this number will be posted as comments"
 " instead of answers"
-msgstr "Email replies having fewer words than this number will be posted as comments instead of answers"
+msgstr "الردود بالبريد الإلكتروني التي لها كلمات أقل من هذا العدد ستُنشر كتعليقات بدلا من أجوبة"
 
 #: conf/email_text.py:9
 msgid "Email template phrases"
@@ -582,11 +583,11 @@ msgstr ""
 msgid ""
 "<p>Please visit {{ SITE_NAME }} at {{ SITE_LINK }}, we look forward to your "
 "posts.</p>"
-msgstr ""
+msgstr "<p>لطفًا زُر {{ SITE_NAME }} في {{ SITE_LINK }}، نتطلع إلى مشاركاتك.</p>"
 
 #: conf/email_text.py:38
 msgid "Email footer"
-msgstr ""
+msgstr "تذييل البريد"
 
 #: conf/email_text.py:39
 msgid "<p>Sincerely,<br>{{ SITE_NAME }} Administrator</p>"
@@ -594,7 +595,7 @@ msgstr ""
 
 #: conf/email_text.py:47
 msgid "Header for the batch email alerts"
-msgstr ""
+msgstr "ترويس تنبيهات البريد الجماعية"
 
 #: conf/email_text.py:48
 msgid ""
@@ -619,7 +620,7 @@ msgstr ""
 
 #: conf/external_keys.py:36
 msgid "Google Analytics key"
-msgstr ""
+msgstr "مفتاح تحليلات غوغل"
 
 #: conf/external_keys.py:38
 #, python-format
@@ -658,7 +659,7 @@ msgstr ""
 
 #: conf/external_keys.py:99
 msgid "Facebook public API key"
-msgstr ""
+msgstr "المفتاح العمومي  لواجهة برمجة تطبيق فيسبوك"
 
 #: conf/external_keys.py:101
 #, python-format
@@ -670,11 +671,11 @@ msgstr ""
 
 #: conf/external_keys.py:112
 msgid "Facebook secret key"
-msgstr ""
+msgstr "المفتاح السري لفيسبوك"
 
 #: conf/external_keys.py:120
 msgid "Twitter consumer key"
-msgstr ""
+msgstr "مفتاح عميل تويتر"
 
 #: conf/external_keys.py:122
 #, python-format
@@ -685,11 +686,11 @@ msgstr ""
 
 #: conf/external_keys.py:133
 msgid "Twitter consumer secret"
-msgstr ""
+msgstr "سرّ عميل تويتر"
 
 #: conf/external_keys.py:141
 msgid "MediaWiki consumer key"
-msgstr ""
+msgstr "مفتاح عميل ميدياويكي"
 
 #: conf/external_keys.py:143
 #, python-format
@@ -701,11 +702,11 @@ msgstr ""
 
 #: conf/external_keys.py:160
 msgid "MediaWiki consumer secret"
-msgstr ""
+msgstr "سرّ عميل ميدياويكي"
 
 #: conf/external_keys.py:168
 msgid "LinkedIn consumer key"
-msgstr ""
+msgstr "مفتاح عميل لنكدإن"
 
 #: conf/external_keys.py:170
 #, python-format
@@ -716,7 +717,7 @@ msgstr ""
 
 #: conf/external_keys.py:181
 msgid "LinkedIn consumer secret"
-msgstr ""
+msgstr "سرّ عميل لنكدإن"
 
 #: conf/external_keys.py:189
 msgid "ident.ca consumer key"
@@ -777,11 +778,11 @@ msgstr ""
 
 #: conf/feedback.py:17
 msgid "Anyone"
-msgstr ""
+msgstr "أيّ أحد"
 
 #: conf/feedback.py:18
 msgid "Only authenticated users"
-msgstr ""
+msgstr "فقط المستخدمون الموثَّقون"
 
 #: conf/feedback.py:19
 msgid "Nobody, disable feedback form"
@@ -899,7 +900,7 @@ msgstr ""
 
 #: conf/forum_data_rules.py:27
 msgid "Editor for the posts"
-msgstr "Editor for the posts"
+msgstr "محرر للمشاركات"
 
 #: conf/forum_data_rules.py:42
 msgid "Editor for the comments"
@@ -939,7 +940,7 @@ msgstr ""
 
 #: conf/forum_data_rules.py:110
 msgid "Allow posting before logging in"
-msgstr ""
+msgstr "أتِح المشاركة قبل تسجيل الدخول"
 
 #: conf/forum_data_rules.py:112
 msgid ""
@@ -4854,12 +4855,12 @@ msgstr "تم حفظ اشتراكك في الوسم، شكراً!"
 #: models/badges.py:134
 #, python-format
 msgid "Deleted own post with %(votes)s or more upvotes"
-msgstr "حذف مشاركتك مع وجود %(votes)s صوت إيجابي أو أكثر"
+msgstr "حذفت مشاركتك بوجود %(votes)s تصويت إيجابي أو أكثر"
 
 #: models/badges.py:153
 #, python-format
 msgid "Deleted own post with %(votes)s or more downvotes"
-msgstr "حذف مشاركتك مع وجود %(votes)s صوت سلبي أو أكثر"
+msgstr "حذفت مشاركتك بوجود %(votes)s تصويت سلبي أو أكثر"
 
 #: models/badges.py:156
 msgid "Peer Pressure"

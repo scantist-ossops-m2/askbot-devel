@@ -15,6 +15,7 @@
 # Patrick Marzian <Eidexe@justnetwork.eu>, 2012
 # evgeny <evgeny.fadeev@gmail.com>, 2020
 # 485dd9ceb0ca1868ae37e73a31054d46_d7c70ce <05bd4fa09cedd1aa53721918b642958b_270620>, 2015
+# Jan Schrewe, 2023
 # jukey <jukey@ju-key.de>, 2016
 # Marco Held <marco.held@virtualfortknox.de>, 2017-2018
 # yeto01 <mathias.ullrich@hotmail.de>, 2012
@@ -28,9 +29,9 @@ msgstr ""
 "Project-Id-Version: askbot\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 13:08-0500\n"
-"PO-Revision-Date: 2020-08-16 19:55+0000\n"
-"Last-Translator: evgeny <evgeny.fadeev@gmail.com>\n"
-"Language-Team: German (http://www.transifex.com/askbot/askbot/language/de/)\n"
+"PO-Revision-Date: 2011-10-08 20:03+0000\n"
+"Last-Translator: Jan Schrewe, 2023\n"
+"Language-Team: German (http://app.transifex.com/askbot/askbot/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,15 +40,15 @@ msgstr ""
 
 #: admin.py:94
 msgid "Question"
-msgstr ""
+msgstr "Frage"
 
 #: admin.py:159
 msgid "Specific to question"
-msgstr ""
+msgstr "Spezifisch zur Frage"
 
 #: conf/access_control.py:12
 msgid "Access control settings"
-msgstr "Einstellungen"
+msgstr "Zugriffseinstellungen"
 
 #: conf/access_control.py:21
 msgid "Make site read-only"
@@ -92,7 +93,7 @@ msgstr "Benutzerregistrierung"
 
 #: conf/access_control.py:77
 msgid "Require valid email for"
-msgstr "Benötige gültige E-Mail-Adresse für"
+msgstr "Verlange gültige E-Mail-Adresse für"
 
 #: conf/access_control.py:102
 msgid "Allowed email addresses"
@@ -349,15 +350,15 @@ msgstr "Lehrer"
 
 #: conf/badges.py:251 models/badges.py:833
 msgid "Rapid Responder"
-msgstr ""
+msgstr "Schnelle Antworten"
 
 #: conf/badges.py:253
 msgid "maximum delay in hours"
-msgstr ""
+msgstr "Maximale Verzögerung in Stunden"
 
 #: conf/badges.py:254
 msgid "badge expiration in days"
-msgstr ""
+msgstr "Badge Ablaufzeit in Tagen"
 
 #: conf/email.py:17
 msgid "Email and email alert settings"
@@ -371,7 +372,7 @@ msgstr "Präfix, das der Betreffzeile vorangestellt werden soll"
 msgid ""
 "This setting takes default from the django setting EMAIL_SUBJECT_PREFIX. A "
 "value entered here will override the default."
-msgstr ""
+msgstr "Diese Einstellung benutzt die Django Einstellung EMAIL_SUBJECT_PREFIX. Der hier eingegebene Wert überschreibt diese Einstellung."
 
 #: conf/email.py:47
 msgid "Site administrator email address"
@@ -439,16 +440,16 @@ msgstr "Standard Benachrichtigungsintervall für alle vom Benutzer beantworteten
 
 #: conf/email.py:182
 msgid "Default notification frequency on unanswered questions"
-msgstr ""
+msgstr "Standard Benachrichtigungsfrequenz bei unbeantworteten Fragen"
 
 #: conf/email.py:192
 msgid ""
 "Default notification frequency questions individuallyselected by the user"
-msgstr ""
+msgstr "Standard Benachrichtigungsfrequenz bei individuellen vom Benutzer ausgewählten Fragen"
 
 #: conf/email.py:203
 msgid "Default notification frequency for mentionsand comments"
-msgstr ""
+msgstr "Standard Benachrichtigungsfrequenz bei Mentions und Kommentaren"
 
 #: conf/email.py:213
 msgid "Enable reminders about unanswered questions"
@@ -522,7 +523,7 @@ msgstr "ACHTUNG: Die Account-Wiederherstellung per E-Mail wird dadurch unmöglic
 
 #: conf/email.py:323
 msgid "Must be optional"
-msgstr ""
+msgstr "Muss optional sein"
 
 #: conf/email.py:334
 msgid "Fake email for anonymous user"
@@ -750,11 +751,11 @@ msgstr ""
 msgid ""
 "Please register your client application at <a href=\"%(url)s\">yammer "
 "applications site</a>"
-msgstr ""
+msgstr "Bitte registriere deine Client-Anwendung bei <a href=\"%(url)s\">yammer applications site</a>"
 
 #: conf/external_keys.py:223
 msgid "Yammer secret key"
-msgstr ""
+msgstr "Geheimer Yammer-Schlüssel"
 
 #: conf/external_keys.py:231
 msgid "Windows Live client id"
@@ -839,11 +840,11 @@ msgstr "Bitte speichern und anschließend auf <a href=\"http://validator.w3.org/
 
 #: conf/flatpages.py:33
 msgid "Message to display on the authentication pages"
-msgstr ""
+msgstr "Nachricht, die auf den Authentifizierungsseiten angezeigt wird"
 
 #: conf/flatpages.py:36
 msgid "Markdown format is accepted"
-msgstr ""
+msgstr "Markdown Format kann genutzt werden"
 
 #: conf/flatpages.py:44
 msgid "Text of the Help page (html format)"
@@ -899,11 +900,11 @@ msgstr "Regeln für die Dateneingabe und -anzeige"
 
 #: conf/forum_data_rules.py:17
 msgid "Markdown"
-msgstr ""
+msgstr "Markdown"
 
 #: conf/forum_data_rules.py:18
 msgid "WYSIWYG (tinymce)"
-msgstr ""
+msgstr "WYSIWYG (Tinymce)"
 
 #: conf/forum_data_rules.py:27
 msgid "Editor for the posts"
@@ -1839,13 +1840,13 @@ msgstr "Gib eine Phrase pro Zeile ein (Groß- / Kleinschreibung egal). Post mit 
 
 #: conf/moderation.py:55
 msgid "Invited moderators"
-msgstr ""
+msgstr "Eingeladene Moderatoren"
 
 #: conf/moderation.py:56
 msgid ""
 "Use one line per user; on each line enter email address and user name "
 "separated by spaces"
-msgstr ""
+msgstr "Benutze eine Zeile pro Benutzer; trage E-Mail-Adresse und Benutzername durch Leertaste getrennt in jeder Zeile ein"
 
 #: conf/moderation.py:66
 msgid "Enable image moderation"
@@ -2006,7 +2007,7 @@ msgstr "Tagauswahl in Seitenleiste anzeigen"
 msgid ""
 "Uncheck this if you want to hide the options for choosing interesting and "
 "ignored tags"
-msgstr ""
+msgstr "Ausschalten um die Möglichkeiten auszuschalten interessante und ignorierte Tags auszuwählen"
 
 #: conf/sidebar_main.py:76
 msgid "Show tag list/cloud in sidebar"
@@ -2015,7 +2016,7 @@ msgstr "Tagliste/-wolke in der Seitenleiste anzeigen"
 #: conf/sidebar_main.py:77
 msgid ""
 "Uncheck this if you want to hide the tag cloud or tag list from the sidebar"
-msgstr ""
+msgstr "Abwählen um die Tag-Cloud oder Tag-Liste von der Seitenleiste zu entfernen"
 
 #: conf/sidebar_main.py:87 conf/sidebar_question.py:134
 msgid "Custom sidebar footer"
@@ -2072,7 +2073,7 @@ msgstr "Tags in der Seitenleiste anzeigen"
 
 #: conf/sidebar_question.py:102
 msgid "Uncheck this if you want to hide the tag list from the sidebar"
-msgstr ""
+msgstr "Abwählen um die Tag-Liste von der Seitenliste zu entfernen"
 
 #: conf/sidebar_question.py:111
 msgid "Show meta information in sidebar"
@@ -2082,7 +2083,7 @@ msgstr "Meta-Informationen in der Seitenleiste anzeigen"
 msgid ""
 "Uncheck this if you want to hide the meta information about the question "
 "(post date, views, last updated)."
-msgstr ""
+msgstr "Abwählen um die Metainformationen der Frage (Fragedatum, Ansichten, letzte Änderungen) zu verstecken"
 
 #: conf/sidebar_question.py:123
 msgid "Show related questions in sidebar"
@@ -2138,7 +2139,7 @@ msgstr "Copyright Meldung für die Fußzeile"
 
 #: conf/site_settings.py:52
 msgid "Open source question and answer forum written in Python and Django"
-msgstr ""
+msgstr "Open Source Frage & Antwort Forum, geschrieben in Python und Django"
 
 #: conf/site_settings.py:54
 msgid "Site description for the search engines"
@@ -2489,27 +2490,27 @@ msgstr "Kontowiederherstellung per E-Mail erlauben"
 
 #: conf/user_settings.py:87 conf/user_settings.py:98
 msgid "administrators"
-msgstr ""
+msgstr "Administratoren"
 
 #: conf/user_settings.py:88
 msgid "account owners and administrators"
-msgstr ""
+msgstr "Account-Besitzer und Administratoren"
 
 #: conf/user_settings.py:90
 msgid "Who can terminate user accounts"
-msgstr ""
+msgstr "Wer kann Benutzeraccounts löschen"
 
 #: conf/user_settings.py:99
 msgid "administrators and moderators"
-msgstr ""
+msgstr "Administratoren und Moderatoren"
 
 #: conf/user_settings.py:100
 msgid "account owners, administrators and moderators"
-msgstr ""
+msgstr "Account-Besitzer, Administratoren und Moderatoren"
 
 #: conf/user_settings.py:102
 msgid "Who can anonymize and disable accounts"
-msgstr ""
+msgstr "Wer kann Accounts anonymisieren und abschalten"
 
 #: conf/user_settings.py:111
 msgid "Allow adding and removing login methods"
@@ -3362,7 +3363,7 @@ msgstr "Blockiert"
 
 #: const/__init__.py:512
 msgid "terminated"
-msgstr ""
+msgstr "Gelöscht"
 
 #: const/__init__.py:546
 msgid "gold"
@@ -4135,7 +4136,7 @@ msgstr "Individuell ausgewählt"
 
 #: forms.py:1524 models/user.py:412
 msgid "Unanswered questions"
-msgstr ""
+msgstr "Unbeantwortete Fragen"
 
 #: forms.py:1528
 msgid "Entire forum (tag filtered)"
@@ -4290,7 +4291,7 @@ msgstr "Mindestens ein Nutzer auf der Seite wird benötigt, um eine Preview zu e
 
 #: mail/messages.py:483
 msgid "Request to reply to get a sample of email the signature"
-msgstr ""
+msgstr "Antwort anfordern um die E-Mail Signatur zu testen"
 
 #: mail/messages.py:485
 msgid ""
@@ -4315,11 +4316,11 @@ msgstr "Senden, wenn das Posting von einem Moderator mit einer Begründung abgel
 
 #: mail/messages.py:562
 msgid "Account management request"
-msgstr ""
+msgstr "Account Management Anfrage"
 
 #: mail/messages.py:563
 msgid "Sent when user wants to cancel account or download data"
-msgstr ""
+msgstr "Wird gesendet, wenn der Benutzer den Account oder heruntergeladene Daten löschen möchte"
 
 #: mail/messages.py:570
 msgid "Moderation queue has items"
@@ -4370,19 +4371,19 @@ msgstr "Wird an Nutzer versendet, wenn es unbeantwortete Fragen gibt"
 
 #: mail/messages.py:704
 msgid "Account activation"
-msgstr ""
+msgstr "Konto aktivierung"
 
 #: mail/messages.py:705
 msgid "Sent when user creates account, contains email validation link"
-msgstr ""
+msgstr "Wird gesendet, wenn der Benutzer einen Account erstellt, enthält einen E-Mail-Validierungslink"
 
 #: mail/messages.py:720
 msgid "Account recovery"
-msgstr ""
+msgstr "Konto wiederherstellung"
 
 #: mail/messages.py:721
 msgid "Sent when user needs to recover login"
-msgstr ""
+msgstr "Wird gesendet, wenn der Benutzer sein Login wieder herstellen möchte"
 
 #: mail/messages.py:736
 msgid "Unsubscribe link"
@@ -4725,7 +4726,7 @@ msgstr "Neuer Nutzer"
 
 #: models/__init__.py:2739
 msgid "Account terminated"
-msgstr ""
+msgstr "Konto gelöscht"
 
 #: models/__init__.py:2951
 #, python-format
@@ -4964,11 +4965,11 @@ msgstr "Vorgeschlagene Bearbeitung"
 
 #: models/post.py:2174
 msgid "post revision"
-msgstr ""
+msgstr "Fragen Revision"
 
 #: models/post.py:2175
 msgid "post revisions"
-msgstr ""
+msgstr "Fragen Revisionen"
 
 #: models/post.py:2220
 #, python-format
