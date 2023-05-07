@@ -6,6 +6,7 @@ import random
 from typing import List
 
 import json
+import textwrap
 import time
 import warnings
 import zlib
@@ -276,6 +277,14 @@ def list_directory_files(dir_path):
         handler(*elem)
     return file_paths
 
+def wrap_text_for_email(text, max_line_length=70):
+    """Repacks text to fit into email message body"""
+    if not text:
+        return text
+    text = text.replace('\r\n', '\n')
+    text = text.replace('\r', '\n')
+    text = text.replace('\n', '\r\n')
+    return textwrap.fill(text, max_line_length)
 
 def zipzip(zip_path, *args, **kwargs): #pylint: disable=too-many-locals
     """creates or updates the zip file at `zip_path`
