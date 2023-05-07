@@ -332,7 +332,7 @@ def moderate_post_edits(request):
                     num_users += 1
                 #delete all content by the user
                 num_posts += request.user.delete_all_content_authored_by_user(
-                                                            user, submit_spam=True)
+                                                            user, mark_as_spam=True)
 
             num_ips = len(ips)
 
@@ -348,7 +348,7 @@ def moderate_post_edits(request):
                     num_users += 1
                 #delete all content by the user
                 num_posts += request.user.delete_all_content_authored_by_user(
-                                                            editor, submit_spam=True)
+                                                            editor, mark_as_spam=True)
 
         if num_ips:
             ips_message = ungettext('%d ip blocked', '%d ips blocked', num_ips) % num_ips

@@ -50,7 +50,7 @@ from askbot.models.user import get_invited_moderators
 from askbot.models.badges import award_badges_signal
 from askbot import exceptions as askbot_exceptions
 from askbot.utils.twitter import Twitter
-from askbot.utils.akismet_utils import akismet_submit_spam
+from askbot.spam_checker.akismet_spam_checker import akismet_submit_spam
 
 
 logger = get_task_logger(__name__)
@@ -88,7 +88,7 @@ def tweet_new_post_task(post_id):
 
 
 @shared_task(ignore_result=True)
-def submit_spam_posts(post_ids):
+def submit_spam_posts_to_akismet(post_ids):
     posts = Post.objects.filter(pk__in=post_ids)
     # todo: save user agent in the revisions, using a fixed record
     # here because there is nothing better at the moment
@@ -99,7 +99,8 @@ def submit_spam_posts(post_ids):
         akismet_submit_spam(text,
                             ip_addr=ip_addr,
                             user_agent=user_agent,
-                            author=post.author)
+                            username=post.author.username,
+                            email=post.author.email)
 
 
 @shared_task(ignore_result=True)

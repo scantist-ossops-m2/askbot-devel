@@ -1,36 +1,38 @@
 #import these to compile code and install values
 from askbot import const
 import askbot
-import askbot.conf.minimum_reputation
-import askbot.conf.vote_rules
-import askbot.conf.reputation_changes
-import askbot.conf.karma_and_badges_visibility
-import askbot.conf.email
-import askbot.conf.email_text
-import askbot.conf.forum_data_rules
-import askbot.conf.moderation
-import askbot.conf.question_lists
-import askbot.conf.flatpages
-import askbot.conf.site_settings
-import askbot.conf.license
-import askbot.conf.external_keys
-import askbot.conf.ldap
-import askbot.conf.skin_general_settings
-import askbot.conf.sidebar_main
-import askbot.conf.sidebar_question
-import askbot.conf.sidebar_profile
-import askbot.conf.leading_sidebar
-import askbot.conf.spam_and_moderation
-import askbot.conf.user_settings
-import askbot.conf.group_settings
-import askbot.conf.feedback
-import askbot.conf.markup
-import askbot.conf.social_sharing
-import askbot.conf.badges
-import askbot.conf.login_providers
-import askbot.conf.access_control
-import askbot.conf.site_modes
-import askbot.conf.words
+
+def init():
+    import askbot.conf.minimum_reputation
+    import askbot.conf.vote_rules
+    import askbot.conf.reputation_changes
+    import askbot.conf.karma_and_badges_visibility
+    import askbot.conf.email
+    import askbot.conf.email_text
+    import askbot.conf.forum_data_rules
+    import askbot.conf.moderation
+    import askbot.conf.question_lists
+    import askbot.conf.flatpages
+    import askbot.conf.site_settings
+    import askbot.conf.license
+    import askbot.conf.external_keys
+    import askbot.conf.ldap
+    import askbot.conf.skin_general_settings
+    import askbot.conf.sidebar_main
+    import askbot.conf.sidebar_question
+    import askbot.conf.sidebar_profile
+    import askbot.conf.leading_sidebar
+    import askbot.conf.spam_and_moderation
+    import askbot.conf.user_settings
+    import askbot.conf.group_settings
+    import askbot.conf.feedback
+    import askbot.conf.markup
+    import askbot.conf.social_sharing
+    import askbot.conf.badges
+    import askbot.conf.login_providers
+    import askbot.conf.access_control
+    import askbot.conf.site_modes
+    import askbot.conf.words
 
 #import main settings object
 from askbot.conf.settings_wrapper import settings

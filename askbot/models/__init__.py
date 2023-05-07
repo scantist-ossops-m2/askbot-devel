@@ -1978,7 +1978,7 @@ def user_delete_question(
 def user_delete_all_content_authored_by_user(self,
                                              author,
                                              timestamp=None,
-                                             submit_spam=False):
+                                             mark_as_spam=False):
     """Deletes all questions, answers and comments made by the user"""
     count = 0
 
@@ -2013,9 +2013,13 @@ def user_delete_all_content_authored_by_user(self,
     count += comments.count()
     comments.delete()
 
-    if submit_spam:
-        from askbot.tasks import submit_spam_posts
-        defer_celery_task(submit_spam_posts, args=(post_ids,))
+    if mark_as_spam:
+        Post.objects.filter(id__in=post_ids).update(
+            marked_as_spam=True,
+            marked_as_spam_by=self,
+            marked_as_spam_at=timestamp
+        )
+        signals.posts_marked_as_spam.send(post_ids=post_ids, sender=self.__class__)
 
     #delete all unused tags created by this user
     #tags = author.created_tags.all()
@@ -4658,6 +4662,26 @@ signals.question_visited.connect(
     dispatch_uid='record_question_visit'
 )
 
+def handle_posts_marked_as_spam(sender, post_ids, **kwargs):
+    """Launches a task to submit spam posts to Akismet"""
+    if not askbot_settings.SPAM_FILTER_ENABLED:
+        return
+
+    akismet_func_path = 'askbot.spam_checker.akismet_spam_checker.is_spam'
+    if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION != akismet_func_path:
+        return
+
+    if not askbot_settings.AKISMET_API_KEY:
+        return
+
+    from askbot.tasks import submit_spam_posts_to_akismet
+    defer_celery_task(submit_spam_posts_to_akismet, kwargs={'post_ids': post_ids})
+
+signals.posts_marked_as_spam.connect(
+    handle_posts_marked_as_spam,
+    dispatch_uid='handle_posts_marked_as_spam'
+)
+
 #set up a possibility for the users to follow others
 #try:
 #    import followit
@@ -4708,5 +4732,3 @@ __all__ = [
 
         'get_model',
 ]
-
-# a function that returns a number of users in Askbot
