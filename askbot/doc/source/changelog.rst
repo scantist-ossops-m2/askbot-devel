@@ -1,6 +1,19 @@
 Changes in Askbot
 =================
 
+0.11.6 (May 8, 2012)
+--------------------
+* added setting ASKBOT_SPAM_CHECKER_FUNCTION - default is
+  `askbot.spam_checker.akismet_spam_checker.is_spam`
+* added a second spam checker alternative:
+  `askbot.spam_checker.askbot_spam_checker.is_spam`
+  which needs settings: `ASKBOT_SPAM_CHECKER_API_KEY`,
+  `ASKBOT_SPAM_CHECKER_API_URL`
+* added a management command `askbot_get_spam_training_set`
+* added fields to Post model: `marked_as_spam`, `marked_as_spam_at`, `marked_as_spam_by`
+  these fields are populated when marking user as spammer in the moderation queue
+* added signal `askbot.signals.posts_marked_as_spam`
+
 0.11.5 (Apr 12, 2023)
 -------------------
 * Works with python 3.7-3.10
