@@ -1,7 +1,11 @@
 Changes in Askbot
 =================
 
-0.11.6 (May 8, 2012)
+0.11.7 (May 15, 2023)
+---------------------
+* PR #928 - upgrades django-avatar (Bruno Guimarães, @brunobastosg)
+
+0.11.6 (May 8, 2023)
 --------------------
 * added setting ASKBOT_SPAM_CHECKER_FUNCTION - default is
   `askbot.spam_checker.akismet_spam_checker.is_spam`
