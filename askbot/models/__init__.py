@@ -313,7 +313,7 @@ def user_calculate_avatar_url(self, size=48):
             from avatar.util import get_primary_avatar
             logging.warning("Using deprecated version of django-avatar")
 
-        avatar = get_primary_avatar(self, size=size)
+        avatar = get_primary_avatar(self, width=size, height=size)
         if avatar:
             return avatar.avatar_url(size)
         return self.get_default_avatar_url(size)
