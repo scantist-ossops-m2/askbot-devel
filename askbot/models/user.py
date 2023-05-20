@@ -326,10 +326,15 @@ class Activity(models.Model):
         """have to use a special method, because django does not allow
         auto-adding to M2M with "through" model
         """
+        pre_existing = ActivityAuditStatus.objects.filter(user__in=recipients, activity=self)
+        pre_existing = pre_existing.only('user__id')
+        skip_user_ids = [user.id for user in pre_existing]
+
         for recipient in recipients:
-            #todo: may optimize for bulk addition
-            aas = ActivityAuditStatus(user=recipient, activity=self)
-            aas.save()
+            if recipient.id not in skip_user_ids:
+                #todo: may optimize for bulk addition
+                aas = ActivityAuditStatus(user=recipient, activity=self)
+                aas.save()
 
     def get_mentioned_user(self):
         assert(self.activity_type == const.TYPE_ACTIVITY_MENTION)

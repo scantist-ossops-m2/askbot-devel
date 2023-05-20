@@ -5,6 +5,9 @@ Development
 -----------
 * Added ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS parameter to settings.py,
   defaults to 1s
+* Made moderation queue actions snappier by using optimistic UI update
+* fixes creation of duplicate moderation queue records when
+  link and image moderation is enabled.
 
 0.11.7 (May 15, 2023)
 ---------------------
