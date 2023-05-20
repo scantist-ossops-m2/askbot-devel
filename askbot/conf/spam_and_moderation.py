@@ -24,18 +24,6 @@ settings.register(
 
 AKISMET_SPAM_CHECKER_FUNCTION = 'askbot.spam_checker.akismet_spam_checker.is_spam'
 if django_settings.ASKBOT_SPAM_CHECKER_FUNCTION == AKISMET_SPAM_CHECKER_FUNCTION:
-
-    # keep this for a while, to allow migration to SPAM_FILTER_ENABLED - Apr, 9 2023
-    settings.register(
-        livesettings.BooleanValue(
-            SPAM_AND_MODERATION,
-            'USE_AKISMET',
-            description=_('Enable Akismet spam detection(keys below are required)'),
-            default=False,
-            hidden=True,
-        )
-    )
-
     settings.register(
         livesettings.StringValue(
             SPAM_AND_MODERATION,

@@ -635,7 +635,8 @@ def set_question_title(request):
     title = request.POST['title']
 
     spam_checker_params = spam_checker.get_params_from_request(request)
-    if spam_checker.is_spam(question.get_text_content(title=title), **spam_checker_params):
+    enabled = askbot_settings.SPAM_FILTER_ENABLED
+    if enabled and spam_checker.is_spam(question.get_text_content(title=title), **spam_checker_params):
         message = _('Spam was detected in the post')
         raise exceptions.PermissionDenied(message)
 
@@ -681,7 +682,8 @@ def set_post_body(request):
     post = get_object_or_404(models.Post, pk=post_id)
     text = post.get_text_content(body_text=body_text)
     spam_checker_params = spam_checker.get_params_from_request(request)
-    if spam_checker.is_spam(text, **spam_checker_params):
+    enabled = askbot_settings.SPAM_FILTER_ENABLED
+    if enabled and spam_checker.is_spam(text, **spam_checker_params):
         message = _('Spam was detected in the post')
         raise exceptions.PermissionDenied(message)
 

@@ -8,6 +8,8 @@ Development
 * Made moderation queue actions snappier by using optimistic UI update
 * fixes creation of duplicate moderation queue records when
   link and image moderation is enabled.
+* all uses of is_spam function is guarded by the check for
+  askbot.conf.SPAM_FILTER_ENABLED setting
 
 0.11.7 (May 15, 2023)
 ---------------------

@@ -789,7 +789,8 @@ def set_user_description(request):
 
     user = get_object_or_404(models.User, pk=user_id)
     spam_checker_params = spam_checker.get_params_from_request(request)
-    if spam_checker.is_spam(description, **spam_checker_params):
+    enabled = askbot_settings.SPAM_FILTER_ENABLED
+    if enabled and spam_checker.is_spam(description, **spam_checker_params):
         message = _('Spam was detected in the post')
         raise django_exceptions.PermissionDenied(message)
 
