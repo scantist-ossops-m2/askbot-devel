@@ -87,6 +87,9 @@ PostModerationControls.prototype.getModHandler = function (action, items, optRea
       'items': items,//affected items - users, posts, ips
       'reason': optReason || 'none'
     };
+
+    me.removeEntries(selectedEditIds); //an optimistic update
+
     $.ajax({
       type: 'POST',
       cache: false,
@@ -94,10 +97,6 @@ PostModerationControls.prototype.getModHandler = function (action, items, optRea
       data: JSON.stringify(postData),
       url: askbot.urls.moderatePostEdits,
       success: function (response_data) {
-        if (response_data.success) {
-          me.removeEntries(response_data.memo_ids);
-        }
-
         var message = response_data.message || '';
         if (me.getEntryCount() < 10 && response_data.memo_count > 9) {
           if (message) {
