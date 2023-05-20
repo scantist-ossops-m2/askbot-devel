@@ -1,6 +1,11 @@
 Changes in Askbot
 =================
 
+Development
+-----------
+* Added ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS parameter to settings.py,
+  defaults to 1s
+
 0.11.7 (May 15, 2023)
 ---------------------
 * PR #928 - upgrades django-avatar (Bruno Guimarães, @brunobastosg)

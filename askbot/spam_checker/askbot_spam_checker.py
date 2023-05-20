@@ -1,7 +1,7 @@
 """Custom built spam checker for Askbot"""
 import logging
 import requests
-from askbot.conf import settings as askbot_settings
+from django.conf import settings as django_settings
 
 def is_spam(text, **kwargs): # pylint: disable=unused-argument
     """Returns True if the text is spam, `kwargs` are ignored.
@@ -10,10 +10,11 @@ def is_spam(text, **kwargs): # pylint: disable=unused-argument
     If the admin enables the moderation queue, the post will be sent to the queue.
     """
     try:
-        api_key = askbot_settings.ASKBOT_SPAM_CHECKER_API_KEY
-        api_url = askbot_settings.ASKBOT_SPAM_CHECKER_API_URL
+        api_key = django_settings.ASKBOT_SPAM_CHECKER_API_KEY
+        api_url = django_settings.ASKBOT_SPAM_CHECKER_API_URL
+        timeout = django_settings.ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS
         data = {"api_key": api_key, "text": text}
-        response = requests.post(api_url, json=data, timeout=1)
+        response = requests.post(api_url, json=data, timeout=timeout)
     except Exception as error: # pylint: disable=broad-except
         logging.critical('Error while calling spam checker API %s', str(error))
         return False
