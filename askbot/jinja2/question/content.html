@@ -36,7 +36,7 @@
   {% include "question/new_answer_form.html" %}
 {% elif not request.user.is_authenticated and not settings.ALLOW_POSTING_BEFORE_LOGGING_IN %}
   {% include "question/new_answer_form_title.html" %}
-  <a class="button submit"
+  <a class="btn submit mb-4"
     href="{{settings.LOGIN_URL}}?next={{ encode_jwt({'next_url': url('question', question.id)}) }}"
   >{{ settings.WORDS_LOGIN_SIGNUP_TO_ANSWER|escape }}</a>
 {% elif request.user.is_authenticated and settings.LIMIT_ONE_ANSWER_PER_USER %}
