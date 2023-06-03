@@ -54,7 +54,7 @@
 </div>
 {% endif %}
 
-{% if similar_threads.data() and settings.SIDEBAR_QUESTION_SHOW_RELATED %}
+{% if settings.SIDEBAR_QUESTION_SHOW_RELATED and similar_threads.data() %}
     {#% cache 1800 "related_questions" related_questions question.id language_code %#}
     <div class="sidebar-box">
       <h2>{{ settings.WORDS_RELATED_QUESTIONS|escape }}</h2>
