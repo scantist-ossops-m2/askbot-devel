@@ -2,13 +2,9 @@
 import imp
 import sys
 import urllib.parse
-from django.urls import reverse
+from django.urls import reverse, re_path
 from django.conf import settings as django_settings
 from django.urls import clear_url_caches
-try:
-    from django.conf.urls import url
-except ImportError:
-    from django.conf.urls.defaults import url
 from django.utils import translation
 
 def reload_urlconf():
@@ -34,10 +30,10 @@ def service_url(*args, **kwargs):
         pattern = pattern[1:]
 
     prefix = django_settings.ASKBOT_SERVICE_URL_PREFIX
-    pattern = '^' + prefix + pattern
+    pattern = prefix + pattern
     new_args = list(args)
     new_args[0] = pattern
-    return url(*new_args, **kwargs)
+    return re_path(*new_args, **kwargs)
 
 def strip_path(input_url):
     """srips path, params and hash fragments of the url"""

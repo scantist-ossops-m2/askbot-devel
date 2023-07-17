@@ -2,7 +2,7 @@
 import ipaddress
 import os
 import re
-import pytz
+import zoneinfo
 from django.core.exceptions import ValidationError
 from django.conf.global_settings import LANGUAGES
 from askbot.utils.loading import load_module
@@ -56,7 +56,7 @@ class TimezoneValidator: # pylint: disable=too-few-public-methods
     def __call__(cls, value):
         """Validates the timezone"""
         try:
-            pytz.timezone(value)
+            zoneinfo.ZoneInfo(value)
         except Exception as error: # pylint: disable=broad-except
             raise ValidationError('Invalid timezone') from error
 

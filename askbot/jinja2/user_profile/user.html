@@ -40,9 +40,6 @@
       askbot['data']['userPostsPageSize'] = {{ page_size }};
     {% endif %}
   </script>
-  {% if settings.EDITOR_TYPE == 'tinymce' %}
-    {% include "editors/tinymce_scripts.html" %}
-  {% endif %}
   {% compress js %}
   <script src="{{ '/jslib/jquery.form.js'|media }}"></script>
   <script src="{{ '/js/user/response_notifs.js'|media }}"></script>
@@ -62,7 +59,6 @@
   <script src="{{ '/js/utils/toggle.js'|media }}"></script>
   <script src="{{ '/js/utils/unordered_list.js'|media }}"></script>
   <script src="{{ '/js/editors/simple_editor.js'|media }}"></script>
-  <script src="{{ '/js/editors/tinymce.js'|media }}"></script>
   <script src="{{ '/js/utils/editable.js'|media }}"></script>
   {% endcompress %}
   {% block userjs %}

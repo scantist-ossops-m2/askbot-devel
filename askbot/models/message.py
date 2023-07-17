@@ -1,7 +1,7 @@
 '''Copied from Django 1.3.1 source code, it will use this model to'''
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 
 class Message(models.Model):
@@ -14,7 +14,7 @@ class Message(models.Model):
     message.
     """
     user = models.ForeignKey(User, related_name='_message_set', on_delete=models.CASCADE)
-    message = models.TextField(ugettext_lazy('message'))
+    message = models.TextField(gettext_lazy('message'))
 
     class Meta:
         '''Added for backwards compatibility with databases

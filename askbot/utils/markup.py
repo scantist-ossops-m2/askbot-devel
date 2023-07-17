@@ -227,20 +227,12 @@ def markdown_input_converter(text):
     return sanitize_html(text)
 
 
-def tinymce_input_converter(text):
-    """tinymce input to production html converter"""
-    text = urlize_html(text)
-    return strip_tags(text, ['script', 'style', 'link'])
-
-
 def convert_text(text):
     parser_type = askbot_settings.EDITOR_TYPE
     if parser_type == 'plain-text':
         return plain_text_input_converter(text)
     if parser_type == 'markdown':
         return markdown_input_converter(text)
-    if parser_type == 'tinymce':
-        return tinymce_input_converter(text)
     raise NotImplementedError
 
 

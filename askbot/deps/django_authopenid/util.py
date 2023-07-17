@@ -22,7 +22,7 @@ from requests_oauthlib.oauth2_session import OAuth2Session
 from django.db.models.query import Q
 from django.conf import settings
 from django.urls import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.core.exceptions import ImproperlyConfigured
 from askbot.conf import settings as askbot_settings
 from askbot.deps.django_authopenid import providers

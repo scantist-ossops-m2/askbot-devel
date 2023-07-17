@@ -9,8 +9,8 @@ from django.core import mail
 from django.core.exceptions import PermissionDenied
 from django.forms import ValidationError
 from django.utils.text import format_lazy
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.utils.html import strip_tags
 from askbot import exceptions
 from askbot import const
@@ -116,22 +116,22 @@ def send_mail( # pylint: disable=too-many-arguments
         if raise_on_failure:
             raise exceptions.EmailNotSent(str(error))
 
-INSTRUCTIONS_PREAMBLE = ugettext_lazy('<p>To post by email, please:</p>')
-QUESTION_TITLE_INSTRUCTION = ugettext_lazy(
+INSTRUCTIONS_PREAMBLE = gettext_lazy('<p>To post by email, please:</p>')
+QUESTION_TITLE_INSTRUCTION = gettext_lazy(
     '<li>Type title in the subject line</li>'
 )
-QUESTION_DETAILS_INSTRUCTION = ugettext_lazy(
+QUESTION_DETAILS_INSTRUCTION = gettext_lazy(
     '<li>Type details into the email body</li>'
 )
-OPTIONAL_TAGS_INSTRUCTION = ugettext_lazy(
+OPTIONAL_TAGS_INSTRUCTION = gettext_lazy(
 """<li>The beginning of the subject line can contain tags,
 <em>enclosed in the square brackets</em> like so: [Tag1; Tag2]</li>"""
 )
-REQUIRED_TAGS_INSTRUCTION = ugettext_lazy(
+REQUIRED_TAGS_INSTRUCTION = gettext_lazy(
 """<li>In the beginning of the subject add at least one tag
 <em>enclosed in the brackets</em> like so: [Tag1; Tag2].</li>"""
 )
-TAGS_INSTRUCTION_FOOTNOTE = ugettext_lazy(
+TAGS_INSTRUCTION_FOOTNOTE = gettext_lazy(
 """<p>Note that a tag may consist of more than one word, to separate
 the tags, use a semicolon or a comma, for example, [One tag; Other tag]</p>"""
 )

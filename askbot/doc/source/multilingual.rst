@@ -35,7 +35,7 @@ to the language prefix of the url.
 
 For either of multilingual modes, specify the list of
 the enabled languages::
-    from django.utils.translation import ugettext_lazy as _
+    from django.utils.translation import gettext_lazy as _
     LANGUAGES = (
         ('de', _('German')),
         ('en', _('English'))

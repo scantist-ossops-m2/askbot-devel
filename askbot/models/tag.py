@@ -2,8 +2,8 @@ import re
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import get_language
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.conf import settings as django_settings
 from askbot.models.base import BaseQuerySetManager
 from askbot.models.fields import LanguageCodeField
@@ -298,9 +298,9 @@ class Tag(models.Model):
 
 class MarkedTag(models.Model):
     TAG_MARK_REASONS = (
-        ('good', ugettext_lazy('interesting')),
-        ('bad', ugettext_lazy('ignored')),
-        ('subscribed', ugettext_lazy('subscribed')),
+        ('good', gettext_lazy('interesting')),
+        ('bad', gettext_lazy('ignored')),
+        ('subscribed', gettext_lazy('subscribed')),
     )
     tag = models.ForeignKey('Tag', related_name='user_selections', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='tag_selections', on_delete=models.CASCADE)

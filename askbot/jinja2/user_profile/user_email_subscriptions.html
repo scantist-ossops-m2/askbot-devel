@@ -139,7 +139,16 @@
           </tr>
         </tbody>
       </table>
-
+      <style>
+        #id_email_tag_filter_strategy {
+          display: flex;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+        }
+        #id_email_tag_filter_strategy label {
+          white-space: nowrap;
+        }
+      </style>
       <table class='tag-filter-settings'>{{ tag_filter_selection_form }}</table>
       <div>
         <input class='btn' type="submit" name="save" value="{% trans %}Update{% endtrans %}"/>&nbsp;

@@ -1,6 +1,6 @@
 """Settings to control content moderation"""
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot.conf.settings_wrapper import settings
 from askbot.conf.super_groups import DATA_AND_FORMATTING
 from livesettings.values import ConfigurationGroup

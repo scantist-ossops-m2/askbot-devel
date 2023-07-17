@@ -12,8 +12,8 @@ from django.core.exceptions import PermissionDenied
 from django.forms.utils import ErrorList
 from django.utils import timezone
 from django.utils.html import strip_tags
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 from askbot.utils.translation import get_language
 from django.utils.text import get_text_list, format_lazy
 from django.contrib.auth.models import User
@@ -26,7 +26,6 @@ from captcha.fields import ReCaptchaField
 from askbot.conf import settings as askbot_settings
 from askbot.conf import get_tag_email_filter_strategy_choices
 from askbot.models import UserProfile
-from tinymce.widgets import TinyMCE
 import logging
 
 
@@ -226,7 +225,7 @@ class CountedWordsField(forms.CharField):
         value = value.strip()
         word_count = len(value.split())
         if word_count < self.min_words:
-            msg = ungettext_lazy('must be > %d word', 'must be > %d words',
+            msg = ngettext_lazy('must be > %d word', 'must be > %d words',
                                  self.min_words - 1) % (self.min_words - 1)
             # TODO - space is not used in Chinese
             raise forms.ValidationError(
@@ -234,7 +233,7 @@ class CountedWordsField(forms.CharField):
             )
 
         if word_count > self.max_words:
-            msg = ungettext_lazy('must be < %d word', 'must be < %d words',
+            msg = ngettext_lazy('must be < %d word', 'must be < %d words',
                                  self.max_words + 1) % (self.max_words + 1)
             raise forms.ValidationError(
                 format_lazy('{} {}', self.field_name, msg))
@@ -246,7 +245,6 @@ class AskbotReCaptchaField(ReCaptchaField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('private_key', askbot_settings.RECAPTCHA_SECRET)
         kwargs.setdefault('public_key', askbot_settings.RECAPTCHA_KEY)
-        kwargs.setdefault('use_ssl', True)
         super(AskbotReCaptchaField, self).__init__(*args, **kwargs)
 
 
@@ -317,7 +315,7 @@ class TitleField(forms.CharField):
 
         chars = slugify(value).replace('-', '')
         if len(chars) < askbot_settings.MIN_TITLE_LENGTH:
-            msg = ungettext_lazy(
+            msg = ngettext_lazy(
                 'must have > %d non-punctuation character',
                 'must have > %d non-punctuation characters',
                 askbot_settings.MIN_TITLE_LENGTH
@@ -360,20 +358,14 @@ class EditorField(forms.CharField):
         self.required = True
         if askbot_settings.EDITOR_TYPE == 'markdown':
             self.widget = forms.Textarea(attrs=widget_attrs)
-        elif askbot_settings.EDITOR_TYPE == 'tinymce':
-            self.widget = TinyMCE(attrs=widget_attrs, mce_attrs=editor_attrs)
         self.min_length = 10
 
     def clean(self, value):
         value = value or ''
-
-        if askbot_settings.EDITOR_TYPE == 'tinymce':
-            text_length = len(strip_tags(value).strip())
-        else:
-            text_length = len(value.strip())
+        text_length = len(value.strip())
 
         if text_length < self.min_length:
-            msg = ungettext_lazy(
+            msg = ngettext_lazy(
                 'enter > %(length)d character',
                 'enter > %(length)d characters',
                 self.min_length
@@ -418,7 +410,7 @@ def clean_tag(tag_name, look_in_db=True):
     if tag_length > askbot_settings.MAX_TAG_LENGTH:
         # singular form is odd in english, but required for pluralization
         # in other languages
-        msg = ungettext_lazy(
+        msg = ngettext_lazy(
             # odd but added for completeness
             'each tag must be shorter than %(max_chars)d character',
             'each tag must be shorter than %(max_chars)d characters',
@@ -467,7 +459,7 @@ class TagNamesField(forms.CharField):
                             'We ran out of space for recording the tags. '
                             'Please shorten or delete some of them.')
         self.label = kwargs.get('label') or _('tags')
-        self.help_text = kwargs.get('help_text') or ungettext_lazy(
+        self.help_text = kwargs.get('help_text') or ngettext_lazy(
             'Tags are short keywords, with no spaces within. '
             'Up to %(max_tags)d tag can be used.',
             'Tags are short keywords, with no spaces within. '
@@ -492,7 +484,7 @@ class TagNamesField(forms.CharField):
         tag_count = len(tag_strings)
         if tag_count > askbot_settings.MAX_TAGS_PER_POST:
             max_tags = askbot_settings.MAX_TAGS_PER_POST
-            msg = ungettext_lazy(
+            msg = ngettext_lazy(
                         'please use %(tag_count)d tag or less',
                         'please use %(tag_count)d tags or less',
                         tag_count) % {'tag_count': max_tags}

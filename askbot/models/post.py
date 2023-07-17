@@ -1,6 +1,7 @@
 from collections import defaultdict
 import operator
 import logging
+from urllib.parse import quote as django_urlquote
 
 from django.contrib.sitemaps import ping_google
 from django.conf import settings as django_settings
@@ -11,8 +12,7 @@ from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import activate as activate_language
 from django.utils.translation import get_language
-from django.utils.translation import ugettext as _
-from django.utils.http import urlquote as django_urlquote
+from django.utils.translation import gettext as _
 from django.core import exceptions as django_exceptions
 from django.core import cache
 from django.core.exceptions import ValidationError

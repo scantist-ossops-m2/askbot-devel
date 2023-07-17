@@ -14,7 +14,7 @@ from django.core import cache  # import cache, not from cache import cache, to b
 from django.core import exceptions as django_exceptions
 from django.template.loader import get_template
 from django.template import Context
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.translation import get_language
 from django.utils import timezone
 

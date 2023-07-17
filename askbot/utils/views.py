@@ -4,6 +4,7 @@ from django.http import HttpResponseForbidden
 from django.template import Context
 from django.template.loader import get_template
 import json
+from askbot.utils.http import is_ajax
 
 ASKBOT_VIEW_MODULES = (
     'askbot.views',
@@ -66,7 +67,7 @@ class PjaxView(object):
         """returns the view function - for the urls.py"""
         def view_function(request, *args, **kwargs):
             """the actual view function"""
-            if request.user.is_authenticated and request.is_ajax():
+            if request.user.is_authenticated and is_ajax(request):
                 view_method = getattr(self, request.method.lower())
                 return view_method(request, *args, **kwargs)
             else:

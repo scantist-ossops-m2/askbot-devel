@@ -12,7 +12,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 from django.utils.html import strip_tags as strip_all_tags
 from django.utils.html import urlize
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from askbot.conf import settings as askbot_settings
 from askbot.utils.url_utils import get_login_url

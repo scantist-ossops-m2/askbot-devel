@@ -2,8 +2,8 @@ import os
 import shutil
 import tempfile
 from django.test import TestCase
-from django.core.files.uploadedfile import UploadedFile
 from django.conf import settings as django_settings
+from django.core.files.uploadedfile import UploadedFile
 from askbot.conf import settings as askbot_settings
 from askbot.skins import utils as skin_utils
 from askbot.utils.path import mkdir_p
@@ -61,8 +61,8 @@ class SkinTests(TestCase):
                             'askbot-logo.svg'
                         )
         logo_file = open(logo_src, 'rb')
-        new_logo = UploadedFile(file = logo_file)
-        askbot_settings.update('SITE_LOGO_URL', new_logo)
+        uploaded_file = UploadedFile(file=logo_file)
+        askbot_settings.update('SITE_LOGO_URL', uploaded_file)
         logo_url = askbot_settings.SITE_LOGO_URL
         self.assertTrue(logo_url.startswith(django_settings.MEDIA_URL))
         response = self.client.get(logo_url, follow=True)

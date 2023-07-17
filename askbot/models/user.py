@@ -11,8 +11,8 @@ from django.contrib.auth.models import Group as AuthGroup
 from django.core import exceptions
 from django.forms import EmailField, URLField
 from django.utils import translation, timezone
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.utils.html import strip_tags
 from askbot import const
 from askbot.conf import settings as askbot_settings
@@ -411,18 +411,18 @@ class EmailFeedSetting(models.Model):
     }
     # TODO: words
     FEED_TYPE_CHOICES = (
-        ('q_all', ugettext_lazy('Entire forum')),
-        ('q_ask', ugettext_lazy('Questions that I asked')),
-        ('q_ans', ugettext_lazy('Questions that I answered')),
-        ('q_noans', ugettext_lazy('Unanswered questions')),
-        ('q_sel', ugettext_lazy('Individually selected questions')),
-        ('m_and_c', ugettext_lazy('Mentions and comment responses')),
+        ('q_all', gettext_lazy('Entire forum')),
+        ('q_ask', gettext_lazy('Questions that I asked')),
+        ('q_ans', gettext_lazy('Questions that I answered')),
+        ('q_noans', gettext_lazy('Unanswered questions')),
+        ('q_sel', gettext_lazy('Individually selected questions')),
+        ('m_and_c', gettext_lazy('Mentions and comment responses')),
     )
     UPDATE_FREQUENCY = (
-        ('i', ugettext_lazy('Instantly')),
-        ('d', ugettext_lazy('Daily')),
-        ('w', ugettext_lazy('Weekly')),
-        ('n', ugettext_lazy('No email')),
+        ('i', gettext_lazy('Instantly')),
+        ('d', gettext_lazy('Daily')),
+        ('w', gettext_lazy('Weekly')),
+        ('n', gettext_lazy('No email')),
     )
 
     subscriber = models.ForeignKey(User, related_name='notification_subscriptions', on_delete=models.CASCADE)

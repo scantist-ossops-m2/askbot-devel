@@ -113,10 +113,6 @@ SimpleEditor.prototype.createDom = function () {
     this._textarea = textarea;
     this._mirror = mirror;
 
-
-    if (askbot.settings.tinymceEditorDeselector) {
-        textarea.addClass(askbot.settings.tinymceEditorDeselector);//suppress tinyMCE
-    }
     addExtraCssClasses(textarea, 'editorClasses');
     if (this._text) {
         textarea.val(this._text);

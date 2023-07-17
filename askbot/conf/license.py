@@ -1,6 +1,6 @@
 """settings that allow changing of the license
 clause used in askbot instances"""
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot import const
 from askbot.conf.settings_wrapper import settings
 from askbot.conf.super_groups import CONTENT_AND_UI

@@ -15,7 +15,7 @@ try:
     from importlib import import_module
 except ImportError:
     from django.utils.importlib import import_module
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from askbot.deps.group_messaging.signals import response_created
 from askbot.deps.group_messaging.signals import thread_created
 import copy

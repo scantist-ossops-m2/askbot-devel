@@ -11,7 +11,7 @@ from django.core.management import BaseCommand
 from django.db import connection
 from django.db.models import Q, F
 from django.utils import timezone
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.translation import activate as activate_language
 
 from askbot import const
@@ -387,7 +387,7 @@ class Command(BaseCommand):
                                 )
                 emailed_at = datetime.datetime(1970, 1, 1)  #long time ago
                 if django_settings.USE_TZ:
-                    emailed_at = timezone.make_aware(emailed_at, timezone.utc)
+                    emailed_at = timezone.make_aware(emailed_at, datetime.timezone.utc)
             except Activity.MultipleObjectsReturned:
                 raise Exception(
                                 'server error - multiple question email activities '

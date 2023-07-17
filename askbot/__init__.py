@@ -9,7 +9,7 @@ import platform
 import sys
 import traceback
 
-VERSION = (0, 11, 7)
+VERSION = (0, 12, 0)
 
 default_app_config = 'askbot.apps.AskbotConfig' #pylint: disable=invalid-name
 
@@ -19,37 +19,35 @@ REQUIREMENTS = {
     'aiohttp': 'aiohttp<4.0',
     'appconf': 'django-appconf==1.0.5',
     'akismet': 'akismet==1.0.1',
-    'avatar': 'django-avatar>=4.0',
+    'avatar': 'django-avatar>=7.0',
     'bleach': 'bleach==5.0.1',
     'bs4': 'beautifulsoup4<=4.7.1',
-    'compressor': 'django-compressor>=2.0,<=2.4',
+    'compressor': 'django-compressor>=3.0,<=4.4',
     'celery': 'celery==5.2.7',
-    'django': 'django>=1.11,<4.0',
+    'django': 'django>=3.0,<5.0',
     'django_countries': 'django-countries>=3.3',
     'django_jinja': 'django-jinja>=2.0',
-    'followit': 'django-followit==0.5.0',
+    'followit': 'django-followit==0.6.0',
     'html5lib': 'html5lib==1.1',
     'jinja2': 'Jinja2>=2.10,<3.1',
     'jsonfield': 'jsonfield>=2.0.0',
     'jwt': 'pyjwt<=1.7.1',
     'keyedcache': 'django-keyedcache3>=1.5.1',
-    'livesettings': 'django-livesettings3==1.5.1',
+    'livesettings': 'django-livesettings3==1.6.0',
     'markdown2': 'markdown2<=2.3.9',
     'markupsafe': 'markupsafe',
     'mock': 'mock==3.0.5',
     'oauth2': 'oauth2<=1.9.0.post1',
     'openid': 'python-openid2>=3.0',
     'picklefield': 'django-picklefield>=1.0.0,<=3.0.1',
-    'pytz': 'pytz',
-    'captcha': 'django-recaptcha>=1.0.3,<=1.3.0',
-    'cas': 'python-cas>=1.4.0,<1.6',
+    'captcha': 'django-recaptcha==3.0.0',
+    'cas': 'python-cas>=1.4.0,<1.7',
     'okta_jwt_verifier': 'okta-jwt-verifier==0.2.3',
     'responses': 'responses>=0.9.0',
     'requests_oauthlib': 'requests-oauthlib>=1.2.0',
     'requirements': 'requirements-parser>=0.2.0',
-    'robots': 'django-robots>=3.1,<5.0',
+    'robots': 'django-robots==5.0',
     'regex': 'regex',
-    'tinymce': 'django-tinymce==2.8.0',
     'unidecode': 'unidecode',
     'urllib3': 'urllib3<1.27,>=1.21.1'
 }

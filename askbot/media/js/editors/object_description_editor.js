@@ -1,4 +1,4 @@
-/* global askbot, TinyMCE, WMD, WrappedElement, inherits, gettext, showMessage,
+/* global askbot, WMD, WrappedElement, inherits, gettext, showMessage,
  setupButtonEventHandlers */
 /**
  * @constructor
@@ -176,13 +176,6 @@ ObjectDescriptionEditor.prototype.decorate = function (element) {
   var editor;
   if (askbot.settings.editorType === 'markdown') {
     editor = new WMD({minLines: 3});
-  } else {
-    editor = new TinyMCE({//override defaults
-      theme_advanced_buttons1: 'bold, italic, |, link, |, numlist, bullist',
-      theme_advanced_buttons2: '',
-      theme_advanced_path: false,
-      plugins: ''
-    });
   }
   if (this._enabled_editor_buttons) {
     editor.setEnabledButtons(this._enabled_editor_buttons);

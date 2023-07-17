@@ -24,8 +24,8 @@ from django.template import Context, RequestContext
 import json
 from django.utils import timezone
 from django.utils.html import escape
-from django.utils.translation import ugettext as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 from django.utils import translation
 from django.views.decorators import csrf
 from django.urls import reverse
@@ -52,6 +52,7 @@ from askbot.utils import functions
 from askbot.utils.decorators import anonymous_forbidden, ajax_only, get_only
 from askbot.utils.diff import textDiff as htmldiff
 from askbot.utils.html import sanitize_html
+from askbot.utils.http import is_ajax
 from askbot.utils.loading import load_module
 from askbot.utils.translation import get_language_name
 from askbot.utils.url_utils import reverse_i18n
@@ -143,7 +144,7 @@ def questions(request, **kwargs):
 
     reset_method_count = len([_f for _f in [search_state.query, search_state.tags, meta_data.get('author_name', None)] if _f])
 
-    if request.is_ajax():
+    if is_ajax(request):
         q_count = paginator.count
 
         if q_count > search_state.page_size:
@@ -361,7 +362,7 @@ def tags(request):#view showing a listing of available tags - plain list
     data['tags'] = tags
     data.update(context.get_extra('ASKBOT_TAGS_PAGE_EXTRA_CONTEXT', request, data))
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = get_template('tags/content.html')
         json_data = {'success': True, 'html': template.render(data,request)}
         json_string = json.dumps(json_data)

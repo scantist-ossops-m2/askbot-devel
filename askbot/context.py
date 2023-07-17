@@ -84,16 +84,6 @@ def application_settings(request):
     my_settings['LOGOUT_URL'] = url_utils.get_logout_url()
     my_settings['SEARCH_FRONTEND_SRC_URL'] = settings.ASKBOT_SEARCH_FRONTEND_SRC_URL
     my_settings['SEARCH_FRONTEND_CSS_URL'] = settings.ASKBOT_SEARCH_FRONTEND_CSS_URL
-
-    if my_settings['EDITOR_TYPE'] == 'tinymce':
-        tinymce_plugins = settings.TINYMCE_DEFAULT_CONFIG.get('plugins', '').split(',')
-        my_settings['TINYMCE_PLUGINS'] = [v.strip() for v in tinymce_plugins]
-        my_settings['TINYMCE_EDITOR_DESELECTOR'] = settings.TINYMCE_DEFAULT_CONFIG['editor_deselector'] #pylint: disable=line-too-long
-        my_settings['TINYMCE_CONFIG_JSON'] = json.dumps(settings.TINYMCE_DEFAULT_CONFIG)
-    else:
-        my_settings['TINYMCE_PLUGINS'] = []
-        my_settings['TINYMCE_EDITOR_DESELECTOR'] = ''
-
     my_settings['LOGOUT_REDIRECT_URL'] = url_utils.get_logout_redirect_url()
 
     current_language = get_language()
@@ -131,9 +121,4 @@ def application_settings(request):
         context.update(login_context.login_context(request))
 
     context['group_list'] = json.dumps(make_group_list())
-
-    if askbot_settings.EDITOR_TYPE == 'tinymce':
-        from tinymce.widgets import TinyMCE
-        context['tinymce'] = TinyMCE()
-
     return context

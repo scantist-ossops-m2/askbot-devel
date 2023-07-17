@@ -14,8 +14,8 @@ import zipfile
 import jwt
 from django.conf import settings as django_settings
 from django.core.validators import validate_email
-from django.utils.translation import ugettext as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 from django.utils.html import escape
 from django.utils.functional import lazy
 from django.utils.safestring import mark_safe
@@ -180,13 +180,13 @@ def diff_date(date, use_on_prefix=False):
     elif days == 1:
         return _('yesterday')
     elif minutes >= 60:
-        return ungettext(
+        return ngettext(
             '%(hr)d hour ago',
             '%(hr)d hours ago',
             hours
         ) % {'hr':hours}
     else:
-        return ungettext(
+        return ngettext(
             '%(min)d min ago',
             '%(min)d mins ago',
             minutes

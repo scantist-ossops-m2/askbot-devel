@@ -37,20 +37,22 @@
             {% endif %}
           {% else %}
             {# show uploaded avatar #}
+            <p class="avatar-label">{% trans %}Uploaded{% endtrans %}</p>
             {% include "avatar/avatar.html" %}
-            {% if not avatar.is_primary %}
-              {# select this avatar as primary #}
-              <form method="POST" action="{{ url('askbot_avatar_set_primary',  view_user.id ) }}">{{ csrf_input }}
-                <input type="hidden" name="choice" value="{{ avatar.id }}" />
-                <p><input type="submit" class="btn" value="{% trans %}Set as primary{% endtrans %}" /></p>
+            <div style="display: flex; flex-wrap: nowrap;">
+              {% if not avatar.is_primary %}
+                {# select this avatar as primary #}
+                <form method="POST" action="{{ url('askbot_avatar_set_primary',  view_user.id ) }}">{{ csrf_input }}
+                  <input type="hidden" name="choice" value="{{ avatar.id }}" />
+                  <p><input type="submit" class="btn" value="{% trans %}Set as primary{% endtrans %}" /></p>
+                </form>
+              {% endif %}
+              <form method="POST" action="{{ url('askbot_avatar_delete',  avatar.id ) }}">
+                {{ csrf_input }}
+                <input type="submit" class="btn avatar-delete" value="x" />
+                <span class="sr-only">{% trans %}Remove{% endtrans %}</span>
               </form>
-            {% endif %}
-            {# delete avatar button #}
-            <form method="POST" action="{{ url('askbot_avatar_delete',  avatar.id ) }}">
-              {{ csrf_input }}
-              <input type="submit" class="btn avatar-delete" value="x" />
-              <span class="sr-only">{% trans %}Remove{% endtrans %}</span>
-            </form>
+            </div>
           {% endif %}
           {% if avatar.is_primary %}
             <p class="avatar-primary-label">{% trans %}Primary avatar{% endtrans %}</p>

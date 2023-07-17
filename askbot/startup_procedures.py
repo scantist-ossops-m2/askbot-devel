@@ -719,88 +719,6 @@ def test_custom_user_profile_tab():
         print_errors(errors, header=header, footer=footer)
 
 
-def get_tinymce_sample_config():
-    """returns the sample configuration for TinyMCE
-    as string"""
-    askbot_root = askbot.get_install_directory()
-    file_path = os.path.join(
-        askbot_root, 'setup_templates', 'tinymce_sample_config.py')
-    config_file = open(file_path, 'r')
-    sample_config = config_file.read()
-    config_file.close()
-    return sample_config
-
-
-def test_tinymce():
-    """tests the tinymce editor setup"""
-    errors = list()
-    if 'tinymce' not in django_settings.INSTALLED_APPS:
-        errors.append("add 'tinymce', to the INSTALLED_APPS")
-
-    required_attrs = (
-        'TINYMCE_COMPRESSOR',
-        'TINYMCE_JS_ROOT',
-        'TINYMCE_DEFAULT_CONFIG'
-    )
-
-    missing_attrs = list()
-    for attr in required_attrs:
-        if not hasattr(django_settings, attr):
-            missing_attrs.append(attr)
-
-    if missing_attrs:
-        errors.append('add missing settings: %s' % ', '.join(missing_attrs))
-
-    # check compressor setting
-    compressor_on = getattr(django_settings, 'TINYMCE_COMPRESSOR', False)
-    if compressor_on is False:
-        errors.append('add line: TINYMCE_COMPRESSOR = True')
-        # TODO: add pointer to instructions on how to debug tinymce:
-        # 1) add ('tiny_mce', os.path.join(ASKBOT_ROOT, 'media/js/tinymce')),
-        #    to STATIFILES_DIRS
-        # 2) add this to the main urlconf:
-        #     (
-        #         r'^m/(?P<path>.*)$',
-        #         'django.views.static.serve',
-        #         {'document_root': static_root}
-        #     ),
-        # 3) set `TINYMCE_COMPRESSOR = False`
-        # 4) set DEBUG = False
-        # then - tinymce compressing will be disabled and it will
-        # be possible to debug custom tinymce plugins that are used with askbot
-
-    config = getattr(django_settings, 'TINYMCE_DEFAULT_CONFIG', None)
-    if config:
-        if 'editor_deselector' not in config:
-            message = "add to TINYMCE_DEFAULT_CONFIG\n'editor_deselector': 'mceNoEditor',"
-            errors.append(message)
-
-        if 'convert_urls' in config:
-            if config['convert_urls']:
-                message = "set 'convert_urls':False in TINYMCE_DEFAULT_CONFIG"
-                errors.append(message)
-        else:
-            message = "add to TINYMCE_DEFAULT_CONFIG\n'convert_urls': False,"
-            errors.append(message)
-
-
-    # check js root setting - before version 0.7.44 we used to have
-    # "common" skin and after we combined it into the default
-    js_root = getattr(django_settings, 'TINYMCE_JS_ROOT', '')
-    relative_js_path = 'default/media/tinymce/'
-    expected_js_root = os.path.join(django_settings.STATIC_ROOT, relative_js_path)
-    if os.path.normpath(js_root) != os.path.normpath(expected_js_root):
-        error_tpl = "add line: TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, '%s')"
-        errors.append(error_tpl % relative_js_path)
-
-    if errors:
-        header = 'Please add the tynymce editor configuration ' + \
-            'to your settings.py file.'
-        footer = 'You might want to use this sample configuration ' + \
-                'as template:\n\n' + get_tinymce_sample_config()
-        print_errors(errors, header=header, footer=footer)
-
-
 def test_longerusername():
     """tests proper installation of the "longerusername" app
     """
@@ -983,7 +901,7 @@ def test_versions():
 
     dj_ver = django.VERSION
     upgrade_msg = 'About upgrades, please read http://askbot.org/doc/upgrade.html'
-    if dj_ver < (2, 2) or dj_ver >= (4, 0):
+    if dj_ver < (3, 0) or dj_ver >= (5, 0):
         errors.append('This version of Askbot supports django 2.2 - 3.2 ' + upgrade_msg)
     elif py_ver[:3] < (3, 6, 0):
         errors.append('Askbot requires Python 3.6 - 3.10')
@@ -1035,7 +953,6 @@ and for making posts by email"""
     test_service_url_prefix()
     test_staticfiles()
     test_template_settings()
-    test_tinymce()
     settings_tester = SettingsTester({
         'CACHE_MIDDLEWARE_ANONYMOUS_ONLY': {
             'value': True,

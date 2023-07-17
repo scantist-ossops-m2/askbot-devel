@@ -1,7 +1,7 @@
 """
 Settings for askbot data display and entry
 """
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot.conf.settings_wrapper import settings
 from livesettings import values as livesettings
 from askbot import const
@@ -13,10 +13,7 @@ FORUM_DATA_RULES = livesettings.ConfigurationGroup(
     super_group=DATA_AND_FORMATTING
 )
 
-EDITOR_CHOICES = (
-    ('markdown', _('Markdown')),
-    ('tinymce', _('WYSIWYG (tinymce)')),
-)
+EDITOR_CHOICES = (('markdown', _('Markdown')),)
 
 settings.register(
     livesettings.StringValue(
@@ -500,10 +497,7 @@ settings.register(
         'SAVE_COMMENT_ON_ENTER',
         default=False,
         description=_('Save comment by pressing &lt;Enter&gt; key'),
-        help_text=_(
-            'This may be useful when only one-line comments '
-            'are desired. Will not work with TinyMCE editor.'
-        )
+        help_text=_('This may be useful when only one-line comments are desired.')
     )
 )
 

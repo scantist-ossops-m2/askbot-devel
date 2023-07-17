@@ -3,6 +3,7 @@ Changes in Askbot
 
 Development
 -----------
+* Removed TinyMCE code
 * Added ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS parameter to settings.py,
   defaults to 1s
 * Made moderation queue actions snappier by using optimistic UI update

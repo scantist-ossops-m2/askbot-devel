@@ -1,6 +1,3 @@
-{% if settings.EDITOR_TYPE == 'tinymce' %}
-  {% include "editors/tinymce_scripts.html" %}
-{% endif %}
 {% compress js %}
   <script src="{{ '/jslib/editor.js'|media }}"></script>
   <script src="{{ '/jslib/jquery.validate.js'|media }}"></script>
@@ -31,7 +28,6 @@
   <script src="{{ '/js/editors/simple_editor.js'|media }}"></script>
   <script src="{{ '/js/editors/wmd_expander_toggle.js'|media }}"></script>
   <script src="{{ '/js/editors/wmd.js'|media }}"></script>
-  <script src="{{ '/js/editors/tinymce.js'|media }}"></script>
   <script src="{{ '/js/utils/editable.js'|media }}"></script>
   <script src="{{ '/js/forms/form.js'|media }}"></script>
   <script src="{{ '/js/editors/folded_editor.js'|media }}"></script>

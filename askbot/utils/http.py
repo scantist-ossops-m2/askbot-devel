@@ -2,6 +2,11 @@
 """
 from copy import copy
 
+def is_ajax(request):
+    """Returns `True` if request is ajax"""
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
 def hide_passwords(data):
     """replaces content of values that may contain passsword
     with XXXXXX for better security"""

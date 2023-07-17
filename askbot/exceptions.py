@@ -1,5 +1,5 @@
 from django.core import exceptions
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 
 class DeploymentError(exceptions.ImproperlyConfigured):

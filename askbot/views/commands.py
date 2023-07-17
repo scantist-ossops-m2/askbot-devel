@@ -25,10 +25,10 @@ from django.views.decorators import csrf
 import json
 from django.utils import timezone
 from django.utils import translation
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import escape
-from django.utils.translation import ugettext as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 from askbot.utils.slug import slugify
 from askbot import models
 from askbot import forms
@@ -42,6 +42,7 @@ from askbot.utils import url_utils
 from askbot.utils.forms import get_db_object_or_404
 from askbot.utils.functions import decode_and_loads
 from askbot.utils.html import get_login_link
+from askbot.utils.http import is_ajax
 from askbot import spam_checker
 from django.template import RequestContext
 from askbot.skins.shortcuts import render_into_skin_as_string
@@ -148,7 +149,7 @@ def legacy_vote_view(request):
     }
 
     try:
-        if not request.is_ajax() or not request.method == 'POST':
+        if not is_ajax(request) or not request.method == 'POST':
             raise Exception(_('Sorry, something is not right here...'))
 
         if not request.user.is_authenticated:

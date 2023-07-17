@@ -29,7 +29,6 @@
   <script src="{{ '/js/pages/ask/draft_question.js'|media }}"></script>
   <script src="{{ '/js/editors/wmd_expander_toggle.js'|media }}"></script>
   <script src="{{ '/js/editors/wmd.js'|media }}"></script>
-  <script src="{{ '/js/editors/tinymce.js'|media }}"></script>
   <script src="{{ '/js/editors/folded_editor.js'|media }}"></script>
   <script src="{{ '/js/validators/question_validators.js'|media }}"></script>
   <script src="{{ '/js/forms/form.js'|media }}"></script>
@@ -40,9 +39,6 @@
     {% compress js %}
       {% include "meta/markdown_javascript.html" %}
     {% endcompress %}
-  {% elif settings.EDITOR_TYPE == 'tinymce' and editor_is_folded %}
-    {# if unfolded, this is loaded by the form media #}
-    {% include "editors/tinymce_scripts.html" %}
   {% endif %}
   {% include "meta/editor_data.html" %}
   {% if mandatory_tags %}

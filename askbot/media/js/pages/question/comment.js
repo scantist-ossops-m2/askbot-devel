@@ -161,17 +161,8 @@ Comment.prototype.setContent = function (data) {
     vote.setScore(data.score);
 
     // 3) set the comment html
-    if (EditCommentForm.prototype.getEditorType() === 'tinymce') {
-        var theComment = $('<div/>');
-        theComment.html(data.html);
-        //sanitize, just in case
-        this._comment_body.empty();
-        this._comment_body.append(theComment);
-        this._data.text = data.html;
-    } else {
-        this._comment_body.empty();
-        this._comment_body.html(data.html);
-    }
+    this._comment_body.empty();
+    this._comment_body.html(data.html);
 
     // 4) update user info
     this._userLink.attr('href', data.user_profile_url);

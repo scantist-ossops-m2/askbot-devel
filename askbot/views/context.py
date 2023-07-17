@@ -2,7 +2,7 @@
 the templates in the various views"""
 from django.conf import settings as django_settings
 import json
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from askbot.conf import settings as askbot_settings
 from askbot import const
 from askbot.const import message_keys as msg

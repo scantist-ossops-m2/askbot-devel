@@ -1,7 +1,7 @@
 """
 General skin settings
 """
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings as django_settings
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError

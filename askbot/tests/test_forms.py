@@ -333,13 +333,6 @@ class EditorFieldTests(AskbotTestCase):
             django_forms.ValidationError, field.clean, TEXT_WITH_LINK
         )
 
-    @with_settings(EDITOR_TYPE='tinymce', MIN_REP_TO_SUGGEST_LINK=10)
-    def test_low_rep_user_cannot_post_links_tinymce(self):
-        field = forms.EditorField(user=self.user)
-        self.assertRaises(
-            django_forms.ValidationError, field.clean, TEXT_WITH_LINK
-        )
-
 
 class CleanTagTest(AskbotTestCase):
     def test_look_in_db_true(self):

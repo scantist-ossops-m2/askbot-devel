@@ -64,10 +64,7 @@ FoldedEditor.prototype.decorate = function (element) {
     var editorType = askbot.settings.editorType;
     var editor;
 
-    if (editorType === 'tinymce') {
-        editor = new TinyMCE();
-        editor.setId('editor');
-    } else if (editorType === 'markdown') {
+    if (editorType === 'markdown') {
         editor = new WMD({'minLines': 10});
         editor.setIdSeed('');
     } else {

@@ -14,8 +14,8 @@ from django.http import HttpResponse
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect
 from django.utils import translation
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.views.decorators import csrf
 from django.db.models import Max, Count
 from askbot.conf import settings as askbot_settings
@@ -147,7 +147,7 @@ def feedback(request):
     return render(request, 'feedback.html', data)
 
 FEEDBACK_CANCEL_MSG = 'We look forward to hearing your feedback! Please, give it next time :)'
-feedback.CANCEL_MESSAGE=ugettext_lazy(FEEDBACK_CANCEL_MSG)
+feedback.CANCEL_MESSAGE=gettext_lazy(FEEDBACK_CANCEL_MSG)
 
 def privacy(request):
     data = {

@@ -8,6 +8,4 @@ be simply upgraded.
 
 Files/directories known to be modified:
 wmd (added django i18n)
-tinymce (custom plugins file and attachement uploads)
-timeago.js added django i18n, possibly modified some
-           output formats
+timeago.js added django i18n, possibly modified some output formats

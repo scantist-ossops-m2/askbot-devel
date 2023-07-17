@@ -22,8 +22,8 @@ import datetime
 from django.template.defaultfilters import slugify
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 from django.utils import timezone
 from django.dispatch import Signal
 
@@ -808,7 +808,7 @@ class Taxonomist(Badge):
     def __init__(self):
         super(Taxonomist, self).__init__(
             name=_('Taxonomist'), level=const.SILVER_BADGE,
-            multiple=False, description=ungettext(
+            multiple=False, description=ngettext(
                 'Created a tag used %(num)s time',
                 'Created a tag used %(num)s times',
                 askbot_settings.TAXONOMIST_BADGE_MIN_USE_COUNT
@@ -981,8 +981,7 @@ def init_badges():
     from askbot.models.repute import BadgeData
     BadgeData.objects.exclude(slug__in=list(map(slugify, list(BADGES.keys())))).delete()
 
-award_badges_signal = Signal(providing_args=[
-    'actor', 'event', 'context_object', 'timestamp'])
+award_badges_signal = Signal()
 # actor - user who triggers the event
 # event - string name of the event, e.g 'downvote'
 # context_object - database object related to the event, e.g. question

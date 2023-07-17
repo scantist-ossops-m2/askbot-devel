@@ -9,9 +9,9 @@ from django.conf import settings as django_settings
 from django.urls import reverse
 from django.template import Context
 from django.template.loader import get_template
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot import const
 from askbot.conf import settings as askbot_settings
 from askbot.utils.html import (absolutize_urls, site_link, site_url)
@@ -148,7 +148,7 @@ class BaseEmail(object):
         else:
             LOG.warning(
                 'Attempting to send disabled email "%s"',
-                force_text(self.title)
+                force_str(self.title)
             )
 
 
@@ -624,7 +624,7 @@ class BatchEmailAlert(BaseEmail):
         qq = Post.objects.filter(post_type='question')[:2]
 
         act_list = list()
-        act_list.append(force_text(_('new question')))
+        act_list.append(force_str(_('new question')))
         format_action_count('%(num)d rev', 3, act_list)
         format_action_count('%(num)d ans', 2, act_list)
         qdata.append({
@@ -802,7 +802,7 @@ class ApprovedPostNotificationRespondable(BaseEmail):
 
     def process_context(self, context):
         revision = context['revision']
-        prompt = force_text(_('To add to your post EDIT ABOVE THIS LINE'))
+        prompt = force_str(_('To add to your post EDIT ABOVE THIS LINE'))
         context.update({
             'site_name': askbot_settings.APP_SHORT_NAME,
             'post': revision.post,

@@ -6,7 +6,7 @@ text in this project, all unicode text go here.
 """
 import os
 import re
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot import get_install_directory
 #an exception import * because that file has only strings
 from askbot.const.message_keys import * #pylint: disable=wildcard-import

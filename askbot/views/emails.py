@@ -4,7 +4,7 @@ from askbot.mail.messages import BaseEmail
 from askbot.utils.decorators import moderators_only
 from django.http import Http404
 from django.shortcuts import render
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import logging
 
 LOG = logging.getLogger(__name__)

@@ -1,10 +1,10 @@
 /* global askbot, addExtraCssClasses, inherits, removeButtonEventHandlers, showMessage, WrappedElement,
- WMD, SimpleEditor, TinyMCE,
+ WMD, SimpleEditor,
  gettext, interpolate, makeKeyHandler, setupButtonEventHandlers,
  mediaUrl */
 
 /** Form for editing and posting new comment
- * supports 3 editors: markdown, tinymce and plain textarea.
+ * supports markdown editor and plain textarea.
  * There is only one instance of this form in use on the question page.
  * It can be attached to any comment on the page, or to a new blank
  * comment.
@@ -38,30 +38,6 @@ EditCommentForm.prototype.getEditorType = function () {
     return 'plain-text';
 };
 
-EditCommentForm.prototype.startTinyMCEEditor = function () {
-    var editorId = this.makeId('comment-editor');
-    var opts = {
-        mode: 'exact',
-        content_css: mediaUrl('media/css/tinymce/comments-content.css'),
-        elements: editorId,
-        theme: 'advanced',
-        theme_advanced_toolbar_location: 'top',
-        theme_advanced_toolbar_align: 'left',
-        theme_advanced_buttons1: 'bold, italic, |, link, |, numlist, bullist',
-        theme_advanced_buttons2: '',
-        theme_advanced_path: false,
-        plugins: '',
-        width: '100%',
-        height: '70'
-    };
-    var editor = new TinyMCE(opts);
-    editor.setId(editorId);
-    editor.setText(this._text);
-    this._editorBox.prepend(editor.getElement());
-    editor.start();
-    this._editor = editor;
-};
-
 EditCommentForm.prototype.startWMDEditor = function () {
     var editor = new WMD({minLines: 3});
     editor.setEnabledButtons('bold italic link code ol ul');
@@ -79,11 +55,7 @@ EditCommentForm.prototype.startSimpleEditor = function () {
 
 EditCommentForm.prototype.startEditor = function () {
     var editorType = this.getEditorType();
-    if (editorType === 'tinymce') {
-        this.startTinyMCEEditor();
-        //@todo: implement save on enter and character counter in tinyMCE
-        return;
-    } else if (editorType === 'markdown') {
+    if (editorType === 'markdown') {
         this.startWMDEditor();
     } else {
         this.startSimpleEditor();

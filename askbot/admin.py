@@ -10,7 +10,7 @@ exactly match name of the model used in the project
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.admin import UserAdmin
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from askbot import models
 from askbot.const import TAG_EMAIL_FILTER_FULL_STRATEGY_CHOICES
 from askbot.models.user_profile import USER_PROFILE_PROPERTIES

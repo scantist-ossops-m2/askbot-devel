@@ -7,7 +7,7 @@ import re
 
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import keep_lazy
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 @keep_lazy(str)
 def reduce_spaces_between_tags(value):
@@ -16,7 +16,7 @@ def reduce_spaces_between_tags(value):
     do not appear glued together
     slight mod of django.utils.html import strip_spaces_between_tags
     """
-    return re.sub(r'>\s+<', '> <', force_text(value))
+    return re.sub(r'>\s+<', '> <', force_str(value))
 
 class SpacelessMiddleware(MiddlewareMixin):
     def process_response(self, request, response):

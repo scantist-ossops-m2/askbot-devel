@@ -42,10 +42,10 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedire
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.decorators import csrf
 from openid.consumer.consumer import Consumer, \
     SUCCESS, CANCEL, FAILURE, SETUP_NEEDED
@@ -72,7 +72,7 @@ from askbot.deps.django_authopenid.ldap_auth import ldap_create_user
 from askbot.deps.django_authopenid.ldap_auth import ldap_authenticate
 from askbot.deps.django_authopenid.exceptions import OAuthError
 from askbot.deps.django_authopenid.providers import discourse
-from askbot.utils.http import get_request_info, get_request_params
+from askbot.utils.http import get_request_info, get_request_params, is_ajax
 from askbot.utils.loading import load_module
 
 try:
@@ -901,7 +901,7 @@ def change_password(request):
 def delete_login_method(request):
     if askbot_settings.ALLOW_ADD_REMOVE_LOGIN_METHODS is False:
         raise Http404
-    if request.is_ajax() and request.method == 'POST':
+    if is_ajax(request) and request.method == 'POST':
         provider_name = request.POST['provider_name']
         try:
             login_method = UserAssociation.objects.get(user=request.user, #pylint: disable=no-member
@@ -926,7 +926,7 @@ def complete_openid_signin(request):
     logging.debug('in askbot.deps.django_authopenid.complete')
     consumer = Consumer(request.session, util.DjangoOpenIDStore())
     # make sure params are encoded in utf8
-    params = dict((k, smart_text(v)) for k, v in list(request.GET.items()))
+    params = dict((k, smart_str(v)) for k, v in list(request.GET.items()))
     return_to = get_url_host(request) + reverse('user_complete_openid_signin')
     openid_response = consumer.complete(params, return_to)
 

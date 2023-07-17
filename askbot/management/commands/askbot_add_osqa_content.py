@@ -2,10 +2,10 @@ from datetime import datetime
 
 import django.db.utils
 from bs4 import BeautifulSoup
+from urllib.parse import quote as django_urlquote
 from django.db.models import Q
 from django.utils import translation
 from django.conf import settings as django_settings
-from django.utils.http import urlquote as django_urlquote
 from django.utils import timezone
 from django.template.defaultfilters import slugify
 from askbot.deps.django_authopenid.models import UserAssociation

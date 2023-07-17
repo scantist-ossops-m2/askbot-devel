@@ -4,7 +4,7 @@ keywords
 """
 from urllib.parse import urlparse
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings as django_settings
 
 from askbot.conf.settings_wrapper import settings

@@ -21,7 +21,7 @@ from django.conf import settings as django_settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.http import Http404
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from askbot.utils.translation import get_language
 from askbot.conf import settings as askbot_settings

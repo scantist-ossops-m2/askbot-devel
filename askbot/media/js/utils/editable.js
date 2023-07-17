@@ -1,6 +1,6 @@
 ﻿/* global askbot, gettext, getObjectByPath, inherits, parseUrl, runMathJax, showMessage, highlightAll,
  stripTags, getAskbotMarkdownConverter,
- setupButtonEventHandlers, SimpleEditor, TinyMCE, WrappedElement, WMD */
+ setupButtonEventHandlers, SimpleEditor, WrappedElement, WMD */
 /**
  * @constructor
  * Adds in-place text editor for a text value
@@ -102,11 +102,6 @@ Editable.prototype.startEditingText = function (text) {
 Editable.prototype.startActivatingEditor = function (evt) {
   evt.preventDefault();
 
-  if (this._editorType == 'tinymce') {//take shortcut.
-    this.startEditingText(this._content.html());
-    return false;
-  }
-
   var me = this;
   var paramName = this._saveTextParamName;
 
@@ -138,10 +133,6 @@ Editable.prototype.cancelEdit = function () {
 Editable.prototype.saveText = function () {
   var me = this;
   var editorText = this._editor.getText();
-
-  if (this._editorType == 'tinymce') {
-    editorText = stripTags(editorText);
-  }
 
   if (this._validator) {
     try {
@@ -289,18 +280,6 @@ Editable.prototype.decorate = function(element){
     }
     var preview = element.data('previewerEnabled');
     editor.setPreviewerEnabled(preview);
-  } else if (editorType === 'tinymce') {
-    if (this._useCompactEditor) {
-      editor = new TinyMCE({//override defaults
-        theme_advanced_buttons1: 'bold, italic, |, link, |, numlist, bullist',
-        theme_advanced_buttons2: '',
-        theme_advanced_path: false,
-        plugins: ''
-      });
-    } else {
-      editor = new TinyMCE();
-    }
-    editor.setId('tinyMCE-' + this._id);
   } else {
     editor = new SimpleEditor({'minLines': minLines});
   }

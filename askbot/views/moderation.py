@@ -1,14 +1,14 @@
 from django.http import Http404
 from django.utils.text import format_lazy
-from django.utils.translation import ungettext
-from django.utils.translation import ugettext as _
+from django.utils.translation import ngettext
+from django.utils.translation import gettext as _
 from django.conf import settings as django_settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.decorators import csrf
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.core import exceptions
 from askbot.utils import decorators
 from askbot.utils.html import sanitize_html
@@ -244,7 +244,7 @@ def moderate_post_edits(request):
                         num_posts += 1
 
             if num_posts > 0:
-                posts_message = ungettext('%d post approved',
+                posts_message = ngettext('%d post approved',
                                           '%d posts approved',
                                           num_posts) % num_posts
                 result['message'] = concat_messages(result['message'], posts_message)
@@ -258,7 +258,7 @@ def moderate_post_edits(request):
 
             num_users = len(editors)
             if num_users:
-                users_message = ungettext('%d user approved',
+                users_message = ngettext('%d user approved',
                                           '%d users approved',
                                           num_users) % num_users
                 result['message'] = concat_messages(result['message'], users_message)
@@ -281,7 +281,7 @@ def moderate_post_edits(request):
 
         #message to moderator
         if num_posts:
-            posts_message = ungettext('%d post deleted', '%d posts deleted', num_posts) % num_posts
+            posts_message = ngettext('%d post deleted', '%d posts deleted', num_posts) % num_posts
             result['message'] = concat_messages(result['message'], posts_message)
 
     elif post_data['action'] == 'block':
@@ -351,19 +351,19 @@ def moderate_post_edits(request):
                                                             editor, mark_as_spam=True)
 
         if num_ips:
-            ips_message = ungettext('%d ip blocked', '%d ips blocked', num_ips) % num_ips
+            ips_message = ngettext('%d ip blocked', '%d ips blocked', num_ips) % num_ips
             result['message'] = concat_messages(result['message'], ips_message)
 
         if num_users:
-            users_message = ungettext('%d user blocked', '%d users blocked', num_users) % num_users
+            users_message = ngettext('%d user blocked', '%d users blocked', num_users) % num_users
             result['message'] = concat_messages(result['message'], users_message)
 
         if num_posts:
-            posts_message = ungettext('%d post deleted', '%d posts deleted', num_posts) % num_posts
+            posts_message = ngettext('%d post deleted', '%d posts deleted', num_posts) % num_posts
             result['message'] = concat_messages(result['message'], posts_message)
 
     result['memo_ids'] = [memo.id for memo in memo_set]
-    result['message'] = force_text(result['message'])
+    result['message'] = force_str(result['message'])
 
     #delete items from the moderation queue
     act_ids = [memo.activity_id for memo in memo_set]

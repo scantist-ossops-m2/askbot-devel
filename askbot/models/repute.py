@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import fields
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.html import escape
 from django.utils import timezone
 from django.urls import reverse

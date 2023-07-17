@@ -1,12 +1,12 @@
 import datetime
-import pytz
 import re
 import time
 import urllib.request, urllib.parse, urllib.error
+import zoneinfo
 from bs4 import BeautifulSoup
 from django.core import exceptions as django_exceptions
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _
 from django.utils.translation import get_language as django_get_language
 from django.contrib.humanize.templatetags import humanize
 from django.template import defaultfilters
@@ -44,11 +44,8 @@ class template:
 
 register = template.Library()
 
-TIMEZONE_STR = pytz.timezone(
-                    django_settings.TIME_ZONE
-                ).localize(
-                    datetime.datetime.now()
-                ).strftime('%z')
+TZINFO = zoneinfo.ZoneInfo(django_settings.TIME_ZONE)
+TIMEZONE_STR = datetime.datetime.now().replace(tzinfo=TZINFO).strftime('%z')
 
 @register.filter
 def add_tz_offset(datetime_object):
@@ -74,10 +71,6 @@ def is_empty_editor_value(value):
         return True
     if str(value).strip() == '':
         return True
-    #tinymce uses a weird sentinel placeholder
-    if askbot_settings.EDITOR_TYPE == 'tinymce':
-        soup = BeautifulSoup(value, 'html5lib')
-        return soup.getText().strip() == ''
     return False
 
 @register.filter
@@ -402,7 +395,7 @@ def sub_vars(text, user=None):
     sitename_re = re.compile(r'\{\{\s*SITE_NAME\s*\}\}')
     sitelink_re = re.compile(r'\{\{\s*SITE_LINK\s*\}\}')
 
-    text = force_text(text)
+    text = force_str(text)
 
     if user:
         if user.is_anonymous:

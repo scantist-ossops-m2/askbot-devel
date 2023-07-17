@@ -24,8 +24,8 @@ import json
 from django.utils import timezone
 from django.utils.html import strip_tags, escape
 from django.utils.translation import get_language
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.urls import reverse
 from django.core import exceptions
 from django.conf import settings
@@ -43,6 +43,7 @@ from askbot.utils.functions import diff_date
 from askbot.utils import url_utils
 from askbot.utils.file_utils import store_file
 from askbot.utils.functions import encode_jwt
+from askbot.utils.http import is_ajax
 from askbot.utils.loading import load_module
 from askbot.views import context
 from askbot.templatetags import extra_filters_jinja as template_filters
@@ -172,9 +173,6 @@ def import_data(request):
             raise Http404
 
     if request.method == 'POST':
-        #if not request.is_ajax():
-        #    raise Http404
-
         form = forms.DumpUploadForm(request.POST, request.FILES)
         if form.is_valid():
             dump_file = form.cleaned_data['dump_file']
@@ -198,7 +196,7 @@ def import_data(request):
     return render(request, 'import_data.html', data)
 
 @csrf.csrf_protect
-@decorators.check_authorization_to_post(ugettext_lazy('Please log in to make posts'))
+@decorators.check_authorization_to_post(gettext_lazy('Please log in to make posts'))
 def ask(request):#view used to ask a new question
     """a view to ask a new question
     gives space for q title, body, tags and checkbox for to post as wiki
@@ -490,7 +488,7 @@ def edit_answer(request, id):
         return HttpResponseRedirect(answer.get_absolute_url())
 
 #todo: rename this function to post_new_answer
-@decorators.check_authorization_to_post(ugettext_lazy('Please log in to make posts'))
+@decorators.check_authorization_to_post(gettext_lazy('Please log in to make posts'))
 def answer(request, id, form_class=forms.AnswerForm):#process a new answer
     """view that posts new answer
 
@@ -632,7 +630,7 @@ def post_comments(request):#generic ajax handler to load comments to an object
     """
     # only support get post comments by ajax now
     post_type = getattr(request,request.method).get('post_type', '')
-    if not request.is_ajax() or post_type not in ('question', 'answer'):
+    if not is_ajax(request) or post_type not in ('question', 'answer'):
         raise Http404  # TODO: Shouldn't be 404! More like 400, 403 or sth more specific
 
     if post_type == 'question' \
@@ -774,7 +772,7 @@ def delete_comment(request):
                     '<a href="%(sign_in_url)s">sign in</a>.') % \
                     {'sign_in_url': url_utils.get_login_url()}
             raise exceptions.PermissionDenied(msg)
-        if request.is_ajax():
+        if is_ajax(request):
 
             form = forms.ProcessCommentForm(request.POST)
 

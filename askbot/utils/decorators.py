@@ -10,12 +10,13 @@ from django.http import HttpResponse, HttpResponseForbidden, Http404
 from django.http import HttpResponseRedirect
 import json
 from django.utils import timezone
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.encoding import smart_str
 from askbot import exceptions as askbot_exceptions
 from askbot.conf import settings as askbot_settings
 from askbot.utils import url_utils
 from askbot.utils.html import site_url
+from askbot.utils.http import is_ajax
 from askbot.utils.functions import encode_jwt
 
 
@@ -80,7 +81,7 @@ def post_only(view_func):
 def ajax_only(view_func):
     @functools.wraps(view_func)
     def wrapper(request, *args, **kwargs):
-        if not request.is_ajax():
+        if not is_ajax(request):
             raise Http404
         try:
             data = view_func(request, *args, **kwargs)

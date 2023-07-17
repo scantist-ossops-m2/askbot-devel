@@ -31,8 +31,8 @@ from django.http import HttpResponse, HttpResponseForbidden, FileResponse
 from django.http import HttpResponseRedirect, Http404
 from django.utils.text import format_lazy
 from django.utils.translation import get_language
-from django.utils.translation import ugettext as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 import json
 from django.utils import timezone
 from django.utils.html import strip_tags as strip_all_tags
@@ -396,7 +396,7 @@ def user_moderate(request, subject, context):
                 if user_status_form.cleaned_data['delete_content'] == True:
                     num_deleted = request.user.delete_all_content_authored_by_user(subject)
                     if num_deleted:
-                        num_deleted_message = ungettext('%d post deleted', '%d posts deleted', num_deleted) % num_deleted
+                        num_deleted_message = ngettext('%d post deleted', '%d posts deleted', num_deleted) % num_deleted
                         user_status_changed_message = format_lazy('{}, {}', user_status_changed_message, num_deleted_message)
             user_status_changed = True
         elif 'send_message' in request.POST:

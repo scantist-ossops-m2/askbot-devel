@@ -16,13 +16,13 @@ from django.urls import reverse, NoReverseMatch
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.db.models import signals as django_signals
-from django.utils import timezone
 from django.utils import translation
-from django.utils.translation import ugettext as _
-from django.utils.translation import override, ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import override, ngettext
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 from django.utils.text import format_lazy
+from django.utils import timezone
 from django.apps import apps
 from django.db import models
 from django.db.models import Count, Q
@@ -1065,7 +1065,7 @@ def user_assert_can_edit_comment(self, comment=None):
             if now - comment.added_at > datetime.timedelta(0, delta_seconds):
                 if comment.is_last():
                     return
-                error_message = ungettext(
+                error_message = ngettext(
                     'Sorry, comments (except the last one) are editable only '
                     'within %(minutes)s minute from posting',
                     'Sorry, comments (except the last one) are editable only '
@@ -1239,7 +1239,7 @@ def user_assert_can_edit_post(self, post=None):
     if now - post.added_at > datetime.timedelta(0, delta_seconds):
         #vague message because it is hard to add
         #these phrases to askbot.conf.words as parameters
-        error_message = ungettext(
+        error_message = ngettext(
             'Sorry, posts like this are editable only '
             'within %(minutes)s minute from posting',
             'Sorry, posts like this are editable only '
@@ -1300,7 +1300,7 @@ def user_assert_can_delete_question(self, question = None):
                         .exclude(author=self).exclude(points__lte=0).count()
 
         if answer_count > 0:
-            msg = ungettext(
+            msg = ngettext(
                 'Sorry, cannot delete this since it '
                 'has an upvoted response posted by someone else',
                 'Sorry, cannot delete this since it '
@@ -1485,7 +1485,7 @@ def user_assert_can_delete_comment(self, comment = None):
             delta_seconds = 60 * askbot_settings.MINUTES_TO_EDIT_COMMENT
             if now - comment.added_at > datetime.timedelta(0, delta_seconds):
                 if not comment.is_last():
-                    error_message = ungettext(
+                    error_message = ngettext(
                         'Sorry, comments (except the last one) are deletable only '
                         'within %(minutes)s minute from posting',
                         'Sorry, comments (except the last one) are deletable only '
@@ -2457,10 +2457,10 @@ def user_post_answer(self,
             elif days == 1:
                 left = _('tomorrow')
             elif minutes >= 60:
-                left = ungettext('in %(hr)d hour','in %(hr)d hours',hours) % {'hr':hours}
+                left = ngettext('in %(hr)d hour','in %(hr)d hours',hours) % {'hr':hours}
             else:
-                left = ungettext('in %(min)d min','in %(min)d mins',minutes) % {'min':minutes}
-            day = ungettext('%(days)d day','%(days)d days',askbot_settings.MIN_DAYS_TO_ANSWER_OWN_QUESTION) % {'days':askbot_settings.MIN_DAYS_TO_ANSWER_OWN_QUESTION}
+                left = ngettext('in %(min)d min','in %(min)d mins',minutes) % {'min':minutes}
+            day = ngettext('%(days)d day','%(days)d days',askbot_settings.MIN_DAYS_TO_ANSWER_OWN_QUESTION) % {'days':askbot_settings.MIN_DAYS_TO_ANSWER_OWN_QUESTION}
             error_message = _(
                 'New users must wait %(days)s to %(answer_own_questions)s. '
                 ' You can post an answer %(left)s'
@@ -3127,21 +3127,21 @@ def user_get_badge_summary(self):
 
     badge_bits = list()
     if self.gold:
-        bit = ungettext(
+        bit = ngettext(
                 'one gold badge',
                 '%(count)d gold badges',
                 self.gold
             ) % {'count': self.gold}
         badge_bits.append(bit)
     if self.silver:
-        bit = ungettext(
+        bit = ngettext(
                 'one silver badge',
                 '%(count)d silver badges',
                 self.silver
             ) % {'count': self.silver}
         badge_bits.append(bit)
     if self.bronze:
-        bit = ungettext(
+        bit = ngettext(
                 'one bronze badge',
                 '%(count)d bronze badges',
                 self.bronze
@@ -3300,7 +3300,7 @@ def user_fix_html_links(self, text):
     if is_simple_user and has_low_rep:
         result = replace_links_with_text(text)
         if result != text:
-            message = ungettext(
+            message = ngettext(
                 'At least %d karma point is required to post links',
                 'At least %d karma points is required to post links',
                 askbot_settings.MIN_REP_TO_INSERT_LINK
@@ -4068,7 +4068,7 @@ def record_question_visit(request, question, **kwargs):
 
         if last_seen and timezone.is_naive(last_seen) \
             and getattr(django_settings, 'USE_TZ', False):
-            last_seen = timezone.make_aware(last_seen, timezone.utc)
+            last_seen = timezone.make_aware(last_seen, datetime.timezone.utc)
 
         update_view_count = False
         if question.thread.last_activity_by_id != request.user.id:

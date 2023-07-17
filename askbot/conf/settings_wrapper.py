@@ -22,13 +22,12 @@ askbot.deps.livesettings is a module developed for satchmo project
 """
 from django.conf import settings as django_settings
 from django.core.cache import cache
-from django.contrib.sites.models import Site
 from django.core.files import uploadedfile
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.functional import lazy
 from django.utils.translation import get_language
 from django.utils.text import format_lazy
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 import askbot
 from livesettings.values import SortedDotDict
@@ -143,7 +142,7 @@ class ConfigSettings(object):
             anchor='id_%s__%s__%s' % (group_name, setting_name, get_language())
         )
         if len(data) == 4:
-            return force_text(format_lazy('{} ({})',link, data[3]))
+            return force_str(format_lazy('{} ({})',link, data[3]))
         return link
 
     def get_related_settings_info(self, *requirements):
@@ -218,6 +217,7 @@ class ConfigSettings(object):
     def prime_cache(cls, cache_key, **kwargs):
         """reload all settings into cache as dictionary
         """
+        from django.contrib.sites.models import Site
         db_keys = cls.precache_all_values()
 
         out = dict()

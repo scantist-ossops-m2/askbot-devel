@@ -5,7 +5,7 @@
 from django.db import models, migrations
 from django.db.models import Sum
 from django.utils import translation
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from askbot.utils.console import ProgressBar
 from askbot import const
 

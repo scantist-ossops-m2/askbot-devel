@@ -70,7 +70,6 @@ example INSTALLED_APPS:
         'django_countries',
         'kombu.transport.memory',
         'followit',
-        'tinymce',
         'askbot.deps.group_messaging',
         #'avatar',#experimental use git clone git://github.com/ericflo/django-avatar.git$
         'captcha',

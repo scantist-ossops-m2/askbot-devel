@@ -6,8 +6,8 @@ from django.template.loader import get_template
 from askbot import models
 from askbot import const
 from askbot.conf import settings as askbot_settings
-from django.utils.translation import ugettext as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 from django.utils import translation
 from askbot.mail.messages import AcceptAnswersReminder
 from askbot.utils.classes import ReminderSchedule

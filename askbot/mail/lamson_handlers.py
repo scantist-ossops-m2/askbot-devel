@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.conf import settings as django_settings
 from django.template import Context
 from django.template.loader import get_template
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from askbot.models import ReplyAddress, Group, Tag
 from askbot import mail
 from askbot.conf import settings as askbot_settings

@@ -34,8 +34,8 @@ import cgi
 import logging
 from django import forms
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.conf import settings as django_settings
 from askbot.conf import settings as askbot_settings
 from askbot import const as askbot_const
@@ -326,13 +326,13 @@ class ChangePasswordForm(forms.Form):
     new_password = forms.CharField(
                         widget=forms.PasswordInput(),
                         error_messages = {
-                            'required': ugettext_lazy('password is required'),
+                            'required': gettext_lazy('password is required'),
                         }
                     )
     new_password_retyped = forms.CharField(
                         widget=forms.PasswordInput(),
                         error_messages = {
-                            'required': ugettext_lazy('retype your password'),
+                            'required': gettext_lazy('retype your password'),
                         }
                     )
 
@@ -444,7 +444,7 @@ class EmailPasswordForm(forms.Form):
     """ send new password form """
     username = UserNameField(
                     skip_clean=True,
-                    label=ugettext_lazy('Your user name')
+                    label=gettext_lazy('Your user name')
                 )
 
     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,

@@ -39,9 +39,6 @@
   askbot['settings']['errorPlacement'] = 'after-label';
   askbot['data']['maxCommentLength'] = {{ settings.MAX_COMMENT_LENGTH }};
   askbot['settings']['editorType'] = '{{ settings.EDITOR_TYPE }}';
-  {% if settings.EDITOR_TYPE == 'tinymce' %}
-    askbot['settings']['tinyMCEConfigJson'] = '{{ settings.TINYMCE_CONFIG_JSON|escapejs }}';
-  {% endif %}
   askbot['settings']['commentsEditorType'] = '{{ settings.COMMENTS_EDITOR_TYPE|escapejs }}';
   askbot['messages']['askYourQuestion'] = '{{ settings.WORDS_ASK_YOUR_QUESTION|escapejs }}';
   askbot['messages']['acceptOwnAnswer'] = '{{ settings.WORDS_ACCEPT_OR_UNACCEPT_OWN_ANSWER|escapejs }}';
@@ -125,7 +122,6 @@
 {% endcompress %}
 <script>
   /*<![CDATA[*/
-  $('.mceStatusbar').remove();//a hack to remove the tinyMCE status bar
   $(document).ready(function(){
     // focus input on the search bar endcomment
     var activeTab = askbot['data']['activeTab'];

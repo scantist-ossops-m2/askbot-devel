@@ -17,45 +17,34 @@ GenericSignal = namedtuple(
     'GenericSignal', field_names=['signal', 'callback', 'dispatch_uid'])
 
 
-tags_updated = django.dispatch.Signal(
-    providing_args=['tags', 'user', 'timestamp'])
+tags_updated = django.dispatch.Signal()
 
-after_post_removed = django.dispatch.Signal(
-    providing_args=['instance', 'deleted_by'])
+after_post_removed = django.dispatch.Signal()
 
-after_post_restored = django.dispatch.Signal(
-    providing_args=['instance', 'restored_by'])
+after_post_restored = django.dispatch.Signal()
 
-flag_offensive = django.dispatch.Signal(providing_args=['instance', 'mark_by'])
-remove_flag_offensive = django.dispatch.Signal(providing_args=['instance', 'mark_by'])
-user_updated = django.dispatch.Signal(providing_args=['instance', 'updated_by'])
+flag_offensive = django.dispatch.Signal()
+remove_flag_offensive = django.dispatch.Signal()
+user_updated = django.dispatch.Signal()
 # TODO: move this to authentication app
-user_registered = django.dispatch.Signal(providing_args=['user', 'request'])
-user_logged_in = django.dispatch.Signal(providing_args=['session'])
+user_registered = django.dispatch.Signal()
+user_logged_in = django.dispatch.Signal()
 
-new_answer_posted = django.dispatch.Signal(
-    providing_args=['answer', 'user', 'form_data'])
-new_question_posted = django.dispatch.Signal(
-    providing_args=['question', 'user', 'form_data'])
-new_comment_posted = django.dispatch.Signal(
-    providing_args=['comment', 'user', 'form_data'])
-answer_edited = django.dispatch.Signal(
-    providing_args=['answer', 'user', 'form_data'])
-question_visited = django.dispatch.Signal(
-    providing_args=['request', 'question'])
+new_answer_posted = django.dispatch.Signal()
+new_question_posted = django.dispatch.Signal()
+new_comment_posted = django.dispatch.Signal()
+answer_edited = django.dispatch.Signal()
+question_visited = django.dispatch.Signal()
 
-post_updated = django.dispatch.Signal(
-    providing_args=['post', 'updated_by', 'newly_mentioned_users'])
+post_updated = django.dispatch.Signal()
 
-post_revision_published = django.dispatch.Signal(
-    providing_args = ['revision', 'was_approved' ])
+post_revision_published = django.dispatch.Signal()
 
-spam_rejected = django.dispatch.Signal(
-    providing_args = ['text', 'spam', 'user', 'ip_addr' ])
+spam_rejected = django.dispatch.Signal()
 
-site_visited = django.dispatch.Signal(providing_args=['user', 'timestamp'])
-reputation_received = django.dispatch.Signal(providing_args=['user', 'reputation_before'])
-posts_marked_as_spam = django.dispatch.Signal(providing_args=['post_ids'])
+site_visited = django.dispatch.Signal()
+reputation_received = django.dispatch.Signal()
+posts_marked_as_spam = django.dispatch.Signal()
 
 
 def pop_signal_receivers(signal):

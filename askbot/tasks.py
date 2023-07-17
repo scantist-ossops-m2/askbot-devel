@@ -25,7 +25,7 @@ import uuid
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.translation import activate as activate_language
 
 from celery import shared_task

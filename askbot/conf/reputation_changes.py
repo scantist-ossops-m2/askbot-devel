@@ -3,7 +3,7 @@ Settings for reputation changes that apply to
 user in response to various actions by the same
 users or others
 """
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot.conf.settings_wrapper import settings
 from livesettings.values import ConfigurationGroup, IntegerValue
 from askbot.conf.super_groups import REP_AND_BADGES

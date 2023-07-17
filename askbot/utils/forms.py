@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot.conf import settings as askbot_settings
 from askbot.utils.slug import slugify
 from askbot.utils.functions import encode_jwt, decode_jwt, split_list, mark_safe_lazy

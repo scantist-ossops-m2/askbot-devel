@@ -1,7 +1,7 @@
 """
 Sidebar settings
 """
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from askbot.conf.settings_wrapper import settings
 from livesettings.values import ConfigurationGroup
 from livesettings import values
