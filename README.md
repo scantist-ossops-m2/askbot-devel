@@ -9,15 +9,18 @@ and Sailing Cai and some code written for OSQA.
 
 Demos and hosting are available at http://askbot.com.
 
-Branch `0.7.x` - is the latest version supporting Django 1.5
+Branch `master` - released as versions 0.12.x - supports Django 4.2
 
-Branch `0.8.x` - transitional version for the upgrade of the database to Django 1.7
-
-Branch `0.9.x` supports Django 1.7
+Branch `0.11.x` - released as versions 0.11.x - supports Django 3.2/Python 3.7 - 3.10
 
 Branch `0.10.x` - supports Django 1.8 - the last version series to support Python 2.7
 
-Branch `master` - released as versions 0.11.x - supports Django 3.2/Python 3.7 - 3.10
+Branch `0.9.x` supports Django 1.7
+
+Branch `0.8.x` - transitional version for the upgrade of the database to Django 1.7
+
+Branch `0.7.x` - is the latest version supporting Django 1.5
+
 
 ## Installation
 
