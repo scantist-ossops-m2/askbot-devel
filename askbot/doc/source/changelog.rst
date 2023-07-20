@@ -1,9 +1,10 @@
 Changes in Askbot
 =================
 
-Development
------------
-* Removed TinyMCE code
+0.12.0 (Jul 19, 2023)
+---------------------
+* Added support for Django 4.2
+* Removed all TinyMCE code
 * Added ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS parameter to settings.py,
   defaults to 1s
 * Made moderation queue actions snappier by using optimistic UI update
