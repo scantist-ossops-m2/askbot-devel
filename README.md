@@ -1,6 +1,3 @@
-# ATTENTION: master branch is experimental, please read below
-
-
 ## Askbot - a Django Q&A forum platform
 
 This is Askbot project - open source Q&A system, like StackOverflow, Yahoo Answers and some others.
