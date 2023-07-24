@@ -19,7 +19,7 @@
 <p class="row">
   {% trans %}When:{% endtrans %} {{ timeago(question.thread.closed_at) }}
 </p>
-<form id="fmclose" action="{{ url('reopen',  question.id ) }}" method="post" >{{ csrf_input }}
+<form id="fmclose" style="margin-bottom: 1rem" action="{{ url('reopen',  question.id ) }}" method="post" >{{ csrf_input }}
   <div class="row">
     <input class="btn" type="submit" value="{{ settings.WORDS_REOPEN_QUESTION|escape }}"/>
     <input class="js-btn-back btn btn-muted" type="button" value="{% trans %}Cancel{% endtrans %}"/>

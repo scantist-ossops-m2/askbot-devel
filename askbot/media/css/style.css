@@ -9917,6 +9917,19 @@ ul.tags li {
   transform: rotate(270deg);
 }
 
+.question-status {
+  background: var(--post-update-info-bg);
+  color: var(--post-update-info-details-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin: 1.25rem 0 1rem;
+  text-align: center;
+}
+.question-status em {
+  font-weight: var(--font-weight-bold);
+  font-style: normal;
+}
+
 .ask-page main {
   padding: 1rem 0;
 }
