@@ -73,19 +73,17 @@ TODO:
 """
 
 import os
-import re
 import sys
 import tarfile
-import tempfile
-from datetime import datetime, date
+from datetime import datetime
 from lxml import etree
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.db import connection
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from askbot import models as askbot_models
 from askbot.utils import console
-from askbot.utils.html import unescape
 from askbot import exceptions as askbot_exceptions
 from askbot.conf import settings as askbot_settings
 from askbot.importers.zendesk import models as zendesk_models
@@ -245,7 +243,7 @@ def post_question(zendesk_entry):
                 closed=True, 
                 closed_by=ADMIN_USER, 
                 closed_at=timezone.now(), 
-                close_reason=5)
+                close_reason_text=str(_('the question is answered, right answer was accepted')))
             askbot_post.thread.save()
         return askbot_post
     except Exception as e:

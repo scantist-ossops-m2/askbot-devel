@@ -126,14 +126,14 @@ class X(object):#
     }
 
     close_reason_map = {
-        1:1,#duplicate
-        2:2,#off-topic
-        3:3,#subjective and argumentative
-        4:4,#not a real question
-        5:7,#offensive
-        6:6,#irrelevant or outdated question
-        7:9,#too localized
-        10:8,#spam
+        1: _('duplicate question'),
+        2: _('question is off-topic or not relevant'),
+        3: _('too subjective and argumentative'),
+        4: _('not a real question'),
+        5: _('question contains offensive or malicious remarks'),
+        6: _('question is not relevant or outdated'),
+        7: _('too localized'),
+        10: _('spam or advertising'),
     }
 
     @classmethod
@@ -179,7 +179,7 @@ class X(object):#
     def get_close_reason(cls, se_reason):
         #todo: this is a guess - have not seen real data
         se_reason = int(se_reason)
-        return cls.close_reason_map[se_reason]
+        return str(cls.close_reason_map[se_reason])
 
     @classmethod
     def get_user(cls, se_user):
@@ -609,9 +609,9 @@ it may be helpful to split this procedure in two:\n
                 if p is None:
                     return
                 if rev_type == 'Post Closed':
-                    p.thread.set_closed_status(closed=True, closed_at=t, closed_by=u, close_reason=X.get_close_reason(rev.comment))
+                    p.thread.set_closed_status(closed=True, closed_at=t, closed_by=u, close_reason_text=X.get_close_reason(rev.comment))
                 elif rev_type == 'Post Reopened':
-                    p.thread.set_closed_status(closed=False, closed_at=None, closed_by=None, close_reason=None)
+                    p.thread.set_closed_status(closed=False, closed_at=None, closed_by=None, close_reason_text='')
                 self.mark_activity(p,u,t)
                 p.save()
                 return

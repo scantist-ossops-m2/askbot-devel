@@ -1,8 +1,9 @@
 Changes in Askbot
 =================
 
-Development
------------
+0.11.8 (Jul 24, 2023)
+---------------------
+* Allows customization of the question close reasons in the settings
 * Added ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS parameter to settings.py,
   defaults to 1s
 * Made moderation queue actions snappier by using optimistic UI update

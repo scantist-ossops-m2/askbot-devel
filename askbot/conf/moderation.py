@@ -1,12 +1,14 @@
 """Settings to control content moderation"""
 
 from django.utils.translation import ugettext_lazy as _
-from askbot.conf.settings_wrapper import settings
-from askbot.conf.super_groups import DATA_AND_FORMATTING
 from livesettings.values import ConfigurationGroup
 from livesettings.values import BooleanValue
 from livesettings.values import LongStringValue
 from livesettings.values import StringValue
+from livesettings.values import StringArrayValue
+from askbot.conf.settings_wrapper import settings
+from askbot.conf.super_groups import DATA_AND_FORMATTING
+from askbot import const
 
 MODERATION = ConfigurationGroup(
     'MODERATION',
@@ -89,3 +91,13 @@ settings.register(
         )
     )
 )
+
+settings.register(
+    StringArrayValue(
+        MODERATION,
+        'QUESTION_CLOSE_REASONS',
+        default=[str(reason[1]) for reason in const.CLOSE_REASONS],
+        description=_('Reasons for closing questions'),
+    )
+)
+

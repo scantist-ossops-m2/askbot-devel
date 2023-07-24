@@ -418,7 +418,7 @@ class ReopenQuestionPermissionAssertionTests(utils.AskbotTestCase):
         self.create_user(username = 'other_user')
         self.question = self.post_question()
         self.user.set_status('m')
-        self.user.close_question(self.question)
+        self.user.close_question(self.question, reason=askbot_settings.QUESTION_CLOSE_REASONS[0])
         self.user.set_status('a')
 
     def assert_can_reopen(self, user = None):

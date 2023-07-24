@@ -14,7 +14,7 @@
 {% endtrans %}
 </p>
 <p class="row">
-  {% trans %}Close reason:{% endtrans %} "<strong>{{question.thread.get_close_reason_display()}}</strong>".
+  {% trans %}Close reason:{% endtrans %} "<strong>{{question.thread.close_reason_text}}</strong>".
 </p>
 <p class="row">
   {% trans %}When:{% endtrans %} {{ timeago(question.thread.closed_at) }}
