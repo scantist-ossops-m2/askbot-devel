@@ -9,7 +9,7 @@ import platform
 import sys
 import traceback
 
-VERSION = (0, 12, 0)
+VERSION = (0, 12, 1)
 
 default_app_config = 'askbot.apps.AskbotConfig' #pylint: disable=invalid-name
 
@@ -43,7 +43,7 @@ REQUIREMENTS = {
     'captcha': 'django-recaptcha==3.0.0',
     'cas': 'python-cas>=1.4.0,<1.7',
     'okta_jwt_verifier': 'okta-jwt-verifier==0.2.3',
-    'responses': 'responses>=0.9.0',
+    'responses': 'responses>=0.9.0,<=0.23.1',
     'requests_oauthlib': 'requests-oauthlib>=1.2.0',
     'requirements': 'requirements-parser>=0.2.0',
     'robots': 'django-robots==5.0',

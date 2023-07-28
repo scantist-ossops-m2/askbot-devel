@@ -227,4 +227,8 @@ AVATAR_THUMB_FORMAT = 'PNG'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+{% if extra_settings %}
 {{ extra_settings }}
+{% endif %}
