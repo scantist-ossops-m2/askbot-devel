@@ -9,7 +9,6 @@ of the deployment scripts (e.g. Dockerfile).
 import os.path
 import sys
 from argparse import ArgumentParser
-from django.conf import settings as django_settings
 from django.core.exceptions import ValidationError
 
 from askbot.deployment import const
@@ -329,11 +328,6 @@ class AskbotSetup:
             deployers.makedir(params['proj_dir'], force)
             deployers.makedir(params['media_root_dir'], force)
             deployers.makedir(params['static_root_dir'], force)
-
-            upload_handler ="django.core.files.uploadhandler.TemporaryFileUploadHandler"
-            if upload_handler in django_settings.FILE_UPLOAD_HANDLERS:
-                deployers.makedir(django_settings.FILE_UPLOAD_TEMP_DIR, force)
-
             deployers.makedir(os.path.dirname(params['log_file_path']), force)
 
             deployers.ManagePy(params).deploy()
