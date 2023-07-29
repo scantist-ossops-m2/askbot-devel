@@ -326,6 +326,7 @@ class AskbotSetup:
             force = params['force']
             deployers.makedir(params['root_dir'], force)
             deployers.makedir(params['proj_dir'], force)
+            deployers.makedir(os.path.join(params['proj_dir'], 'tmp'), force)
             deployers.makedir(params['media_root_dir'], force)
             deployers.makedir(params['static_root_dir'], force)
             deployers.makedir(os.path.dirname(params['log_file_path']), force)
