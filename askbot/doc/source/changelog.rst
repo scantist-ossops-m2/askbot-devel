@@ -1,6 +1,14 @@
 Changes in Askbot
 =================
 
+0.12.2 (Jul 29, 2023)
+---------------------
+* improves installation process, supports Python 3.11
+
+0.12.1 (Jul 21, 2023)
+---------------------
+* bug fixes with library versions
+
 0.12.0 (Jul 19, 2023)
 ---------------------
 * Added support for Django 4.2
