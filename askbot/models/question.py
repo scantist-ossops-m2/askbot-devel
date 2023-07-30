@@ -615,6 +615,7 @@ class Thread(models.Model):
     close_reason = models.SmallIntegerField(choices=const.CLOSE_REASONS,
                                             null=True,
                                             blank=True)
+    close_reason_text = models.CharField(max_length=256, default='', blank=True)
     deleted = models.BooleanField(default=False, db_index=True)
 
     # denormalized data: the core approval of the posts is made
@@ -857,11 +858,11 @@ class Thread(models.Model):
             self.update_summary_html()  # proactively regenerate thread summary html
         ####################################################################
 
-    def set_closed_status(self, closed, closed_by, closed_at, close_reason):
+    def set_closed_status(self, closed, closed_by, closed_at, close_reason_text):
         self.closed = closed
         self.closed_by = closed_by
         self.closed_at = closed_at
-        self.close_reason = close_reason
+        self.close_reason_text = close_reason_text
         self.save()
         self.reset_cached_data()
 

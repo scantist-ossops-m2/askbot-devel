@@ -4,6 +4,7 @@ Changes in Askbot
 0.12.2 (Jul 29, 2023)
 ---------------------
 * improves installation process, supports Python 3.11
+* Allows customization of the question close reasons in the settings
 
 0.12.1 (Jul 21, 2023)
 ---------------------
@@ -13,6 +14,18 @@ Changes in Askbot
 ---------------------
 * Added support for Django 4.2
 * Removed all TinyMCE code
+* Added ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS parameter to settings.py,
+  defaults to 1s
+* Made moderation queue actions snappier by using optimistic UI update
+* fixes creation of duplicate moderation queue records when
+  link and image moderation is enabled.
+* all uses of is_spam function is guarded by the check for
+  askbot.conf.SPAM_FILTER_ENABLED setting
+
+0.11.8 (Jul 24, 2023)
+---------------------
+* Allows customization of the question close reasons in the settings,
+  this feature is not merged into v0.12.x until 0.12.2
 * Added ASKBOT_SPAM_CHECKER_TIMEOUT_SECONDS parameter to settings.py,
   defaults to 1s
 * Made moderation queue actions snappier by using optimistic UI update

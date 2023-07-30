@@ -1233,7 +1233,11 @@ class VoteForm(forms.Form):
 
 
 class CloseForm(forms.Form):
-    reason = forms.ChoiceField(choices=const.CLOSE_REASONS)
+    def __init__(self, *args, **kwargs): 
+        super(CloseForm, self).__init__(*args, **kwargs)
+        reasons = askbot_settings.QUESTION_CLOSE_REASONS
+        close_choices = tuple([tuple([reason, reason]) for reason in reasons])
+        self.fields['reason'] = forms.ChoiceField(choices=close_choices)
 
 
 class RetagQuestionForm(forms.Form):

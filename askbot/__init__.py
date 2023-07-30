@@ -42,6 +42,7 @@ REQUIREMENTS = {
     'picklefield': 'django-picklefield>=1.0.0,<=3.0.1',
     'captcha': 'django-recaptcha==3.0.0',
     'cas': 'python-cas>=1.4.0,<1.7',
+    'psycopg2': 'psycopg2-binary>=2.9.6',
     'okta_jwt_verifier': 'okta-jwt-verifier==0.2.3',
     'responses': 'responses>=0.9.0,<=0.23.1',
     'requests_oauthlib': 'requests-oauthlib>=1.2.0',
