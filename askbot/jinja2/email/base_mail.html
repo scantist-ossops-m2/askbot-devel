@@ -1,3 +1,4 @@
+{% premailer %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -40,6 +41,12 @@
     color: purple !important; /* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */
     }
 
+    pre,
+    code {
+       word-wrap: break-word;
+       white-space: pre-wrap;
+    }
+
     /* Outlook 07, 10 Padding issue fix
     Bring inline: No.*/
     table td {border-collapse: collapse;}
@@ -68,7 +75,6 @@
           }
 
       .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-            text-decoration: default;
             color: orange !important;
             pointer-events: auto;
             cursor: default;
@@ -89,7 +95,6 @@
           }
 
       .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-            text-decoration: default;
             color: orange !important;
             pointer-events: auto;
             cursor: default;
@@ -181,3 +186,4 @@
   </table>  
 </body>
 </html>
+{% endpremailer %}

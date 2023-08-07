@@ -13,6 +13,8 @@ import askbot
 from askbot.conf import settings as askbot_settings
 from askbot.skins import utils
 from askbot.skins.askbot_environments import SkinEnvironment
+from askbot.templatetags.textwrap import TextWrapExtension
+from askbot.templatetags.premail import PremailerExtension
 from askbot.utils.functions import encode_jwt
 from askbot.utils.translation import HAS_ASKBOT_LOCALE_MIDDLEWARE
 from askbot.utils.translation import get_language
@@ -33,6 +35,9 @@ import django_jinja.backend
 
 if 'jinja2.ext.i18n' not in DEFAULT_EXTENSIONS:
     DEFAULT_EXTENSIONS.append('jinja2.ext.i18n')
+
+DEFAULT_EXTENSIONS.append(TextWrapExtension)
+DEFAULT_EXTENSIONS.append(PremailerExtension)
 
 try:
     DEFAULT_EXTENSIONS.remove('django_jinja.builtins.extensions.CsrfExtension')

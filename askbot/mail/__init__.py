@@ -18,7 +18,6 @@ from askbot.conf import settings as askbot_settings
 from askbot.mail import parsing
 from askbot.utils import url_utils
 from askbot.utils.file_utils import store_file
-from askbot.utils.functions import wrap_text_for_email
 from askbot.utils.html import absolutize_urls
 from askbot.utils.html import get_text_from_html
 
@@ -73,7 +72,7 @@ def _send_mail(subject_line, body_text, sender_email, recipient_list, # pylint: 
                 attachments=attachments
             )
     if html_enabled:
-        msg.attach_alternative(wrap_text_for_email(body_text), "text/html")
+        msg.attach_alternative(body_text, "text/html")
 
     msg.send()
 
