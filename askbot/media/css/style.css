@@ -8692,8 +8692,12 @@ code.hljs {
 }
 
 .info-box ul {
-  list-style: disc;
+  display: block !important;
+  list-style: disc !important;
   padding-left: 1rem;
+}
+.info-box p {
+  margin: 0 0 0.25rem;
 }
 
 .input-with-button {
@@ -10488,6 +10492,13 @@ a.badge-page-link {
 .verify-email-page .password-login-inputs .btn,
 .signup-page .password-login-inputs .btn {
   margin-right: 0.5rem;
+}
+
+.signin-page .info-box,
+.verify-email-page .info-box,
+.registration-page .info-box,
+.signup-page .info-box {
+  margin: 0.5rem 0;
 }
 
 .verify-email-page .info-box {

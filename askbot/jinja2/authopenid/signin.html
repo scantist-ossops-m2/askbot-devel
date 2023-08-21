@@ -6,7 +6,7 @@
 {% block layout_class %}signin-page{% endblock %}
 {% block content %}
   {% if settings.AUTHENTICATION_PAGE_MESSAGE %}
-    <div class="instructions-message">
+    <div class="info-box">
       {{ settings.AUTHENTICATION_PAGE_MESSAGE|convert_markdown }}
     </div>
   {% endif %}

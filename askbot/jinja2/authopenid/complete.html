@@ -27,6 +27,11 @@ parameters:
             <h1 class="section-title">{% trans %}New user registrations are disabled{% endtrans %}</h1>
             <div>{{ settings.NEW_REGISTRATIONS_DISABLED_MESSAGE }}</div>
         {% else %}
+            {% if settings.AUTHENTICATION_PAGE_MESSAGE %}
+              <div class="info-box">
+                {{ settings.AUTHENTICATION_PAGE_MESSAGE|convert_markdown }}
+              </div>
+            {% endif %}
             <h1 class="section-title">{% trans %}Complete registration{% endtrans %}</h1>
             {% if openid_register_form.errors %}
                 <ul class="errorlist">

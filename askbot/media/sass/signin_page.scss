@@ -55,6 +55,15 @@
   }
 }
 
+.signin-page,
+.verify-email-page,
+.registration-page,
+.signup-page {
+  .info-box {
+    margin: 0.5rem 0;
+  }
+}
+
 .verify-email-page {
   .info-box {
     display: inline-block;
