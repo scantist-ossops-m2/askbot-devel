@@ -123,6 +123,7 @@ class UserProfile(models.Model):
     is_fake = models.BooleanField(default=False)
     email_isvalid = models.BooleanField(default=False)
     email_key = models.CharField(max_length=32, null=True)
+    email_is_confidential = models.BooleanField(default=False)
     #hardcoded initial reputaion of 1, no setting for this one
     reputation = models.PositiveIntegerField(default=const.MIN_REPUTATION, db_index=True)
     gravatar = models.CharField(max_length=32)

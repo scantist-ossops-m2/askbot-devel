@@ -39,7 +39,7 @@ settings.register(
         USER_SETTINGS,
         'SHOW_ADMINS_PRIVATE_USER_DATA',
         default=False,
-        description=_('Show email addresses to moderators')
+        description=_('Show email addresses to moderators, does not apply to confidential email addresses')
     )
 )
 

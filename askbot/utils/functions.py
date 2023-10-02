@@ -48,6 +48,12 @@ def is_email_valid(email):
     return True
 
 
+def get_emails(text):
+    words = text.split()
+    return [word for word in words if is_email_valid(word)]
+
+
+
 def timedelta_total_seconds(time_delta):
     """returns total seconds for the timedelta object
     supports python < 2.7

@@ -54,4 +54,7 @@ class SettingsTests(AskbotTestCase):
         self.admin = self.create_user('admin', status='d')
         self.client.login(user_id=self.admin.id, method='force')
         response = self.client.get(reverse('satchmo_site_settings'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers['Location'], '/settings/MIN_REP/')
+        response = self.client.get(reverse('satchmo_site_settings') + 'MIN_REP/')
         self.assertEqual(response.status_code, 200)

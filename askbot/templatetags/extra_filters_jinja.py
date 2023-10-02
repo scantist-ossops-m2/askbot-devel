@@ -108,6 +108,10 @@ def can_see_private_user_data(viewer, target):
     if viewer.is_authenticated:
         if viewer == target:
             return True
+        if viewer.is_staff: #staff has access to the admin panel, no point hiding here
+            return True
+        if target.askbot_profile.email_is_confidential:
+            return False
         if viewer.is_administrator_or_moderator():
             #todo: take into account intersection of viewer and target user groups
             return askbot_settings.SHOW_ADMINS_PRIVATE_USER_DATA

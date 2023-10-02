@@ -115,6 +115,46 @@ def delete_notifications(request):
     memo_set.delete()
     request.user.update_response_counts()
 
+
+def filter_users_by_email_search(users, search_query=None, visitor=None):
+    """If necessary, filters out users with confidential email addresses"""
+    emails = set(functions.get_emails(search_query))
+    if not emails:
+        return users
+    if visitor.is_authenticated:
+        if visitor.is_staff:
+            return users
+        if visitor.is_administrator_or_moderator() and askbot_settings.SHOW_ADMINS_PRIVATE_USER_DATA:
+            return users
+
+    if visitor.is_anonymous:
+        return users.exclude(email__in=emails)
+
+    emails = emails - set([visitor.email]) #users can search for themselves
+    return users.exclude(email__in=emails)
+
+
+def clean_search_query(query, visitor=None):
+    """Removes confidential emails from the user search query, if needed"""
+    bits = query.split()
+    cleaned_bits = []
+    for bit in bits:
+        if not functions.is_email_valid(bit):
+            cleaned_bits.append(bit)
+        elif visitor.is_anonymous:
+            continue
+        elif bit == visitor.email or visitor.is_staff:
+            cleaned_bits.append(bit)
+        elif visitor.is_administrator_or_moderator():
+            if models.User.objects.filter(email=bit, askbot_profile__email_is_confidential=True).exists():
+                # non-staff admins and mods cannot see this email
+                continue
+            if askbot_settings.SHOW_ADMINS_PRIVATE_USER_DATA:
+                cleaned_bits.append(bit)
+
+    return ' '.join(cleaned_bits)
+
+
 def users_list(request, by_group=False, group_id=None, group_slug=None):
     """Users view, including listing of users by group"""
     if askbot_settings.GROUPS_ENABLED and not by_group:
@@ -183,15 +223,30 @@ def users_list(request, by_group=False, group_id=None, group_slug=None):
                                     )
                     return HttpResponseRedirect(group_page_url)
 
-    is_paginated = True
-
     form = forms.ShowUsersForm(getattr(request, request.method))
     form.full_clean() # always valid
     sort_method = form.cleaned_data['sort']
     page = form.cleaned_data['page']
     search_query = form.cleaned_data['query']
+    # cleaned value might have some email addresses removed due to the privacy limits
+    cleaned_search_query = clean_search_query(search_query, visitor=request.user)
 
-    if search_query == '':
+    if search_query and cleaned_search_query:
+        sort_method = 'reputation'
+        matching_users = models.get_users_by_text_query(cleaned_search_query, users)
+        matching_users = filter_users_by_email_search(matching_users, search_query=cleaned_search_query, visitor=request.user)
+        objects_list = Paginator(
+                            matching_users.order_by('-askbot_profile__reputation'),
+                            askbot_settings.USERS_PAGE_SIZE
+                        )
+        base_url = request.path + '?query=%s&sort=%s&' % (search_query, sort_method)
+    elif search_query and not cleaned_search_query:
+        objects_list = Paginator(
+                            models.User.objects.none(),
+                            askbot_settings.USERS_PAGE_SIZE
+                        )
+        base_url = request.path + '?query=%s&sort=%s&' % (search_query, sort_method)
+    else:
         if sort_method == 'newest':
             order_by_parameter = '-date_joined'
         elif sort_method == 'last':
@@ -211,14 +266,6 @@ def users_list(request, by_group=False, group_id=None, group_slug=None):
                             askbot_settings.USERS_PAGE_SIZE
                         )
         base_url = request.path + '?sort=%s&' % sort_method
-    else:
-        sort_method = 'reputation'
-        matching_users = models.get_users_by_text_query(search_query, users)
-        objects_list = Paginator(
-                            matching_users.order_by('-askbot_profile__reputation'),
-                            askbot_settings.USERS_PAGE_SIZE
-                        )
-        base_url = request.path + '?name=%s&sort=%s&' % (search_query, sort_method)
 
     try:
         users_page = objects_list.page(page)
@@ -226,7 +273,7 @@ def users_list(request, by_group=False, group_id=None, group_slug=None):
         users_page = objects_list.page(objects_list.num_pages)
 
     paginator_data = {
-        'is_paginated' : is_paginated,
+        'is_paginated' : objects_list.num_pages > 1,
         'pages': objects_list.num_pages,
         'current_page_number': page,
         'page_object': users_page,
@@ -253,7 +300,7 @@ def users_list(request, by_group=False, group_id=None, group_slug=None):
         'group_email_moderation_enabled': group_email_moderation_enabled,
         'group_openness_choices': group_openness_choices,
         'paginator_context' : paginator_context,
-        'search_query' : search_query,
+        'query' : search_query,
         'tab_id' : sort_method,
         'user_acceptance_level': user_acceptance_level,
         'user_count': objects_list.count,
