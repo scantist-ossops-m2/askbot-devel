@@ -286,6 +286,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     model = models.user_profile.UserProfile
     search_fields = ('auth_user_ptr__username', 'auth_user_ptr__email')
     list_display = (profile_owner, 'email_is_confidential')
+    list_filter = ('email_is_confidential', 'status')
     fieldsets = (
         (None, {
             'fields': (
