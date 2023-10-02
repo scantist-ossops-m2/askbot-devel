@@ -185,6 +185,10 @@ class UserProfile(models.Model):
     class Meta:
         app_label = 'askbot'
 
+    def __str__(self):
+        user = User.objects.get(pk=self.pk)
+        return f'{user.username}\'s ({user.email}) profile'
+
     def anonymize(self):
         """Deletes personal data"""
         self.avatar_urls = dict()

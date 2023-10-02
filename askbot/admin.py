@@ -274,6 +274,31 @@ class EmailFeedSettingAdmin(admin.ModelAdmin):
     search_fields = ('subscriber__username', )
 
 
+def profile_owner(obj):
+    try:
+        user = models.User.objects.filter(askbot_profile=obj)[0]
+        return f'{user.username} ({user.email})'
+    except Exception: #pylint: disable=broad-except
+        return 'Unknown'
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    model = models.user_profile.UserProfile
+    search_fields = ('auth_user_ptr__username', 'auth_user_ptr__email')
+    list_display = (profile_owner, 'email_is_confidential')
+    fieldsets = (
+        (None, {
+            'fields': (
+                ('email_is_confidential'),
+                ('email_isvalid'),
+                ('status',),
+                ('is_fake',),
+                ('last_seen'),
+            )
+        }),
+    )
+
+
 admin.site.register(models.BadgeData, BadgeDataAdmin)
 admin.site.register(models.Group, GroupAdmin)
 admin.site.register(models.Post, PostAdmin)
@@ -290,11 +315,11 @@ admin.site.register(models.question.ThreadToGroup, ThreadToGroupAdmin)
 admin.site.register(models.QuestionView, QuestionViewAdmin)
 admin.site.register(models.ReplyAddress, ReplyAddressAdmin)
 admin.site.register(models.EmailFeedSetting, EmailFeedSettingAdmin)
+admin.site.register(models.user_profile.UserProfile, UserProfileAdmin)
 
 
 class MarkedTagInlineAdmin(admin.TabularInline):
     model = models.MarkedTag
-
 
 UserAdmin.readonly_fields = USER_PROFILE_PROPERTIES
 UserAdmin.fieldsets = UserAdmin.fieldsets + (('User Profile', {'fields': tuple(USER_PROFILE_PROPERTIES)}), )
