@@ -98,7 +98,7 @@ def get_admin():
     """
     try:
         return User.objects.filter(
-                        is_superuser=True
+                        askbot_profile__status='d'
                     ).order_by('id')[0]
     except IndexError:
         if User.objects.filter(username='_admin_').count() == 0:
@@ -111,11 +111,7 @@ def get_admin():
 
 
 def get_moderators():
-    return User.objects.filter(
-            Q(askbot_profile__status='m') | Q(is_superuser=True)
-        ).filter(
-            is_active = True
-        )
+    return User.objects.filter(askbot_profile__status__in=('m', 'd')).filter(is_active = True)
 
 
 def get_users_by_role(role_name):
@@ -2679,45 +2675,39 @@ def user_remove_role_set(self, status):
 
 def user_set_status(self, new_status):
     """sets new status to user
-
-    this method understands that administrator status is
-    stored in the User.is_superuser field, but
-    everything else in User.status field
-
-    there is a slight aberration - administrator status
-    can be removed, but not added yet
-
     if new status is applied to user, then the record is
     committed to the database
+    d - administrator (kept in sync with is_superuser)
+    m - moderator
+    s - suspended
+    b - blocked
+    w - watched
+    a - approved (regular user)
     """
-    #d - administrator
-    #m - moderator
-    #s - suspended
-    #b - blocked
-    #w - watched
-    #a - approved (regular user)
     assert(new_status in ('d', 'm', 's', 'b', 'w', 'a'))
     if new_status == self.status:
         return
 
-    if self.status == 'm':
+    if new_status not in ('d', 'm'):
         self.remove_role_set('moderator')
-    elif self.status == 'd':
         self.remove_role_set('administrator')
+        self.is_superuser = False
+        self.is_staff = False
 
-    #clear admin status if user was an administrator
-    #because this function is not dealing with the site admins
+    if new_status == 'm':
+        self.remove_role_set('administrator')
+        self.assign_role_set('moderator')
+        self.is_superuser = False #cannot access /settings/
+        self.is_staff = False #cannot access /admin/
+
     if new_status == 'd':
-        #create a new admin
-        self.is_superuser = True
         self.assign_role_set('administrator')
-    else:
-        #This was the old method, kept in the else clause when changing
-        #to admin, so if you change the status to another thing that
-        #is not Administrator it will simply remove admin if the user have
-        #that permission, it will mostly be false.
-        if self.is_administrator():
-            self.is_superuser = False
+        self.is_superuser = True
+        #do not modify is_staff, staff is above admin
+        #because staff has access to the /admin/ dashboard
+        #you want to have tight control over access to the /admin/
+        #therefore - assign this flag manually on per-user basis
+
 
     #when toggling between blocked and non-blocked status
     #we need to invalidate question page caches, b/c they contain
@@ -2728,8 +2718,6 @@ def user_set_status(self, new_status):
             thread.invalidate_cached_post_data()
 
     self.status = new_status
-    if new_status == 'm':
-        self.assign_role_set('moderator')
     self.save()
 
 @auto_now_timestamp
@@ -4283,8 +4271,11 @@ def set_administrator_flag(sender, instance, *args, **kwargs):
     if user.is_superuser:
         if instance.status != 'd':
             instance.status = 'd'
-    elif instance.status == 'd':
+            instance.assign_role_set('administrator')
+    elif instance.status == 'd': # demoting the admin by setting is_superuser to false
         instance.status = 'a'
+        instance.remove_role_set('administrator')
+        instance.remove_role_set('moderator')
 
 
 def init_avatar_type(sender, instance, *args, **kwargs):

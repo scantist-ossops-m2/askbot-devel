@@ -711,13 +711,12 @@ class Post(models.Model):
     def get_moderators(self):
         """returns query set of users who are site administrators
         and moderators"""
-        user_filter = models.Q(is_superuser=True) | models.Q(askbot_profile__status='m')
         #if askbot_settings.GROUPS_ENABLED:
         #    post_groups = self.groups.all()
         #    user_filter = user_filter & models.Q(
         #                                group_membership__group__in=post_groups
         #                            )
-        return User.objects.filter(user_filter).distinct()
+        return User.objects.filter(askbot_profile__status__in=('m', 'd')).distinct()
 
     def get_post_type_display(self):
         """Returns localized post type"""

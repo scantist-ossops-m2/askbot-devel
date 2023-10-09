@@ -255,8 +255,7 @@ class ManagementCommandTests(AskbotTestCase):
 
     def test_create_tag_synonym(self):
 
-        admin = User.objects.create_superuser('test_admin', 'admin@admin.com', 'admin_pass')
-
+        admin = self.create_user(username='test_admin', email='admin@admin.com', status='d')
         options = {
             'from': 'tag1',     # ok.. 'from' is a bad keyword argument name..
             'to': 'tag2',

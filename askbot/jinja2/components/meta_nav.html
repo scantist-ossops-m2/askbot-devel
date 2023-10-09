@@ -25,7 +25,7 @@
       </a>
     </li>
     {% endif %}
-    {% if request.user.is_authenticated and request.user.is_administrator() %}
+    {% if request.user.is_authenticated and request.user.is_superuser %}{# important: use is_superuser here #}
     <li>
       <a class="with-settings-icon" href="{{ url('satchmo_site_settings') }}">
         {% trans %}settings{% endtrans %}

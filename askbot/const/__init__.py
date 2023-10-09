@@ -603,3 +603,5 @@ a {
     font-size: 15px;
 }
 """
+
+PROFILE_WEBSITE_URL_MAX_LENGTH = 200

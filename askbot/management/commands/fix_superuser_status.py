@@ -16,7 +16,12 @@ class Command(BaseCommand):
                  .filter(pk__is_superuser=True)
                  .exclude(status='d'))
 
-        fixed = profiles.update(status='d')
+        fixed = profiles.count()
+
+        for profile in profiles:
+            user = User.objects.get(id=profile.auth_user_ptr_id)
+            user.set_status('d')
+
         rebuild_profile_caches(profiles)
 
         # Make sure all normal users have their status not set to 'd'
@@ -24,7 +29,12 @@ class Command(BaseCommand):
                       .filter(status='d')
                       .exclude(pk__is_superuser=True))
 
-        fixed += profiles.update(status='a')
+        fixed += profiles.count()
+
+        for profile in profiles:
+            user = User.objects.get(id=profile.auth_user_ptr_id)
+            user.set_status('a')
+
         rebuild_profile_caches(profiles)
 
         self.stdout.write('Fixed the status of {0} users.'.format(fixed))

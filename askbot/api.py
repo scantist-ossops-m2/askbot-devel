@@ -4,7 +4,6 @@ in the askbot.models module, but
 api must become a place to manupulate the data in the askbot application
 so that other implementations of the data storage could be possible
 """
-from django.db.models import Q
 from askbot import models
 from askbot import const
 
@@ -25,7 +24,7 @@ def get_info_on_moderation_items(user):
         const.TYPE_ACTIVITY_MODERATED_POST_EDIT,
     )
 
-    messages = models.ActivityAuditStatus.objects.filter(
+    messages = models.ActivityAuditStatus.objects.filter( # pylint: disable=no-member
         activity__activity_type__in=content_types, user=user)
 
     seen_count = messages.filter(
@@ -56,11 +55,9 @@ def get_admin(seed_user_id=None):
         if user.is_administrator() or user.is_moderator():
             return user
     try:
-        return models.User.objects.filter(
-            Q(is_superuser=True) | Q(askbot_profile__status__in=('m', 'd'))
-        ).order_by('id')[0]
-    except IndexError:
-        raise models.User.DoesNotExist(
+        return models.User.objects.filter(askbot_profile__status__in=('m', 'd')).order_by('id')[0]
+    except IndexError as error:
+        raise models.User.DoesNotExist( # pylint: disable=no-member
                 """Please add a moderator or an administrator to the forum first
                 there don't seem to be any"""
-            )
+            ) from error

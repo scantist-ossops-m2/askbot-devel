@@ -92,7 +92,7 @@ from askbot.importers.zendesk import models as zendesk_models
 # todo: clean this up
 ZERO_TIME = datetime.strptime('00:00', '%H:%M')
 # load admin user where a user is needed (eg. user who closed thread)
-ADMIN_USER = askbot_models.User.objects.filter(is_superuser=True)[:1]
+ADMIN_USER = askbot_models.User.objects.filter(askbot_profile__status='d')[:1]
 # option choices for what data to import from Zendesk
 DATA_IMPORT_ALL = 0
 DATA_IMPORT_FORUMS = 1

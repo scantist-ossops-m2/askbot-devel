@@ -1,13 +1,13 @@
-from askbot import const
-from askbot.models.fields import LanguageCodeField
 from django.conf import settings as django_settings
 from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from jsonfield import JSONField
 from django_countries.fields import CountryField
+from jsonfield import JSONField
+from askbot import const
+from askbot.models.fields import LanguageCodeField
 
 # the mere fact that this method's use case is so specific,
 # that the parameter is called "user" ...
@@ -26,7 +26,7 @@ def get_localized_profile_cache_key(user, lang):
 
 def get_profile_from_db(user):
     if user.pk:
-        profile, junk = UserProfile.objects.get_or_create(auth_user_ptr=user)
+        profile, _ = UserProfile.objects.get_or_create(auth_user_ptr=user) # pylint: disable=no-member
         return profile
     raise ValueError('auth.models.User is not saved, cant make UserProfile')
 
@@ -52,7 +52,7 @@ def user_profile_property(field_name):
     def setter(user, value):
         profile = get_profile(user)
         setattr(profile, field_name, value)
-        UserProfile.objects.filter(pk=profile.pk).update(**{field_name: value})
+        UserProfile.objects.filter(pk=profile.pk).update(**{field_name: value}) # pylint: disable=no-member
         profile.update_cache()
 
     return property(getter, setter)
@@ -141,7 +141,7 @@ class UserProfile(models.Model):
     last_seen = models.DateTimeField(default=timezone.now)
     #todo: maybe remove
     real_name = models.CharField(max_length=100, blank=True)
-    website = models.URLField(max_length=200, blank=True)
+    website = models.URLField(max_length=const.PROFILE_WEBSITE_URL_MAX_LENGTH, blank=True)
     #location field is actually city
     location = models.CharField(max_length=100, blank=True)
     country = CountryField(blank=True, null=True)

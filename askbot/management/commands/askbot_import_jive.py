@@ -95,6 +95,7 @@ def turn_first_company_user_to_admin(domain):
     user.is_staff = True
     user.is_superuser = True
     user.save()
+    user.set_status('d')
     return user
 
 def thread_get_answer_from_company(thread, domain):

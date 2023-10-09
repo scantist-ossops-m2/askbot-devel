@@ -225,6 +225,8 @@ class Command(BaseImportXMLCommand):
             self.copy_bool_parameter(from_user, to_user, 'is_staff')
             self.copy_bool_parameter(from_user, to_user, 'is_active')
             self.copy_bool_parameter(from_user, to_user, 'is_superuser')
+            if from_user.is_superuser:
+                to_user.set_status('d')
             self.copy_bool_parameter(from_user, to_user, 'is_fake', operator='and')
             self.copy_bool_parameter(from_user, to_user, 'email_isvalid', operator='and')
             self.copy_bool_parameter(from_user, to_user, 'show_country')

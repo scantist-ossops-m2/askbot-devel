@@ -1,12 +1,10 @@
 """Forms, custom form fields and related utility functions
-used in AskBot"""
-import regex as re #todo: make explicit import
-import askbot
-import unicodedata
+used in Askbot"""
 from collections import OrderedDict
+import logging
+import unicodedata
+import regex as re #todo: make explicit import
 from django import forms
-from askbot import const
-from askbot.const import message_keys
 from django.conf import settings as django_settings
 from django.core.exceptions import PermissionDenied
 from django.forms.utils import ErrorList
@@ -18,16 +16,17 @@ from askbot.utils.translation import get_language
 from django.utils.text import get_text_list, format_lazy
 from django.contrib.auth.models import User
 from django_countries import countries
+import askbot
+from askbot import const
+from askbot.const import message_keys, PROFILE_WEBSITE_URL_MAX_LENGTH
 from askbot.utils.forms import NextUrlField, UserNameField
 from askbot.utils.forms import moderated_email_validator
 from askbot.utils.slug import slugify
 from askbot.mail import extract_first_email_address
-from captcha.fields import ReCaptchaField
 from askbot.conf import settings as askbot_settings
 from askbot.conf import get_tag_email_filter_strategy_choices
 from askbot.models import UserProfile
-import logging
-
+from captcha.fields import ReCaptchaField
 
 def split_tags(data):
     split_re = re.compile(const.TAG_SPLIT_REGEX)
@@ -1314,7 +1313,7 @@ class EditUserForm(forms.Form):
         widget=forms.TextInput(attrs={'size': 35}))
 
     website = forms.URLField(
-        label=_('Website'), required=False, max_length=255,
+        label=_('Website'), required=False, max_length=PROFILE_WEBSITE_URL_MAX_LENGTH,
         widget=forms.TextInput(attrs={'size': 35}))
 
     city = forms.CharField(

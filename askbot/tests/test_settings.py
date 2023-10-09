@@ -51,7 +51,9 @@ class SettingsTests(AskbotTestCase):
         askbot_settings.update('MIN_REP_TO_VOTE_UP', backup)
 
     def test_settings_get(self):
-        self.admin = self.create_user('admin', status='d')
+        self.admin = self.create_user('staff')
+        self.admin.is_superuser = True
+        self.admin.save()
         self.client.login(user_id=self.admin.id, method='force')
         response = self.client.get(reverse('satchmo_site_settings'))
         self.assertEqual(response.status_code, 302)

@@ -259,7 +259,7 @@ def get_admin():
     """Returns an admin users, usefull for raising flags"""
     try:
         from django.contrib.auth.models import User
-        return User.objects.filter(is_superuser=True)[0]
+        return User.objects.filter(askbot_profile__status='d')[0]
     except:
         raise Exception('there is no admin users')
 

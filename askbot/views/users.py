@@ -6,11 +6,11 @@ and other views showing profile-related information.
 
 Also this module includes the view listing all forum users.
 """
-import askbot
 import calendar
 import collections
 import datetime
 import functools
+import json
 import logging
 import math
 import os
@@ -27,17 +27,17 @@ from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseForbidden, FileResponse
+from django.http import HttpResponseForbidden, FileResponse
 from django.http import HttpResponseRedirect, Http404
 from django.utils.text import format_lazy
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from django.utils.translation import ngettext
-import json
 from django.utils import timezone
 from django.utils.html import strip_tags as strip_all_tags
 from django.views.decorators import csrf
 
+import askbot
 from askbot.auth import logout
 from askbot.utils.slug import slugify
 from askbot.utils.html import sanitize_html
@@ -536,7 +536,7 @@ def edit_user(request, id):
     This view is accessible to profile owners or site administrators
     """
     user = get_object_or_404(models.User, id=id)
-    if not(request.user.pk == user.pk or request.user.is_superuser):
+    if not(request.user.pk == user.pk or request.user.is_administrator_or_moderator()):
         raise Http404
     if request.method == "POST":
         form = forms.EditUserForm(user, request.POST)

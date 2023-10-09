@@ -10,23 +10,21 @@ from askbot import const
 from askbot.utils.console import ProgressBar
 
 def fix_revisionless_posts(post_class):
-        posts = post_class.objects.annotate(
-                                        rev_count = Count('revisions')
-                                    ).filter(rev_count = 0)
-        count = len(posts)
-        print(f'have {count} corrupted posts')
-        message = 'Adding missing revisions:'
-        for post in ProgressBar(posts.iterator(), count, message):
-            rev = post.add_revision(
-                        author=post.author,
-                        text=post.text,
-                        comment=str(const.POST_STATUS['default_version']),
-                        revised_at=post.added_at
-                    )
-            post.last_edited_at = None
-            post.last_edited_by = None
-            post.current_revision = rev
-            post.save()
+    posts = post_class.objects.annotate(rev_count=Count('revisions')).filter(rev_count=0)
+    count = len(posts)
+    print(f'have {count} corrupted posts')
+    message = 'Adding missing revisions:'
+    for post in ProgressBar(posts.iterator(), count, message):
+        rev = post.add_revision(
+                    author=post.author,
+                    text=post.text,
+                    comment=str(const.POST_STATUS['default_version']),
+                    revised_at=post.added_at
+                )
+        post.last_edited_at = None
+        post.last_edited_by = None
+        post.current_revision = rev
+        post.save()
 
 class Command(BaseCommand):
     """Command class for "fix_answer_counts"
@@ -40,7 +38,7 @@ class Command(BaseCommand):
         signals.pre_save.receivers = []
         signals.post_save.receivers = []
 
-    def handle(self, *arguments, **options):
+    def handle(self, *arguments, **options): # pylint: disable=unused-argument
         """function that handles the command job
         """
         self.remove_save_signals()

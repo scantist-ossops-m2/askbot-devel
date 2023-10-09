@@ -5,6 +5,7 @@ from askbot.conf import settings
 from askbot import signals
 from askbot.models.tag import format_personal_group_name
 from askbot.models.user import get_invited_moderators
+from askbot.models.role import ADMIN_ROLES
 
 INVITED_MODS = """one@example.com One User
 broken user without email
@@ -96,3 +97,29 @@ class UserModelTests(AskbotTestCase):
         user = self.create_user('user')
         user.username = 'user2'
         user.save()
+
+    def test_superuser_is_admin(self):
+        user = self.create_user('user')
+        user.is_superuser = True
+        user.save()
+        self.assertEqual(user.status, 'd')
+        roles = set(user.askbot_roles.all().values_list('role', flat=True))
+        self.assertEqual(roles, ADMIN_ROLES)
+
+    def test_dismissed_superuser_is_approved_user(self):
+        user = self.create_user('user')
+        user.is_superuser = True
+        user.save()
+        user.is_superuser = False
+        user.save()
+        self.assertEqual(user.status, 'a')
+        roles = set(user.askbot_roles.all().values_list('role', flat=True))
+        self.assertEqual(roles, set())
+
+    def test_first_user_is_admin(self):
+        self.assertEqual(User.objects.count(), 0)
+        user = self.create_user('user')
+        self.assertEqual(user.status, 'd')
+        roles = set(user.askbot_roles.all().values_list('role', flat=True))
+        self.assertEqual(roles, ADMIN_ROLES)
+        self.assertEqual(user.is_superuser, True)

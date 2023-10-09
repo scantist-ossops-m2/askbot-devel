@@ -622,7 +622,7 @@ class Group(AuthGroup):
 
     def get_moderators(self):
         """returns group moderators"""
-        user_filter = models.Q(is_superuser=True) | models.Q(askbot_profile__status='m')
+        user_filter = models.Q(askbot_profile__status__in=('m', 'd'))
         user_filter = user_filter & models.Q(group_membership__group__in=[self])
         return User.objects.filter(user_filter)
 
