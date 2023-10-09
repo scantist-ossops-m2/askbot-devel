@@ -3442,7 +3442,7 @@ def user_get_flags_for_post(self, post):
 
 def user_create_email_key(self):
     email_key = generate_random_key()
-    UserProfile.objects.filter(auth_user_ptr=self).update(email_key=email_key)
+    self.email_key = email_key #updates the profile object in the database
     return email_key
 
 def user_get_or_create_email_key(self):

@@ -1572,8 +1572,13 @@ class SimpleEmailSubscribeForm(forms.Form):
 
 class UnsubscribeForm(forms.Form):
     key = forms.CharField(widget=forms.HiddenInput)
-    email = forms.CharField(widget=forms.HiddenInput)  # Allow invalid email
+    email = forms.EmailField(widget=forms.HiddenInput)
 
+    def clean_key(self):
+        key = self.cleaned_data['key']
+        if not re.match('[\da-z].*', key):
+            raise forms.ValidationError(_('Invalid key'))
+        return key
 
 class GroupLogoURLForm(forms.Form):
     """form for saving group logo url"""
