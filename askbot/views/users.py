@@ -1302,12 +1302,9 @@ def user_unsubscribe(request):
         key = form.cleaned_data['key']
         email = form.cleaned_data['email']
         try:
-            #we use email too, in case the key changed
-            user = models.User.objects.get(email=email)
-        except models.User.DoesNotExist:
-            user = models.User.objects.get(askbot_profile__email_key=key)
-        except models.User.DoesNotExist:
-            result = 'bad_input'
+            user = models.User.objects.filter(email__iexact=email)[0]
+        except IndexError:
+            result = 'user_not_found'
         except models.User.MultipleObjectsReturned:
             result = 'error'
             logging.critical('unexpected error with data %s', str(form.cleaned_data))

@@ -404,7 +404,7 @@ class AccountRecoveryForm(forms.Form):
                 self.cleaned_data['user'] = user
             except IndexError:
                 del self.cleaned_data['email']
-                message = _('Sorry, we don\'t have this email address in the database')
+                message = _("Sorry, we don't have a user with this email.")
                 raise forms.ValidationError(message)
 
 
