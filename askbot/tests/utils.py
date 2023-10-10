@@ -14,6 +14,7 @@ from django.db.models.signals import post_migrate
 from django.test import TestCase
 from askbot import models
 from askbot import signals
+from django.test import signals as django_test_signals
 
 def with_settings(**settings_dict):
     """a decorator that will run function with settings
@@ -385,3 +386,19 @@ def skipIf(condition, reason):
     if condition:
         return skip(reason)
     return _id
+
+
+def patch_jinja2():
+    from jinja2 import Template
+    ORIG_JINJA2_RENDERER = Template.render
+
+    def instrumented_render(template_object, *args, **kwargs):
+        context = dict(*args, **kwargs)
+        django_test_signals.template_rendered.send(
+                                sender=template_object,
+                                template=template_object,
+                                context=context
+                            )
+        return ORIG_JINJA2_RENDERER(template_object, *args, **kwargs)
+    Template.render = instrumented_render
+

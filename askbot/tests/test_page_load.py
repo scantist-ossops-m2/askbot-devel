@@ -1,5 +1,4 @@
 from askbot.search.state_manager import SearchState
-from django.test import signals
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
@@ -18,23 +17,9 @@ from askbot.utils import url_utils
 from askbot.tests.utils import AskbotTestCase
 from askbot.conf import settings as askbot_settings
 from askbot.tests.utils import skipIf
-from askbot.tests.utils import with_settings
+from askbot.tests.utils import skipIf, patch_jinja2, with_settings
 
 from askbot.skins.template_backends import Template as AskbotTemplate
-
-def patch_jinja2():
-    from jinja2 import Template
-    ORIG_JINJA2_RENDERER = Template.render
-
-    def instrumented_render(template_object, *args, **kwargs):
-        context = dict(*args, **kwargs)
-        signals.template_rendered.send(
-                                sender=template_object,
-                                template=template_object,
-                                context=context
-                            )
-        return ORIG_JINJA2_RENDERER(template_object, *args, **kwargs)
-    Template.render = instrumented_render
 
 patch_jinja2()
 
