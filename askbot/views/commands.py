@@ -1364,8 +1364,7 @@ def moderate_group_join_request(request):
         activity.delete()
         url = request.user.get_absolute_url() + '?sort=inbox&section=join_requests'
         return HttpResponseRedirect(url)
-    else:
-        raise Http404
+    raise Http404
 
 @decorators.get_only
 def get_editor(request):

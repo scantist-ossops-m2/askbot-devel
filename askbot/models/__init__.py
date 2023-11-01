@@ -1436,11 +1436,9 @@ def user_assert_can_remove_all_flags_offensive(self, post = None):
                     )
     if all_flags.count() < 1:
         raise django_exceptions.PermissionDenied(non_existing_flagging_error_message)
-    #one extra assertion
     if self.is_administrator() or self.is_moderator():
         return
-    else:
-        raise django_exceptions.PermissionDenied(permission_denied_message)
+    raise django_exceptions.PermissionDenied(permission_denied_message)
 
 
 def user_assert_can_retag_question(self, question = None):
