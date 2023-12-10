@@ -68,3 +68,5 @@ node_modules
 bower_components/
 .tox
 coverage_html_report
+/activity.txt
+/askbot/media/jslib/katex/

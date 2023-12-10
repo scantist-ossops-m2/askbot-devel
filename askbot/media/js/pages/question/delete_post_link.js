@@ -62,8 +62,8 @@
 
   DeletePostLink.prototype.decorate = function (element) {
     this._element = element;
-    this._post_deleted = this.getPostElement().hasClass('js-post-deleted');
     this._post_id = $(element).data('postId');
+    this._post_deleted = this.getPostElement().hasClass('js-post-deleted');
     this.setHandler(this.getDeleteHandler());
   };
 
