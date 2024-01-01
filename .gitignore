@@ -67,6 +67,5 @@ htmlcov
 node_modules
 bower_components/
 .tox
-coverage_html_report
-askbot/media/jslib/katex/
 /activity.txt
+/askbot/media/jslib/katex/
