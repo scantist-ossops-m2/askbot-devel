@@ -1,5 +1,10 @@
 from django.db import models
+from django.db.models import Q
+from django.db.models.functions import Substr, StrIndex
 from django.contrib.auth.models import User
+from django.conf import settings as django_settings
+from django.db.models import Value, Count
+from django.contrib.auth import get_user_model
 
 """
 class Dimension(models.Model):
@@ -16,6 +21,30 @@ class Metric(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 """
+
+def get_non_admins_count():
+    """Returns the count of non-admin users, as relevant for Askbot analytics"""
+    non_admins = User.objects.exclude(Q(is_superuser=True) | Q(is_staff=True))
+    non_admins = non_admins.exclude(Q(askbot_profile__status='d') | Q(askbot_profile__status='m'))
+    admin_filter = django_settings.ASKBOT_ANALYTICS_ADMINS_FILTER
+    if admin_filter:
+        non_admins = non_admins.exclude(**admin_filter)
+    return non_admins.count()
+
+
+def get_organization_domains():
+    """Returns the query set of organization domain names"""
+    domain_annotation = Substr('email', StrIndex('email', Value('@')) + 1)
+    return User.objects.annotate(domain=domain_annotation).values('domain').distinct()
+
+
+def get_organizations_count():
+    """Returns the count of organizations.
+    An organization is a collection of users with the same email domain.
+    """
+    if not django_settings.ASKBOT_ANALYTICS_EMAIL_DOMAIN_ORGANIZATIONS_ENABLED:
+        return 0
+    return get_organization_domains().count()
 
 
 class Session(models.Model):
