@@ -37,6 +37,7 @@ from askbot import const
 from askbot.const import message_keys
 from askbot.conf import settings as askbot_settings
 from askbot.models.question import Thread
+import askbot.models.analytics
 from askbot.skins import utils as skin_utils
 from askbot.mail.messages import (WelcomeEmail,
                                   WelcomeEmailRespondable,

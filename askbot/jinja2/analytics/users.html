@@ -1,0 +1,30 @@
+{% extends "one_column_body.html" %}
+{% block title %}{% filter trim %}{% trans %}Analytics / Home{% endtrans %}{% endfilter %}{% endblock %}
+{% block layout_class %}{{ super() }} analytics-page{% endblock %}
+{% block forum_header %}{% endblock %}
+{% block content %}
+<h1><a href="{{ url('analytics_index') }}">{% trans %}Analytics{% endtrans %}</a> / {% trans %}Users{% endtrans %}</h1>
+<div class="analytics-summary">
+  <div class="analytics-summary-number">
+    <div>{% trans %}All:{% endtrans %} {{ all_users_count }}</div>
+    <p>{% trans %}All users{% endtrans %}</p>
+  </div>
+  <div class="analytics-summary-number">
+    <div>
+        {{ non_admins_slice_name }}:
+        {{ non_admins_count }}
+    </div>
+    <p>
+      {{ non_admins_slice_description }}
+    </p>
+  </div>
+  {% if orgs_enabled %}
+    <div class="analytics-summary-number">
+      <div>{% trans %}Organizations:{% endtrans %} {{ orgs_count }}</div>
+      <p>{% trans %}According to the email domain names{% endtrans %}</p>
+    </div>
+  {% endif %}
+<div>
+
+</div>
+{% endblock %}

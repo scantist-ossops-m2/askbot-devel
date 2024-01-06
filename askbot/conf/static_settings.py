@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from appconf import AppConf
 import os
 from askbot import const
@@ -37,6 +38,9 @@ class AskbotStaticSettings(AppConf):
     }
 
     AUTO_INIT_BADGES = True
+    ANALYTICS_EMAIL_DOMAIN_ORGANIZATIONS_ENABLED = False
+    ANALYTICS_NON_ADMINS_SLICE_NAME = _('Non-Admins')
+    ANALYTICS_NON_ADMINS_SLICE_DESCRIPTION = _('All users, excluding the moderators and admins')
     CAS_USER_FILTER = None
     CAS_USER_FILTER_DENIED_MSG = None
     CAS_GET_USERNAME = None # python path to function

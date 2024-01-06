@@ -10765,4 +10765,27 @@ a.badge-page-link {
   background: var(--clr-neutral-90);
 }
 
+.analytics-page h1, .analytics-page section {
+  margin: 0 0 1rem;
+}
+.analytics-page h1 {
+  font-size: 1.5rem;
+}
+.analytics-page h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem;
+}
+
+.analytics-summary {
+  display: flex;
+}
+
+.analytics-summary-number {
+  margin-right: 1.5rem;
+}
+.analytics-summary-number div {
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
 /*# sourceMappingURL=style.css.map */
