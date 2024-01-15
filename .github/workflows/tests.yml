@@ -8,7 +8,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.11.7]
+        python-version: [3.7.17]
 
 #    services:
 #      postgres:
@@ -39,8 +39,12 @@ jobs:
         python setup.py install
         pip install -r requirements-tests.txt
         cat askbot_setup_test_inputs.txt | socat stdio exec:askbot-setup,pty,setsid,echo=1
+        pwd
+        ls -d askbot_site
     - name: Run Tests
       run: |
+        pwd
+        ls -d askbot_site
         cd askbot_site
         ln -s ../askbot/tests .
         python manage.py test tests.test_forms
