@@ -12,7 +12,6 @@ jobs:
 
 #    services:
 #      postgres:
-#        # image should match heroku and/or docker-compose.yaml
 #        image: postgres:13.6
 #        env: # must match with settings from $DJANGO_SETTINGS_MODULE
 #          POSTGRES_USER: postgres
