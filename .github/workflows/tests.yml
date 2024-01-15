@@ -41,6 +41,8 @@ jobs:
         cat askbot_setup_test_inputs.txt | socat stdio exec:askbot-setup,pty,setsid,echo=1
         pwd
         ls -l
+        which askbot-setup
+        echo $PATH
     - name: Run Tests
       run: |
         pwd
