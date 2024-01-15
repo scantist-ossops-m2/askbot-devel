@@ -27,26 +27,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install setuptools-rust
         python setup.py install
         pip install -r requirements-tests.txt
         cat askbot_setup_test_inputs.txt | askbot-setup
-        pwd
-        ls -l
-    - name: Run Tests
+    - name: Run tests
       run: |
-        pwd
-        ls -d askbot_site
         cd askbot_site
         ln -s ../askbot/tests .
-        python manage.py test tests.test_forms
+        python manage.py test tests
 #      env:
 #        # Variables for unit tests
 #        DJANGO_SETTINGS_MODULE: settings
