@@ -33,16 +33,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
-        sudo apt-get -y install socat
         python -m pip install --upgrade pip
         pip install setuptools-rust
         python setup.py install
         pip install -r requirements-tests.txt
-        cat askbot_setup_test_inputs.txt | socat stdio exec:askbot-setup,pty,setsid,echo=1
+        cat askbot_setup_test_inputs.txt | askbot-setup
         pwd
         ls -l
-        which askbot-setup
-        echo $PATH
     - name: Run Tests
       run: |
         pwd
