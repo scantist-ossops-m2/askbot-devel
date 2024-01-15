@@ -40,7 +40,7 @@ jobs:
         pip install -r requirements-tests.txt
         cat askbot_setup_test_inputs.txt | socat stdio exec:askbot-setup,pty,setsid,echo=1
         pwd
-        ls -d askbot_site
+        ls -l
     - name: Run Tests
       run: |
         pwd
