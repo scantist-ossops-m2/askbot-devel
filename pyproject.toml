@@ -1,6 +1,9 @@
+# pyproject.toml duplicates some information in setup.py
+# However, setup.py is deprecated, and pyproject.toml is needed for ruff config
 [project]
+name = "askbot"
 requires-python = ">=3.8"
-target-version = "py38"
+version = "0.12.2"
 
 [tool.ruff]
 # exclude Django migrations
