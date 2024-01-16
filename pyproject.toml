@@ -5,7 +5,10 @@
 [project]
 name = "askbot"
 requires-python = ">=3.8"
-version = "0.12.2"
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "askbot.VERSION"}
 
 [tool.ruff]
 # exclude Django migrations
