@@ -52,6 +52,19 @@ All documentation is in the directory askbot/doc
 Follow https://help.github.com/articles/fork-a-repo to to learn how to use
 `fetch` and `push` as well as other help on using git.
 
+pre-commit
+==========
+
+This repository uses [pre-commit](https://pre-commit.com/) to check
+some code rules, so please install it:
+
+```
+$ pre-commit install
+```
+
+It will then check the rules upon `git commit`.
+
+
 License, copyright and trademarks
 =================================
 Askbot software is licensed under GPL, version 3.
