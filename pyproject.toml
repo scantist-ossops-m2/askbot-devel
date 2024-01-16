@@ -1,5 +1,7 @@
 # pyproject.toml duplicates some information in setup.py
-# However, setup.py is deprecated, and pyproject.toml is needed for ruff config
+# However, pyproject.toml is now standard, and needed for ruff config
+# See also https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+# See also https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
 [project]
 name = "askbot"
 requires-python = ">=3.8"
