@@ -5,7 +5,8 @@
 [project]
 name = "askbot"
 requires-python = ">=3.8"
-dynamic = ["version"]
+dynamic = ["version", "dependencies", "scripts", "classifiers", "license",
+    "description", "readme", "authors", "keywords"]
 
 [tool.setuptools.dynamic]
 version = {attr = "askbot.VERSION"}
