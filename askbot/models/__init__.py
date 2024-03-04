@@ -2220,6 +2220,7 @@ def user_edit_post(self,
             revision_comment=revision_comment,
             by_email=by_email,
             suppress_email=suppress_email,
+            is_private=is_private,
             ip_addr=ip_addr
         )
     elif post.post_type == 'question':

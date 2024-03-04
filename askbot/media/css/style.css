@@ -9410,6 +9410,10 @@ ul.tags li {
   text-decoration-thickness: var(--border-width);
 }
 
+.g-recaptcha {
+  margin-bottom: 0.5rem;
+}
+
 .error-page main {
   display: flex;
   flex-direction: column;
