@@ -3,7 +3,6 @@ import random
 import datetime
 from django.utils.translation import ugettext as _
 from django.utils.translation import ungettext
-from django.utils.html import escape
 
 def get_from_dict_or_object(source, key):
     try:
@@ -147,7 +146,7 @@ def setup_paginator(context):
             pages_outside_trailing_range = [n + 1 for n in range(0, NUM_PAGES_OUTSIDE_RANGE)]
 
         return {
-            "base_url": escape(context["base_url"]),
+            "base_url": context["base_url"],
             "is_paginated": context["is_paginated"],
             "previous": context["previous"],
             "has_previous": context["has_previous"],
